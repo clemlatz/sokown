@@ -31,11 +31,19 @@ export default class Ship {
     this._currentPosition = value;
   }
 
-  get destination(): Location | null {
+  get destination(): Location {
+    if (this._destination === null) {
+      throw new Error("Ship has no destination");
+    }
+
     return this._destination;
   }
 
   resetDestination(): void {
     this._destination = null;
+  }
+
+  get isStationary(): boolean {
+    return this._destination === null;
   }
 }
