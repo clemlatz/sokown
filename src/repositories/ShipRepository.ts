@@ -1,6 +1,8 @@
-import Ship from "../models/Ship";
 import {PrismaClient} from "@prisma/client";
+
 import Position from "../models/Position";
+import Ship from "../models/Ship";
+import LocationRepository from "./LocationRepository";
 
 export default class ShipRepository {
   private prisma: PrismaClient;
@@ -10,10 +12,12 @@ export default class ShipRepository {
   }
 
   async getAll(): Promise<Ship[]> {
+    const locationRepository = new LocationRepository();
     const ships = await this.prisma.ship.findMany();
     return ships.map(ship => {
+      const destination = ship.destinationCode ? locationRepository.getByCode(ship.destinationCode) : null;
       const currentPosition = new Position(ship.currentPositionX, ship.currentPositionY)
-      return new Ship(ship.id,ship.name || "Unnamed ship", currentPosition);
+      return new Ship(ship.id,ship.name || "Unnamed ship", currentPosition, destination);
     });
   }
 
@@ -25,6 +29,7 @@ export default class ShipRepository {
       data: {
         currentPositionX: ship.currentPosition.x,
         currentPositionY: ship.currentPosition.y,
+        destinationCode: ship.destination?.code || null,
       },
     });
   }

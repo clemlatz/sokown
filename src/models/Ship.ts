@@ -1,16 +1,18 @@
 import Position from "./Position";
-import {name} from "ts-jest/dist/transformers/hoist-jest";
+import Location from "./Location";
 
 export default class Ship {
 
   private readonly _id: number;
   private readonly _name: string;
   private _currentPosition: Position = new Position(0,0);
+  private _destination: Location|null;
 
-  constructor(id: number, name: string, currentPosition: Position) {
+  constructor(id: number, name: string, currentPosition: Position, destination: Location|null) {
     this._id = id;
     this._name = name;
     this._currentPosition = currentPosition;
+    this._destination = destination;
   }
 
   get id(): number {
@@ -27,5 +29,13 @@ export default class Ship {
 
   set currentPosition(value: Position) {
     this._currentPosition = value;
+  }
+
+  get destination(): Location | null {
+    return this._destination;
+  }
+
+  resetDestination(): void {
+    this._destination = null;
   }
 }

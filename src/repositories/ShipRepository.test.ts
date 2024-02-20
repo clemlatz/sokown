@@ -20,7 +20,7 @@ describe("ShipRepository", () => {
 
       // then
       const expectedPosition = new Position(1, 2);
-      const expectedShip = new Ship(1, "Ship", expectedPosition);
+      const expectedShip = new Ship(1, "Ship", expectedPosition, null);
       expect(prisma.ship.findMany).toHaveBeenCalled();
       expect(ships[0]).toStrictEqual(expectedShip);
     });
@@ -29,7 +29,7 @@ describe("ShipRepository", () => {
   describe("update", () => {
     test("it updates the ships", async () => {
       // given
-      const ship = new Ship(1, "Ship", new Position(1, 2));
+      const ship = new Ship(1, "Ship", new Position(1, 2), null);
       const prisma = {
         ship: {
           update: jest.fn(),
@@ -48,6 +48,7 @@ describe("ShipRepository", () => {
         data: {
           currentPositionX: ship.currentPosition.x,
           currentPositionY: ship.currentPosition.y,
+          destinationId: null,
         },
       });
     })

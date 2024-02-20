@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Ship {
-  id    Int     @id @default(autoincrement())
-  name  String?
+  id               Int      @id @default(autoincrement())
+  name             String
   currentPositionX Float
   currentPositionY Float
+  destinationCode  String?
 }
