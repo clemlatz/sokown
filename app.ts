@@ -1,6 +1,7 @@
 import {PrismaClient} from '@prisma/client'
 import ShipRepository from "./src/repositories/ShipRepository";
 import moveShipTowardsDestinationUsecase from "./src/usescases/moveShipTowardsDestinationUsecase";
+import server from "./src/server";
 
 const prisma = new PrismaClient()
 const shipRepository = new ShipRepository(prisma);
@@ -17,6 +18,8 @@ main()
 
 async function main() {
   setInterval(tick, 1000);
+
+  await server();
 }
 
 async function tick() {
