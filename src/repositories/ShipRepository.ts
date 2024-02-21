@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Position from '../models/Position';
 import Ship from '../models/Ship';
 import LocationRepository from './LocationRepository';
+import { Injectable } from '@nestjs/common';
 
 type ShipDTO = {
   id: number;
@@ -12,6 +13,7 @@ type ShipDTO = {
   destinationCode: string;
 };
 
+@Injectable()
 export default class ShipRepository {
   private prisma: PrismaClient;
 
