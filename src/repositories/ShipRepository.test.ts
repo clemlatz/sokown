@@ -5,6 +5,30 @@ import Position from '../models/Position';
 import Location from '../models/Location';
 
 describe('ShipRepository', () => {
+  describe('getAll', () => {
+    test('it gets all the ships', async () => {
+      // given
+      const givenShips = [
+        { id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 },
+      ];
+      const prisma = {
+        ship: {
+          findMany: jest.fn(() => givenShips),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+
+      // when
+      const ships = await repository.getAll();
+
+      // then
+      const expectedPosition = new Position(1, 2);
+      const expectedShip = new Ship(1, 'Ship', expectedPosition, null);
+      expect(prisma.ship.findMany).toHaveBeenCalledWith();
+      expect(ships[0]).toStrictEqual(expectedShip);
+    });
+  });
+
   describe('getShipsWithDestination', () => {
     test('it gets all the ships with a destination set', async () => {
       // given
