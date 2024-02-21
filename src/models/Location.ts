@@ -1,10 +1,9 @@
-import Position from "./Position";
+import Position from './Position';
 
 export default class Location {
-
   private readonly _code: string;
   private readonly _name: string;
-  private readonly _position: Position = new Position(0,0);
+  private readonly _position: Position = new Position(0, 0);
 
   constructor(code: string, name: string, position: Position) {
     this._code = code;

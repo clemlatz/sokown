@@ -1,8 +1,8 @@
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-import Position from "../models/Position";
-import Ship from "../models/Ship";
-import LocationRepository from "./LocationRepository";
+import Position from '../models/Position';
+import Ship from '../models/Ship';
+import LocationRepository from './LocationRepository';
 
 export default class ShipRepository {
   private prisma: PrismaClient;
@@ -15,13 +15,23 @@ export default class ShipRepository {
     const locationRepository = new LocationRepository();
     const ships = await this.prisma.ship.findMany({
       where: {
-        destinationCode: { not: null }
-      }
+        destinationCode: { not: null },
+      },
     });
-    return ships.map(ship => {
-      const destination = ship.destinationCode ? locationRepository.getByCode(ship.destinationCode) : null;
-      const currentPosition = new Position(ship.currentPositionX, ship.currentPositionY)
-      return new Ship(ship.id,ship.name || "Unnamed ship", currentPosition, destination);
+    return ships.map((ship) => {
+      const destination = ship.destinationCode
+        ? locationRepository.getByCode(ship.destinationCode)
+        : null;
+      const currentPosition = new Position(
+        ship.currentPositionX,
+        ship.currentPositionY,
+      );
+      return new Ship(
+        ship.id,
+        ship.name || 'Unnamed ship',
+        currentPosition,
+        destination,
+      );
     });
   }
 

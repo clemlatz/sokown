@@ -1,14 +1,16 @@
-import ShipRepository from "./ShipRepository";
-import {PrismaClient} from "@prisma/client";
-import Ship from "../models/Ship";
-import Position from "../models/Position";
-import Location from "../models/Location";
+import ShipRepository from './ShipRepository';
+import { PrismaClient } from '@prisma/client';
+import Ship from '../models/Ship';
+import Position from '../models/Position';
+import Location from '../models/Location';
 
-describe("ShipRepository", () => {
-  describe("getShipsWithDestination", () => {
-    test("it gets all the ships with a destination set", async () => {
+describe('ShipRepository', () => {
+  describe('getShipsWithDestination', () => {
+    test('it gets all the ships with a destination set', async () => {
       // given
-      const givenShips = [{ id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 }];
+      const givenShips = [
+        { id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 },
+      ];
       const prisma = {
         ship: {
           findMany: jest.fn(() => givenShips),
@@ -21,7 +23,7 @@ describe("ShipRepository", () => {
 
       // then
       const expectedPosition = new Position(1, 2);
-      const expectedShip = new Ship(1, "Ship", expectedPosition, null);
+      const expectedShip = new Ship(1, 'Ship', expectedPosition, null);
       expect(prisma.ship.findMany).toHaveBeenCalledWith({
         where: {
           destinationCode: { not: null },
@@ -31,11 +33,11 @@ describe("ShipRepository", () => {
     });
   });
 
-  describe("update", () => {
-    describe("when ship is stationary", () => {
-      test("it updates the ships", async () => {
+  describe('update', () => {
+    describe('when ship is stationary', () => {
+      test('it updates the ships', async () => {
         // given
-        const ship = new Ship(1, "Ship", new Position(1, 2), null);
+        const ship = new Ship(1, 'Ship', new Position(1, 2), null);
         const prisma = {
           ship: {
             update: jest.fn(),
@@ -60,12 +62,16 @@ describe("ShipRepository", () => {
       });
     });
 
-    describe("when ship has a destination", () => {
-      test("it updates the ships and destination", async () => {
+    describe('when ship has a destination', () => {
+      test('it updates the ships and destination', async () => {
         // given
         const destinationPosition = new Position(1, 2);
-        const destination = new Location("destination", "Destination", destinationPosition);
-        const ship = new Ship(1, "Ship", new Position(1, 2), destination);
+        const destination = new Location(
+          'destination',
+          'Destination',
+          destinationPosition,
+        );
+        const ship = new Ship(1, 'Ship', new Position(1, 2), destination);
         const prisma = {
           ship: {
             update: jest.fn(),
@@ -84,7 +90,7 @@ describe("ShipRepository", () => {
           data: {
             currentPositionX: ship.currentPosition.x,
             currentPositionY: ship.currentPosition.y,
-            destinationCode: "destination",
+            destinationCode: 'destination',
           },
         });
       });
