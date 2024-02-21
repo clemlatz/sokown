@@ -29,7 +29,7 @@ export default class ShipRepository {
       data: {
         currentPositionX: ship.currentPosition.x,
         currentPositionY: ship.currentPosition.y,
-        destinationCode: ship.destination?.code || null,
+        destinationCode: ship.isStationary ? null : ship.destination.code,
       },
     });
   }
