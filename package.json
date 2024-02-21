@@ -4,7 +4,9 @@
   "description": "A space game",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "nodemon app.ts",
+    "start": "ts-node app.ts"
   },
   "author": "Clément Latzarus <c@ltzr.io>",
   "license": "ISC",
@@ -12,6 +14,7 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.19",
     "jest": "^29.7.0",
+    "nodemon": "^3.0.3",
     "prisma": "^5.10.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
