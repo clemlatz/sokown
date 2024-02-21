@@ -11,9 +11,13 @@ export default class ShipRepository {
     this.prisma = prisma;
   }
 
-  async getAll(): Promise<Ship[]> {
+  async getShipsWithDestination(): Promise<Ship[]> {
     const locationRepository = new LocationRepository();
-    const ships = await this.prisma.ship.findMany();
+    const ships = await this.prisma.ship.findMany({
+      where: {
+        destinationCode: { not: null }
+      }
+    });
     return ships.map(ship => {
       const destination = ship.destinationCode ? locationRepository.getByCode(ship.destinationCode) : null;
       const currentPosition = new Position(ship.currentPositionX, ship.currentPositionY)

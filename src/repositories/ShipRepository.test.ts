@@ -5,8 +5,8 @@ import Position from "../models/Position";
 import Location from "../models/Location";
 
 describe("ShipRepository", () => {
-  describe("getAll", () => {
-    test("it gets all the ships", async () => {
+  describe("getShipsWithDestination", () => {
+    test("it gets all the ships with a destination set", async () => {
       // given
       const givenShips = [{ id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 }];
       const prisma = {
@@ -17,12 +17,16 @@ describe("ShipRepository", () => {
       const repository = new ShipRepository(prisma);
 
       // when
-      const ships = await repository.getAll();
+      const ships = await repository.getShipsWithDestination();
 
       // then
       const expectedPosition = new Position(1, 2);
       const expectedShip = new Ship(1, "Ship", expectedPosition, null);
-      expect(prisma.ship.findMany).toHaveBeenCalled();
+      expect(prisma.ship.findMany).toHaveBeenCalledWith({
+        where: {
+          destinationCode: { not: null },
+        },
+      });
       expect(ships[0]).toStrictEqual(expectedShip);
     });
   });
