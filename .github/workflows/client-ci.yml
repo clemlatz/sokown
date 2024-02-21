@@ -1,0 +1,20 @@
+name: Client CI
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v1
+      - uses: rwjblue/setup-volta@v1
+      - uses: mydea/actions-ember-testing@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Lint JS
+        run: npm run lint:js
+      - name: Lint HBS
+        run: npm run lint:hbs
+      - name: Run tests
+        run: npm test
