@@ -1,5 +1,6 @@
 import Ship from '../models/Ship';
 import calculateNewPosition from '../helpers/calculateNewPosition';
+import LocationRepository from '../repositories/LocationRepository';
 
 type loggerFunction = (message: string) => void;
 
@@ -16,7 +17,15 @@ export default async function moveShipTowardsDestinationUsecase(
     newPosition.x === ship.currentPosition.x &&
     newPosition.y === ship.currentPosition.y
   ) {
-    logger(`Ship ${ship.name} has arrived at ${ship.destinationPosition}`);
+    const locationRepository = new LocationRepository();
+    const destinationLocation = locationRepository.findByPosition(newPosition);
+    if (destinationLocation) {
+      logger(
+        `Ship ${ship.name} has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
+      );
+    } else {
+      logger(`Ship ${ship.name} has arrived at ${ship.destinationPosition}`);
+    }
     ship.resetDestination();
     return ship;
   }
