@@ -1,6 +1,7 @@
 import Location from '../models/Location';
 import Position from '../models/Position';
 
+const spaceLocation = new Location('space', 'Space', new Position(0, 0));
 const locations = [
   new Location('earth', 'Earth', new Position(1, 1)),
   new Location('moon', 'Moon', new Position(3, 3)),
@@ -24,6 +25,6 @@ export default class LocationRepository {
       );
     });
 
-    return location ?? null;
+    return location ?? spaceLocation;
   }
 }

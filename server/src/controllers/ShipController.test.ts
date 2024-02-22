@@ -52,7 +52,7 @@ describe('ShipController', () => {
           id: 2,
           name: 'Europa Report',
           currentPosition: { x: 3, y: 4 },
-          currentLocation: null,
+          currentLocation: { name: 'Space' },
           destinationPosition: { x: 23, y: 17 },
           destinationLocation: { name: 'Mars' },
         },

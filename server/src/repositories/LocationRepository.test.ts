@@ -48,7 +48,7 @@ describe('LocationRepository', () => {
       const location = locationRepository.findByPosition(position);
 
       // then
-      expect(location).toBeNull();
+      expect(location.name).toEqual('Space');
     });
   });
 });
