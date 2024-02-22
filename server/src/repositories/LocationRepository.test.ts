@@ -1,4 +1,5 @@
-import LocationRepository from "./LocationRepository";
+import LocationRepository from './LocationRepository';
+import Position from '../models/Position';
 
 describe('LocationRepository', () => {
   describe('getByCode', () => {
@@ -22,6 +23,32 @@ describe('LocationRepository', () => {
 
       // then
       expect(tested).toThrowError(new Error('Unknown location nibiru'));
+    });
+  });
+
+  describe('findByPosition', () => {
+    test('it returns a location matching position', () => {
+      // given
+      const locationRepository = new LocationRepository();
+      const earthPosition = new Position(1, 1);
+
+      // when
+      const location = locationRepository.findByPosition(earthPosition);
+
+      // then
+      expect(location.name).toEqual('Earth');
+    });
+
+    test('it returns null if there is no location at position', () => {
+      // given
+      const locationRepository = new LocationRepository();
+      const position = new Position(100, 100);
+
+      // when
+      const location = locationRepository.findByPosition(position);
+
+      // then
+      expect(location).toBeNull();
     });
   });
 });

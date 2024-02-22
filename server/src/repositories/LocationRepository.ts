@@ -16,4 +16,14 @@ export default class LocationRepository {
 
     return location;
   }
+
+  findByPosition(position: Position): Location | null {
+    const location = locations.find((location) => {
+      return (
+        location.position.x === position.x && location.position.y === position.y
+      );
+    });
+
+    return location ?? null;
+  }
 }
