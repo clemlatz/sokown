@@ -8,7 +8,7 @@ export class ShipController {
   constructor(private readonly shipRepository: ShipRepository) {
   }
 
-  @Get('ships')
+  @Get('api/ships')
   async index(@Res() res: Response): Promise<void> {
     const ships = await this.shipRepository.getAll();
     const locationRepository = new LocationRepository();
