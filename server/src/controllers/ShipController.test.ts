@@ -6,7 +6,6 @@ import { ShipController } from './ShipController';
 import ShipRepository from '../repositories/ShipRepository';
 import Ship from '../models/Ship';
 import Position from '../models/Position';
-import Location from '../models/Location';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -28,10 +27,9 @@ describe('ShipController', () => {
       const response = {
         json: jest.fn(),
       } as unknown as Response;
-      const destination = new Location('europa', 'Europa', new Position(5, 6));
       const ships = [
         new Ship(1, 'Discovery One', new Position(1, 2), null),
-        new Ship(2, 'Europa Report', new Position(3, 4), destination),
+        new Ship(2, 'Europa Report', new Position(3, 4), new Position(5,6)),
       ];
       jest
         .spyOn(shipRepository, 'getAll')
@@ -52,7 +50,7 @@ describe('ShipController', () => {
           id: 2,
           name: 'Europa Report',
           position: { x: 3, y: 4 },
-          destination: { name: 'Europa' },
+          destination: { x: 5, y: 6 },
         },
       ]);
     });

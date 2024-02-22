@@ -14,7 +14,7 @@ export class ShipController {
         id: ship.id,
         name: ship.name,
         position: { x: ship.currentPosition.x, y: ship.currentPosition.y },
-        destination: ship.isStationary ? null : { name: ship.destination.name },
+        destination: ship.isStationary ? null : { x: ship.destinationPosition.x, y: ship.destinationPosition.y },
       };
     });
     res.json(shipsResponse);

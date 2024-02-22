@@ -2,14 +2,20 @@ import ShipRepository from './ShipRepository';
 import { PrismaClient } from '@prisma/client';
 import Ship from '../models/Ship';
 import Position from '../models/Position';
-import Location from '../models/Location';
 
 describe('ShipRepository', () => {
   describe('getAll', () => {
     test('it gets all the ships', async () => {
       // given
       const givenShips = [
-        { id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 },
+        {
+          id: 1,
+          name: 'Ship',
+          currentPositionX: 1,
+          currentPositionY: 2,
+          destinationPositionX: null,
+          destinationPositionY: null,
+        },
       ];
       const prisma = {
         ship: {
@@ -33,7 +39,14 @@ describe('ShipRepository', () => {
     test('it gets all the ships with a destination set', async () => {
       // given
       const givenShips = [
-        { id: 1, name: 'Ship', currentPositionX: 1, currentPositionY: 2 },
+        {
+          id: 1,
+          name: 'Ship',
+          currentPositionX: 1,
+          currentPositionY: 2,
+          destinationPositionX: 3,
+          destinationPositionY: 4,
+        },
       ];
       const prisma = {
         ship: {
@@ -47,10 +60,17 @@ describe('ShipRepository', () => {
 
       // then
       const expectedPosition = new Position(1, 2);
-      const expectedShip = new Ship(1, 'Ship', expectedPosition, null);
+      const expectedDestination = new Position(3, 4);
+      const expectedShip = new Ship(
+        1,
+        'Ship',
+        expectedPosition,
+        expectedDestination,
+      );
       expect(prisma.ship.findMany).toHaveBeenCalledWith({
         where: {
-          destinationCode: { not: null },
+          destinationPositionX: { not: null },
+          destinationPositionY: { not: null },
         },
       });
       expect(ships[0]).toStrictEqual(expectedShip);
@@ -80,7 +100,8 @@ describe('ShipRepository', () => {
           data: {
             currentPositionX: ship.currentPosition.x,
             currentPositionY: ship.currentPosition.y,
-            destinationCode: null,
+            destinationPositionX: null,
+            destinationPositionY: null,
           },
         });
       });
@@ -89,13 +110,9 @@ describe('ShipRepository', () => {
     describe('when ship has a destination', () => {
       test('it updates the ships and destination', async () => {
         // given
+        const currentPosition = new Position(1, 3);
         const destinationPosition = new Position(1, 2);
-        const destination = new Location(
-          'destination',
-          'Destination',
-          destinationPosition,
-        );
-        const ship = new Ship(1, 'Ship', new Position(1, 2), destination);
+        const ship = new Ship(1, 'Ship', currentPosition, destinationPosition);
         const prisma = {
           ship: {
             update: jest.fn(),
@@ -114,7 +131,8 @@ describe('ShipRepository', () => {
           data: {
             currentPositionX: ship.currentPosition.x,
             currentPositionY: ship.currentPosition.y,
-            destinationCode: 'destination',
+            destinationPositionX: ship.destinationPosition.x,
+            destinationPositionY: ship.destinationPosition.y,
           },
         });
       });

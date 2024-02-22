@@ -1,7 +1,6 @@
 import moveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
 import Position from '../models/Position';
 import Ship from '../models/Ship';
-import Location from '../models/Location';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
@@ -9,12 +8,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       // given
       const currentPosition = new Position(1, 1);
       const destinationPosition = new Position(3, 4);
-      const destination = new Location(
-        'destination',
-        'Destination',
-        destinationPosition,
-      );
-      const ship = new Ship(1, 'Bebop', currentPosition, destination);
+      const ship = new Ship(1, 'Bebop', currentPosition, destinationPosition);
       const logger = jest.fn();
 
       // when
@@ -22,7 +16,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
 
       // then
       expect(logger).toHaveBeenCalledWith(
-        'Ship Bebop moved to {1.5547001962252291,1.8320502943378436} (going to Destination)',
+        'Ship Bebop moved to {1.5547001962252291,1.8320502943378436}',
       );
       expect(updatedShip.currentPosition.x).toBe(1.5547001962252291);
       expect(updatedShip.currentPosition.y).toBe(1.8320502943378436);
@@ -34,12 +28,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       // given
       const startPosition = new Position(3, 4);
       const destinationPosition = new Position(3, 4);
-      const destination = new Location(
-        'destination',
-        'Destination',
-        destinationPosition,
-      );
-      const ship = new Ship(1, 'Cepheus', startPosition, destination);
+      const ship = new Ship(1, 'Cepheus', startPosition, destinationPosition);
       const logger = jest.fn();
 
       // when
@@ -47,7 +36,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
 
       // then
       expect(logger).toHaveBeenCalledWith(
-        'Ship Cepheus has arrived at Destination',
+        'Ship Cepheus has arrived at {3,4}',
       );
       expect(updatedShip.currentPosition.x).toBe(3);
       expect(updatedShip.currentPosition.y).toBe(4);

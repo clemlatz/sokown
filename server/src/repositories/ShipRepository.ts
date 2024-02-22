@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 import Position from '../models/Position';
 import Ship from '../models/Ship';
-import LocationRepository from './LocationRepository';
 import { Injectable } from '@nestjs/common';
 
 type ShipDTO = {
@@ -10,7 +9,8 @@ type ShipDTO = {
   name: string;
   currentPositionX: number;
   currentPositionY: number;
-  destinationCode: string;
+  destinationPositionX: number;
+  destinationPositionY: number;
 };
 
 @Injectable()
@@ -22,23 +22,18 @@ export default class ShipRepository {
   }
 
   async getAll() {
-    const locationRepository = new LocationRepository();
     const ships = await this.prisma.ship.findMany();
-    return ships.map((ship) =>
-      ShipRepository.buildShipModel(ship, locationRepository),
-    );
+    return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
   async getShipsWithDestination(): Promise<Ship[]> {
-    const locationRepository = new LocationRepository();
     const ships = await this.prisma.ship.findMany({
       where: {
-        destinationCode: { not: null },
+        destinationPositionX: { not: null },
+        destinationPositionY: { not: null },
       },
     });
-    return ships.map((ship) =>
-      ShipRepository.buildShipModel(ship, locationRepository),
-    );
+    return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
   async update(ship: Ship): Promise<void> {
@@ -49,18 +44,21 @@ export default class ShipRepository {
       data: {
         currentPositionX: ship.currentPosition.x,
         currentPositionY: ship.currentPosition.y,
-        destinationCode: ship.isStationary ? null : ship.destination.code,
+        destinationPositionX: ship.isStationary
+          ? null
+          : ship.destinationPosition.x,
+        destinationPositionY: ship.isStationary
+          ? null
+          : ship.destinationPosition.y,
       },
     });
   }
 
-  private static buildShipModel(
-    ship: ShipDTO,
-    locationRepository: LocationRepository,
-  ) {
-    const destination = ship.destinationCode
-      ? locationRepository.getByCode(ship.destinationCode)
-      : null;
+  private static buildShipModel(ship: ShipDTO) {
+    const destination =
+      ship.destinationPositionX && ship.destinationPositionY
+        ? new Position(ship.destinationPositionX, ship.destinationPositionY)
+        : null;
     const currentPosition = new Position(
       ship.currentPositionX,
       ship.currentPositionY,

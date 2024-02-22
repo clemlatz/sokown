@@ -1,22 +1,21 @@
 import Position from './Position';
-import Location from './Location';
 
 export default class Ship {
   private readonly _id: number;
   private readonly _name: string;
   private _currentPosition: Position = new Position(0, 0);
-  private _destination: Location | null;
+  private _destinationPosition: Position | null;
 
   constructor(
     id: number,
     name: string,
     currentPosition: Position,
-    destination: Location | null,
+    destinationPosition: Position | null,
   ) {
     this._id = id;
     this._name = name;
     this._currentPosition = currentPosition;
-    this._destination = destination;
+    this._destinationPosition = destinationPosition;
   }
 
   get id(): number {
@@ -35,19 +34,19 @@ export default class Ship {
     this._currentPosition = value;
   }
 
-  get destination(): Location {
-    if (this._destination === null) {
+  get destinationPosition(): Position {
+    if (this._destinationPosition === null) {
       throw new Error('Ship has no destination');
     }
 
-    return this._destination;
+    return this._destinationPosition;
   }
 
   resetDestination(): void {
-    this._destination = null;
+    this._destinationPosition = null;
   }
 
   get isStationary(): boolean {
-    return this._destination === null;
+    return this._destinationPosition === null;
   }
 }

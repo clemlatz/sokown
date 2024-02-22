@@ -9,21 +9,19 @@ export default async function moveShipTowardsDestinationUsecase(
 ): Promise<Ship> {
   const newPosition = calculateNewPosition(
     ship.currentPosition,
-    ship.destination.position,
+    ship.destinationPosition,
     1,
   );
   if (
     newPosition.x === ship.currentPosition.x &&
     newPosition.y === ship.currentPosition.y
   ) {
-    logger(`Ship ${ship.name} has arrived at ${ship.destination.name}`);
+    logger(`Ship ${ship.name} has arrived at ${ship.destinationPosition}`);
     ship.resetDestination();
     return ship;
   }
 
-  logger(
-    `Ship ${ship.name} moved to ${newPosition} (going to ${ship.destination.name})`,
-  );
+  logger(`Ship ${ship.name} moved to ${newPosition}`);
   ship.currentPosition = newPosition;
   return ship;
 }
