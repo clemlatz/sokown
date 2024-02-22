@@ -13,7 +13,12 @@ module('Acceptance | sokown', function (hooks) {
 
     // then
     assert.strictEqual(currentURL(), '/');
-    assert.dom(screen.getByRole('heading', { name: 'Home' })).exists();
+    assert
+      .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
+      .exists();
+    assert
+      .dom(screen.getByRole('heading', { name: 'Home', level: 2 }))
+      .exists();
   });
 
   test('visiting /about', async function (assert) {
@@ -23,6 +28,11 @@ module('Acceptance | sokown', function (hooks) {
 
     // then
     assert.strictEqual(currentURL(), '/about');
-    assert.dom(screen.getByRole('heading', { name: 'About Sokown' })).exists();
+    assert
+      .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
+      .exists();
+    assert
+      .dom(screen.getByRole('heading', { name: 'About Sokown', level: 2 }))
+      .exists();
   });
 });
