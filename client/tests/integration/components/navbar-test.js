@@ -12,6 +12,7 @@ module('Integration | Component | navbar', function (hooks) {
 
     // then
     assert.dom(screen.getByRole('link', { name: 'Home' })).exists();
+    assert.dom(screen.getByRole('link', { name: 'Ships' })).exists();
     assert.dom(screen.getByRole('link', { name: 'About' })).exists();
   });
 });

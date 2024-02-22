@@ -1,0 +1,29 @@
+<h2>Ships</h2>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Destination</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each @model as |ship| }}
+    <tr>
+      <td>{{ship.name}}</td>
+      <td>
+        {{ship.currentLocation.name}}
+        ({{ship.currentPosition.x}},{{ship.currentPosition.y}})
+      </td>
+      <td>
+        {{#if ship.isStationary}}
+          -
+        {{else}}
+          {{ship.destinationLocation.name}}
+        {{/if}}
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
