@@ -51,5 +51,7 @@ module('Acceptance | sokown', function (hooks) {
     assert
       .dom(screen.getByRole('heading', { name: 'Ships', level: 2 }))
       .exists();
+    assert.dom(screen.getByRole('cell', { name: 'Artémis' })).exists();
+    assert.dom(screen.getByRole('cell', { name: 'Bebop' })).exists();
   });
 });
