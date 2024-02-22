@@ -28,8 +28,8 @@ describe('ShipController', () => {
         json: jest.fn(),
       } as unknown as Response;
       const ships = [
-        new Ship(1, 'Discovery One', new Position(1, 2), null),
-        new Ship(2, 'Europa Report', new Position(3, 4), new Position(5,6)),
+        new Ship(1, 'Discovery One', new Position(1, 1), null),
+        new Ship(2, 'Europa Report', new Position(3, 4), new Position(23, 17)),
       ];
       jest
         .spyOn(shipRepository, 'getAll')
@@ -43,14 +43,18 @@ describe('ShipController', () => {
         {
           id: 1,
           name: 'Discovery One',
-          position: { x: 1, y: 2 },
-          destination: null,
+          currentPosition: { x: 1, y: 1 },
+          currentLocation: { name: 'Earth' },
+          destinationPosition: null,
+          destinationLocation: null,
         },
         {
           id: 2,
           name: 'Europa Report',
-          position: { x: 3, y: 4 },
-          destination: { x: 5, y: 6 },
+          currentPosition: { x: 3, y: 4 },
+          currentLocation: null,
+          destinationPosition: { x: 23, y: 17 },
+          destinationLocation: { name: 'Mars' },
         },
       ]);
     });
