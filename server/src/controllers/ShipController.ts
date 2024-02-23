@@ -12,6 +12,7 @@ import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
 import Ship from '../models/Ship';
 import Position from '../models/Position';
+import EventRepository from '../repositories/EventRepository';
 
 class UpdateShipDTO {
   readonly data: {
@@ -29,6 +30,7 @@ export class ShipController {
   constructor(
     private readonly shipRepository: ShipRepository,
     private readonly locationRepository: LocationRepository,
+    private readonly eventRepository: EventRepository,
   ) {}
 
   @Get('api/ships')
@@ -62,6 +64,18 @@ export class ShipController {
     );
     ship.setDestination(newDestinationPosition);
     await this.shipRepository.update(ship);
+
+    const currentLocation = this.locationRepository.findByPosition(
+      ship.currentPosition,
+    );
+    const destinationLocation = this.locationRepository.findByPosition(
+      ship.destinationPosition,
+    );
+    await this.eventRepository.create(
+      `Ship ${ship.name} has departed from ${currentLocation.name} to ${destinationLocation.name}`,
+      ship,
+      currentLocation,
+    );
 
     res.status(HttpStatus.NO_CONTENT);
     res.send();

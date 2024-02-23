@@ -9,21 +9,29 @@ import Position from '../models/Position';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
 import { HttpStatus } from '@nestjs/common';
+import EventRepository from '../repositories/EventRepository';
 
 describe('ShipController', () => {
   let shipController: ShipController;
   let shipRepository: ShipRepository;
   let locationRepository: LocationRepository;
+  let eventRepository: EventRepository;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ShipController],
-      providers: [PrismaClient, ShipRepository, LocationRepository],
+      providers: [
+        PrismaClient,
+        ShipRepository,
+        LocationRepository,
+        EventRepository,
+      ],
     }).compile();
 
     shipController = app.get<ShipController>(ShipController);
     shipRepository = app.get<ShipRepository>(ShipRepository);
     locationRepository = app.get<LocationRepository>(LocationRepository);
+    eventRepository = app.get<EventRepository>(EventRepository);
   });
 
   describe('index', () => {
@@ -116,11 +124,22 @@ describe('ShipController', () => {
         status: jest.fn(),
         send: jest.fn(),
       } as unknown as Response;
-      const ship = new Ship(1, 'Discovery One', new Position(1, 2), null);
+      const earthPosition = new Position(1, 2);
+      const earthLocation = new Location('earth', 'Earth', earthPosition);
+      const marsPosition = new Position(3, 4);
+      const marsLocation = new Location('mars', 'Mars', marsPosition);
+      const ship = new Ship(1, 'Discovery One', earthPosition, null);
       jest
         .spyOn(shipRepository, 'getById')
         .mockImplementation(async () => ship);
       jest.spyOn(shipRepository, 'update').mockImplementation();
+      jest.spyOn(eventRepository, 'create').mockImplementation();
+      jest
+        .spyOn(locationRepository, 'findByPosition')
+        .mockReturnValueOnce(earthLocation);
+      jest
+        .spyOn(locationRepository, 'findByPosition')
+        .mockReturnValueOnce(marsLocation);
       const payload = {
         data: {
           attributes: {
@@ -136,14 +155,18 @@ describe('ShipController', () => {
       await shipController.update({ id: '1' }, payload, response);
 
       // then
-      const newDestinationPosition = new Position(3, 4);
       const updatedShip = new Ship(
         1,
         'Discovery One',
-        new Position(1, 2),
-        newDestinationPosition,
+        earthPosition,
+        marsPosition,
       );
       expect(shipRepository.update).toHaveBeenCalledWith(updatedShip);
+      expect(eventRepository.create).toHaveBeenCalledWith(
+        'Ship Discovery One has departed from Earth to Mars',
+        ship,
+        earthLocation,
+      );
       expect(response.status).toHaveBeenCalledWith(HttpStatus.NO_CONTENT);
       expect(response.send).toHaveBeenCalledWith();
     });
