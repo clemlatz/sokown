@@ -77,6 +77,45 @@ describe('ShipRepository', () => {
     });
   });
 
+  describe('getById', () => {
+    test('it returns ship for given id', async () => {
+      // given
+      const givenShip = {
+        id: 1,
+        name: 'Ship',
+        currentPositionX: 1,
+        currentPositionY: 2,
+        destinationPositionX: 3,
+        destinationPositionY: 4,
+      };
+      const prisma = {
+        ship: {
+          findFirst: jest.fn(() => givenShip),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+
+      // when
+      const ship = await repository.getById(1);
+
+      // then
+      const expectedPosition = new Position(1, 2);
+      const expectedDestination = new Position(3, 4);
+      const expectedShip = new Ship(
+        1,
+        'Ship',
+        expectedPosition,
+        expectedDestination,
+      );
+      expect(prisma.ship.findFirst).toHaveBeenCalledWith({
+        where: {
+          id: 1,
+        },
+      });
+      expect(ship).toStrictEqual(expectedShip);
+    });
+  });
+
   describe('update', () => {
     describe('when ship is stationary', () => {
       test('it updates the ships', async () => {

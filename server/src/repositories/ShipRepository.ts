@@ -36,6 +36,16 @@ export default class ShipRepository {
     return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
+  async getById(id: number) {
+    const ship = await this.prisma.ship.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return ShipRepository.buildShipModel(ship);
+  }
+
   async update(ship: Ship): Promise<void> {
     await this.prisma.ship.update({
       where: {
