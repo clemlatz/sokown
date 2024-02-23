@@ -10,11 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Event {
+  id       Int      @id @default(autoincrement())
+  ship     Ship     @relation(fields: [shipId], references: [id])
+  shipId   Int
+  message  String
+  loggedAt DateTime
+}
+
 model Ship {
-  id                   Int    @id @default(autoincrement())
+  id                   Int     @id @default(autoincrement())
   name                 String
   currentPositionX     Float
   currentPositionY     Float
   destinationPositionX Float?
   destinationPositionY Float?
+  events               Event[]
 }

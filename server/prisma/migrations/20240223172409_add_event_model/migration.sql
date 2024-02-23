@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "Event" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "shipId" INTEGER NOT NULL,
+    "message" TEXT NOT NULL,
+    "loggedAt" DATETIME NOT NULL,
+    CONSTRAINT "Event_shipId_fkey" FOREIGN KEY ("shipId") REFERENCES "Ship" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
