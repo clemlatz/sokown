@@ -2,6 +2,7 @@ import {Controller, Get, Res} from '@nestjs/common';
 import {Response} from 'express';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
+import Ship from '../models/Ship';
 
 @Controller()
 export class ShipController {
@@ -12,34 +13,38 @@ export class ShipController {
   async index(@Res() res: Response): Promise<void> {
     const ships = await this.shipRepository.getAll();
     const locationRepository = new LocationRepository();
-    const shipsData = ships.map((ship) => {
-      const currentLocation = locationRepository.findByPosition(
-        ship.currentPosition,
-      );
-      const destinationLocation = ship.isStationary
-        ? null
-        : locationRepository.findByPosition(ship.destinationPosition);
-      return {
-        id: ship.id,
-        type: 'ship',
-        attributes: {
-          name: ship.name,
-          currentPosition: {
-            x: ship.currentPosition.x,
-            y: ship.currentPosition.y,
-          },
-          currentLocation: currentLocation
-            ? {name: currentLocation.name}
-            : null,
-          destinationPosition: ship.isStationary
-            ? null
-            : {x: ship.destinationPosition.x, y: ship.destinationPosition.y},
-          destinationLocation: destinationLocation
-            ? {name: destinationLocation.name}
-            : null,
-        }
-      };
-    });
-    res.json({data: shipsData});
+    const shipsData = ships.map((ship) =>
+      this._serializeShip(locationRepository, ship),
+    );
+    res.json({ data: shipsData });
+  }
+
+  private _serializeShip(locationRepository: LocationRepository, ship: Ship) {
+    const currentLocation = locationRepository.findByPosition(
+      ship.currentPosition,
+    );
+    const destinationLocation = ship.isStationary
+      ? null
+      : locationRepository.findByPosition(ship.destinationPosition);
+    return {
+      id: ship.id,
+      type: 'ship',
+      attributes: {
+        name: ship.name,
+        currentPosition: {
+          x: ship.currentPosition.x,
+          y: ship.currentPosition.y,
+        },
+        currentLocation: currentLocation
+          ? { name: currentLocation.name }
+          : null,
+        destinationPosition: ship.isStationary
+          ? null
+          : { x: ship.destinationPosition.x, y: ship.destinationPosition.y },
+        destinationLocation: destinationLocation
+          ? { name: destinationLocation.name }
+          : null,
+      },
+    };
   }
 }
