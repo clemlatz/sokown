@@ -46,6 +46,10 @@ export default class Ship {
     this._destinationPosition = null;
   }
 
+  setDestination(position: Position) {
+    this._destinationPosition = position;
+  }
+
   get isStationary(): boolean {
     return this._destinationPosition === null;
   }
