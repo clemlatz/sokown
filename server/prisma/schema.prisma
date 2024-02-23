@@ -11,11 +11,12 @@ datasource db {
 }
 
 model Event {
-  id       Int      @id @default(autoincrement())
-  ship     Ship     @relation(fields: [shipId], references: [id])
-  shipId   Int
-  message  String
-  loggedAt DateTime
+  id           Int      @id @default(autoincrement())
+  ship         Ship     @relation(fields: [shipId], references: [id])
+  shipId       Int
+  locationCode String
+  message      String
+  loggedAt     DateTime
 }
 
 model Ship {
