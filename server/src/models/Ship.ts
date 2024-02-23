@@ -36,7 +36,7 @@ export default class Ship {
 
   get destinationPosition(): Position {
     if (this._destinationPosition === null) {
-      throw new Error('Ship has no destination');
+      throw new Error(`Ship ${this.name} has no destination`);
     }
 
     return this._destinationPosition;
