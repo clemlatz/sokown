@@ -1,5 +1,5 @@
-import {Controller, Get, Res} from '@nestjs/common';
-import {Response} from 'express';
+import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Response } from 'express';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
 import Ship from '../models/Ship';
@@ -17,6 +17,17 @@ export class ShipController {
       this._serializeShip(locationRepository, ship),
     );
     res.json({ data: shipsData });
+  }
+
+  @Get('api/ships/:id')
+  async get(
+    @Res() res: Response,
+    @Param() params: { id: string },
+  ): Promise<void> {
+    const ship = await this.shipRepository.getById(parseInt(params.id));
+    const locationRepository = new LocationRepository();
+    const shipData = this._serializeShip(locationRepository, ship);
+    res.json({ data: shipData });
   }
 
   private _serializeShip(locationRepository: LocationRepository, ship: Ship) {

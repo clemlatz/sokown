@@ -67,4 +67,35 @@ describe('ShipController', () => {
       });
     });
   });
+
+  describe('get', () => {
+    it('it returns a ship for given id', async () => {
+      // given
+      const response = {
+        json: jest.fn(),
+      } as unknown as Response;
+      const ship = new Ship(1, 'Discovery One', new Position(1, 1), null);
+      jest
+        .spyOn(shipRepository, 'getById')
+        .mockImplementation(async () => ship);
+
+      // when
+      await shipController.get(response, { id: '1' });
+
+      // then
+      expect(response.json).toHaveBeenCalledWith({
+        data: {
+          id: 1,
+          type: 'ship',
+          attributes: {
+            name: 'Discovery One',
+            currentPosition: { x: 1, y: 1 },
+            currentLocation: { name: 'Earth' },
+            destinationPosition: null,
+            destinationLocation: null,
+          },
+        },
+      });
+    });
+  });
 });
