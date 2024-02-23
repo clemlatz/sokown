@@ -3,11 +3,14 @@
 <h2>{{@model.name}}</h2>
 
 <dl>
-    <dt>Current location</dt>
-    <dd>{{@model.currentLocation.name}} ({{@model.currentPosition.x}},{{@model.currentPosition.y}})</dd>
+    <dt id="current-location">Current location</dt>
+    <dd aria-labelledby="current-location">
+        {{@model.currentLocation.name}}
+        ({{@model.currentPosition.x}},{{@model.currentPosition.y}})
+    </dd>
 
-    <dt>Current destination</dt>
-    <dd>
+    <dt id="current-destination">Current destination</dt>
+    <dd aria-labelledby="current-destination">
         {{#if @model.isStationary}}
             —
         {{else}}
@@ -15,3 +18,26 @@
         {{/if}}
     </dd>
 </dl>
+
+<h3>Autopilot</h3>
+<form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
+    <div class="col-12">
+        <label class="visually-hidden" for="newDestinationPositionX">X</label>
+        <div class="input-group">
+            <div class="input-group-text">X</div>
+            <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} />
+        </div>
+    </div>
+
+    <div class="col-12">
+        <label class="visually-hidden" for="newDestinationPositionY">Y</label>
+        <div class="input-group">
+            <div class="input-group-text">Y</div>
+            <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} />
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Set Autopilot</button>
+    </div>
+</form>

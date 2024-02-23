@@ -67,6 +67,8 @@ function routes() {
     };
   });
 
+  this.patch('/api/ships/:id');
+
   // These comments are here to help you get started. Feel free to delete them.
 
   /*

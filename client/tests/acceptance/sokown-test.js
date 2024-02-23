@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'sokown/tests/helpers';
 import { visit } from '@1024pix/ember-testing-library';
-import { click } from '@ember/test-helpers';
+import { click, fillIn } from '@ember/test-helpers';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
 module('Acceptance | sokown', function (hooks) {
@@ -69,5 +69,28 @@ module('Acceptance | sokown', function (hooks) {
     assert
       .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
       .exists();
+    assert
+      .dom(screen.getByRole('definition', { name: 'Current location' }))
+      .hasText('Moon (3,3)');
+    assert
+      .dom(screen.getByRole('definition', { name: 'Current destination' }))
+      .hasText('—');
+  });
+
+  test('visiting /ships/:id and updating destination', async function (assert) {
+    // given
+    this.server.create('ship', { id: 1 });
+
+    // when
+    const screen = await visit('/ships/1');
+    await fillIn(screen.getByRole('textbox', { name: 'X' }), '17');
+    await fillIn(screen.getByRole('textbox', { name: 'Y' }), '23');
+
+    await click(screen.getByRole('button', { name: 'Set Autopilot' }));
+    // then
+    assert.strictEqual(currentURL(), '/ships/1');
+    assert
+      .dom(screen.getByRole('definition', { name: 'Current destination' }))
+      .hasText('(17,23)');
   });
 });
