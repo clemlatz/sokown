@@ -1,12 +1,11 @@
 import Ship from '../models/Ship';
 import calculateNewPosition from '../helpers/calculateNewPosition';
 import LocationRepository from '../repositories/LocationRepository';
-
-type loggerFunction = (message: string) => void;
+import EventRepository from '../repositories/EventRepository';
 
 export default async function moveShipTowardsDestinationUsecase(
   ship: Ship,
-  logger: loggerFunction,
+  eventRepository: EventRepository,
 ): Promise<Ship> {
   const newPosition = calculateNewPosition(
     ship.currentPosition,
@@ -20,17 +19,16 @@ export default async function moveShipTowardsDestinationUsecase(
     const locationRepository = new LocationRepository();
     const destinationLocation = locationRepository.findByPosition(newPosition);
     if (destinationLocation) {
-      logger(
+      await eventRepository.create(
         `Ship ${ship.name} has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
+        ship,
+        destinationLocation,
       );
-    } else {
-      logger(`Ship ${ship.name} has arrived at ${ship.destinationPosition}`);
     }
     ship.resetDestination();
     return ship;
   }
 
-  logger(`Ship ${ship.name} moved to ${newPosition}`);
   ship.currentPosition = newPosition;
   return ship;
 }
