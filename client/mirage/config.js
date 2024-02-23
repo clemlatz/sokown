@@ -51,6 +51,22 @@ function routes() {
     };
   });
 
+  this.get('/api/ships/1', () => {
+    return {
+      data: {
+        id: 1,
+        type: 'ship',
+        attributes: {
+          name: 'Artémis',
+          currentPosition: { x: 3, y: 3 },
+          currentLocation: { name: 'Moon' },
+          destinationPosition: null,
+          destinationLocation: null,
+        },
+      },
+    };
+  });
+
   // These comments are here to help you get started. Feel free to delete them.
 
   /*

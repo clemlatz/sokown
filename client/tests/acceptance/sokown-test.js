@@ -54,4 +54,20 @@ module('Acceptance | sokown', function (hooks) {
     assert.dom(screen.getByRole('cell', { name: 'Artémis' })).exists();
     assert.dom(screen.getByRole('cell', { name: 'Bebop' })).exists();
   });
+
+  test('visiting /ships/:id', async function (assert) {
+    // when
+    const screen = await visit('/');
+    await click(screen.getByRole('link', { name: 'Ships' }));
+    await click(screen.getByRole('link', { name: 'Artémis' }));
+
+    // then
+    assert.strictEqual(currentURL(), '/ships/1');
+    assert
+      .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
+      .exists();
+    assert
+      .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
+      .exists();
+  });
 });

@@ -13,7 +13,11 @@
   <tbody>
   {{#each @model as |ship| }}
     <tr>
-      <td>{{ship.name}}</td>
+      <td>
+        <LinkTo @route="ships.get" @model={{ship}}>
+          {{ship.name}}
+        </LinkTo>
+      </td>
       <td>
         {{ship.currentLocation.name}}
         ({{ship.currentPosition.x}},{{ship.currentPosition.y}})

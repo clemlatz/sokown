@@ -1,1 +1,21 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
+
+dl {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+dl dt {
+  background: lightgray;
+  padding: 4px;
+  padding-right: 8px;
+  margin-bottom: 4px;
+  text-align: right;
+  width: 20%;
+}
+
+dl dd {
+  padding: 4px;
+  padding-left: 8px;
+  width: 80%;
+}

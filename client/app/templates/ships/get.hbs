@@ -1,0 +1,17 @@
+{{page-title @model.name}}
+
+<h2>{{@model.name}}</h2>
+
+<dl>
+    <dt>Current location</dt>
+    <dd>{{@model.currentLocation.name}} ({{@model.currentPosition.x}},{{@model.currentPosition.y}})</dd>
+
+    <dt>Current destination</dt>
+    <dd>
+        {{#if @model.isStationary}}
+            —
+        {{else}}
+            {{@model.destinationLocation.name}} ({{@model.destinationPosition.x}},{{@model.destinationPosition.y}})
+        {{/if}}
+    </dd>
+</dl>
