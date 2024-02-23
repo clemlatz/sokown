@@ -1,8 +1,28 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
 import Ship from '../models/Ship';
+import Position from '../models/Position';
+
+class UpdateShipDTO {
+  readonly data: {
+    attributes: {
+      destinationPosition: {
+        x: number;
+        y: number;
+      };
+    };
+  };
+}
 
 @Controller()
 export class ShipController {
@@ -26,6 +46,25 @@ export class ShipController {
     const ship = await this.shipRepository.getById(parseInt(params.id));
     const shipData = this._serializeShip(ship);
     res.json({ data: shipData });
+  }
+
+  @Patch('api/ships/:id')
+  async update(
+    @Param() params: { id: string },
+    @Body() body: UpdateShipDTO,
+    @Res() res: Response,
+  ): Promise<void> {
+    const { destinationPosition } = body.data.attributes;
+    const ship = await this.shipRepository.getById(parseInt(params.id));
+    const newDestinationPosition = new Position(
+      destinationPosition.x,
+      destinationPosition.y,
+    );
+    ship.setDestination(newDestinationPosition);
+    await this.shipRepository.update(ship);
+
+    res.status(HttpStatus.NO_CONTENT);
+    res.send();
   }
 
   private _serializeShip(ship: Ship) {

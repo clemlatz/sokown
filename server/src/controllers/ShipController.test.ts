@@ -8,6 +8,7 @@ import Ship from '../models/Ship';
 import Position from '../models/Position';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
+import { HttpStatus } from '@nestjs/common';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -105,6 +106,46 @@ describe('ShipController', () => {
           },
         },
       });
+    });
+  });
+
+  describe('update', () => {
+    it('it updates a ship for given id', async () => {
+      // given
+      const response = {
+        status: jest.fn(),
+        send: jest.fn(),
+      } as unknown as Response;
+      const ship = new Ship(1, 'Discovery One', new Position(1, 2), null);
+      jest
+        .spyOn(shipRepository, 'getById')
+        .mockImplementation(async () => ship);
+      jest.spyOn(shipRepository, 'update').mockImplementation();
+      const payload = {
+        data: {
+          attributes: {
+            destinationPosition: {
+              x: 3,
+              y: 4,
+            },
+          },
+        },
+      };
+
+      // when
+      await shipController.update({ id: '1' }, payload, response);
+
+      // then
+      const newDestinationPosition = new Position(3, 4);
+      const updatedShip = new Ship(
+        1,
+        'Discovery One',
+        new Position(1, 2),
+        newDestinationPosition,
+      );
+      expect(shipRepository.update).toHaveBeenCalledWith(updatedShip);
+      expect(response.status).toHaveBeenCalledWith(HttpStatus.NO_CONTENT);
+      expect(response.send).toHaveBeenCalledWith();
     });
   });
 });
