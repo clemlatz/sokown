@@ -6,16 +6,15 @@ import Ship from '../models/Ship';
 
 @Controller()
 export class ShipController {
-  constructor(private readonly shipRepository: ShipRepository) {
-  }
+  constructor(
+    private readonly shipRepository: ShipRepository,
+    private readonly locationRepository: LocationRepository,
+  ) {}
 
   @Get('api/ships')
   async index(@Res() res: Response): Promise<void> {
     const ships = await this.shipRepository.getAll();
-    const locationRepository = new LocationRepository();
-    const shipsData = ships.map((ship) =>
-      this._serializeShip(locationRepository, ship),
-    );
+    const shipsData = ships.map((ship) => this._serializeShip(ship));
     res.json({ data: shipsData });
   }
 
@@ -25,18 +24,17 @@ export class ShipController {
     @Param() params: { id: string },
   ): Promise<void> {
     const ship = await this.shipRepository.getById(parseInt(params.id));
-    const locationRepository = new LocationRepository();
-    const shipData = this._serializeShip(locationRepository, ship);
+    const shipData = this._serializeShip(ship);
     res.json({ data: shipData });
   }
 
-  private _serializeShip(locationRepository: LocationRepository, ship: Ship) {
-    const currentLocation = locationRepository.findByPosition(
+  private _serializeShip(ship: Ship) {
+    const currentLocation = this.locationRepository.findByPosition(
       ship.currentPosition,
     );
     const destinationLocation = ship.isStationary
       ? null
-      : locationRepository.findByPosition(ship.destinationPosition);
+      : this.locationRepository.findByPosition(ship.destinationPosition);
     return {
       id: ship.id,
       type: 'ship',

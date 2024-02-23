@@ -1,5 +1,6 @@
 import Location from '../models/Location';
 import Position from '../models/Position';
+import { Injectable } from '@nestjs/common';
 
 const spaceLocation = new Location('space', 'Space', new Position(0, 0));
 const locations = [
@@ -8,6 +9,7 @@ const locations = [
   new Location('mars', 'Mars', new Position(23, 17)),
 ];
 
+@Injectable()
 export default class LocationRepository {
   getByCode(code: string): Location {
     const location = locations.find((location) => location.code === code);
