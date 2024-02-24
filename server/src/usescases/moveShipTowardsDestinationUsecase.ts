@@ -20,7 +20,7 @@ export default async function moveShipTowardsDestinationUsecase(
     const destinationLocation = locationRepository.findByPosition(newPosition);
     if (destinationLocation) {
       await eventRepository.create(
-        `Ship ${ship.name} has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
+        `has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
         ship,
         destinationLocation,
       );

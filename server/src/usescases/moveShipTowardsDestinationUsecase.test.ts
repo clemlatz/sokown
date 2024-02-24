@@ -51,7 +51,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
         new Position(23, 17),
       );
       expect(eventRepository.create).toHaveBeenCalledWith(
-        'Ship Cepheus has arrived at Mars ({23,17})',
+        'has arrived at Mars ({23,17})',
         ship,
         destinationLocation,
       );

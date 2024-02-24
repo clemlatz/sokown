@@ -72,7 +72,7 @@ export class ShipController {
       ship.destinationPosition,
     );
     await this.eventRepository.create(
-      `Ship ${ship.name} has departed from ${currentLocation.name} to ${destinationLocation.name}`,
+      `has departed from ${currentLocation.name} to ${destinationLocation.name}`,
       ship,
       currentLocation,
     );

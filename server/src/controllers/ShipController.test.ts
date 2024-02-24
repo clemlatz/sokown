@@ -163,7 +163,7 @@ describe('ShipController', () => {
       );
       expect(shipRepository.update).toHaveBeenCalledWith(updatedShip);
       expect(eventRepository.create).toHaveBeenCalledWith(
-        'Ship Discovery One has departed from Earth to Mars',
+        'has departed from Earth to Mars',
         ship,
         earthLocation,
       );
