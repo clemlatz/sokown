@@ -10,7 +10,7 @@ export default async function moveShipTowardsDestinationUsecase(
   const newPosition = calculateNewPosition(
     ship.currentPosition,
     ship.destinationPosition,
-    1,
+    ship.speed,
   );
   if (
     newPosition.x === ship.currentPosition.x &&
