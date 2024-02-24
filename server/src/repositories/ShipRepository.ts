@@ -60,6 +60,7 @@ export default class ShipRepository {
         destinationPositionY: ship.isStationary
           ? null
           : ship.destinationPosition.y,
+        updatedAt: new Date(),
       },
     });
   }

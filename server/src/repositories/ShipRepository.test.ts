@@ -127,6 +127,7 @@ describe('ShipRepository', () => {
           },
         } as unknown as PrismaClient;
         const repository = new ShipRepository(prisma);
+        jest.useFakeTimers().setSystemTime(new Date('2019-01-01'));
 
         // when
         await repository.update(ship);
@@ -141,6 +142,7 @@ describe('ShipRepository', () => {
             currentPositionY: ship.currentPosition.y,
             destinationPositionX: null,
             destinationPositionY: null,
+            updatedAt: new Date('2019-01-01'),
           },
         });
       });
@@ -158,6 +160,7 @@ describe('ShipRepository', () => {
           },
         } as unknown as PrismaClient;
         const repository = new ShipRepository(prisma);
+        jest.useFakeTimers().setSystemTime(new Date('2019-01-01'));
 
         // when
         await repository.update(ship);
@@ -172,6 +175,7 @@ describe('ShipRepository', () => {
             currentPositionY: ship.currentPosition.y,
             destinationPositionX: ship.destinationPosition.x,
             destinationPositionY: ship.destinationPosition.y,
+            updatedAt: new Date('2019-01-01'),
           },
         });
       });
