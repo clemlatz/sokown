@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Ship` ADD COLUMN `speed` DOUBLE NOT NULL DEFAULT 1;
