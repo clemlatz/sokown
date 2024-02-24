@@ -1,0 +1,2 @@
+/api/*  https://sokown.osc-fr1.scalingo.io/api/:splat  200
+/*  /index.html  200
