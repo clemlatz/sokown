@@ -5,9 +5,10 @@ export default class ModelFactory {
   public static createShip({
     id = 1,
     name = 'Artémis',
+    speed = 1,
     currentPosition = new Position(1, 1),
     destinationPosition = null,
   }): Ship {
-    return new Ship(id, name, currentPosition, destinationPosition);
+    return new Ship(id, name, speed, currentPosition, destinationPosition);
   }
 }

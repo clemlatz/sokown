@@ -8,6 +8,7 @@ describe('Ship', () => {
       const ship = new Ship(
         1,
         'Hermes',
+        1,
         new Position(1, 2),
         new Position(3, 4),
       );
@@ -21,7 +22,7 @@ describe('Ship', () => {
 
     test('it throws an error if there is no destination', () => {
       // given
-      const ship = new Ship(1, 'Hermes', new Position(1, 2), null);
+      const ship = new Ship(1, 'Hermes', 1, new Position(1, 2), null);
 
       // when
       const tested = () => ship.destinationPosition;

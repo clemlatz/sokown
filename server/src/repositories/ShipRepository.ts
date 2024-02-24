@@ -7,6 +7,7 @@ import { Injectable } from '@nestjs/common';
 type ShipDTO = {
   id: number;
   name: string;
+  speed: number;
   currentPositionX: number;
   currentPositionY: number;
   destinationPositionX: number;
@@ -77,6 +78,7 @@ export default class ShipRepository {
     return new Ship(
       ship.id,
       ship.name || 'Unnamed ship',
+      ship.speed,
       currentPosition,
       destination,
     );
