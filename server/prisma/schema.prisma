@@ -20,11 +20,13 @@ model Event {
 }
 
 model Ship {
-  id                   Int     @id @default(autoincrement())
+  id                   Int       @id @default(autoincrement())
   name                 String
   currentPositionX     Float
   currentPositionY     Float
   destinationPositionX Float?
   destinationPositionY Float?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime?
   events               Event[]
 }
