@@ -1,8 +1,8 @@
 import moveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
 import Position from '../models/Position';
-import Ship from '../models/Ship';
 import EventRepository from '../repositories/EventRepository';
 import Location from '../models/Location';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
@@ -10,7 +10,10 @@ describe('moveShipTowardsDestinationUsecase', () => {
       // given
       const currentPosition = new Position(1, 1);
       const destinationPosition = new Position(3, 4);
-      const ship = new Ship(1, 'Bebop', currentPosition, destinationPosition);
+      const ship = ModelFactory.createShip({
+        currentPosition,
+        destinationPosition,
+      });
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
@@ -31,9 +34,12 @@ describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is at destination', () => {
     test('it does not move ship and reset ships destination', async () => {
       // given
-      const startPosition = new Position(23, 17);
+      const currentPosition = new Position(23, 17);
       const destinationPosition = new Position(23, 17);
-      const ship = new Ship(1, 'Cepheus', startPosition, destinationPosition);
+      const ship = ModelFactory.createShip({
+        currentPosition,
+        destinationPosition,
+      });
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;

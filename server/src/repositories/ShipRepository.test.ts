@@ -1,7 +1,7 @@
 import ShipRepository from './ShipRepository';
 import { PrismaClient } from '@prisma/client';
-import Ship from '../models/Ship';
 import Position from '../models/Position';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('ShipRepository', () => {
   describe('getAll', () => {
@@ -29,7 +29,11 @@ describe('ShipRepository', () => {
 
       // then
       const expectedPosition = new Position(1, 2);
-      const expectedShip = new Ship(1, 'Ship', expectedPosition, null);
+      const expectedShip = ModelFactory.createShip({
+        id: 1,
+        name: 'Ship',
+        currentPosition: expectedPosition,
+      });
       expect(prisma.ship.findMany).toHaveBeenCalledWith();
       expect(ships[0]).toStrictEqual(expectedShip);
     });
@@ -61,12 +65,12 @@ describe('ShipRepository', () => {
       // then
       const expectedPosition = new Position(1, 2);
       const expectedDestination = new Position(3, 4);
-      const expectedShip = new Ship(
-        1,
-        'Ship',
-        expectedPosition,
-        expectedDestination,
-      );
+      const expectedShip = ModelFactory.createShip({
+        id: 1,
+        name: 'Ship',
+        currentPosition: expectedPosition,
+        destinationPosition: expectedDestination,
+      });
       expect(prisma.ship.findMany).toHaveBeenCalledWith({
         where: {
           destinationPositionX: { not: null },
@@ -101,12 +105,12 @@ describe('ShipRepository', () => {
       // then
       const expectedPosition = new Position(1, 2);
       const expectedDestination = new Position(3, 4);
-      const expectedShip = new Ship(
-        1,
-        'Ship',
-        expectedPosition,
-        expectedDestination,
-      );
+      const expectedShip = ModelFactory.createShip({
+        id: 1,
+        name: 'Ship',
+        currentPosition: expectedPosition,
+        destinationPosition: expectedDestination,
+      });
       expect(prisma.ship.findFirst).toHaveBeenCalledWith({
         where: {
           id: 1,
@@ -120,7 +124,11 @@ describe('ShipRepository', () => {
     describe('when ship is stationary', () => {
       test('it updates the ships', async () => {
         // given
-        const ship = new Ship(1, 'Ship', new Position(1, 2), null);
+        const ship = ModelFactory.createShip({
+          id: 1,
+          name: 'Ship',
+          currentPosition: new Position(1, 2),
+        });
         const prisma = {
           ship: {
             update: jest.fn(),
@@ -153,7 +161,12 @@ describe('ShipRepository', () => {
         // given
         const currentPosition = new Position(1, 3);
         const destinationPosition = new Position(1, 2);
-        const ship = new Ship(1, 'Ship', currentPosition, destinationPosition);
+        const ship = ModelFactory.createShip({
+          id: 1,
+          name: 'Ship',
+          currentPosition,
+          destinationPosition,
+        });
         const prisma = {
           ship: {
             update: jest.fn(),

@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
 import EventRepository from './EventRepository';
-import Ship from '../models/Ship';
 import Position from '../models/Position';
 import Location from '../models/Location';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('EventRepository', () => {
   describe('create', () => {
@@ -15,7 +15,7 @@ describe('EventRepository', () => {
         },
       } as unknown as PrismaClient;
       const repository = new EventRepository(prisma);
-      const ship = new Ship(1, 'Logger', new Position(1, 1), null);
+      const ship = ModelFactory.createShip({ id: 1 });
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
       // when
@@ -40,7 +40,7 @@ describe('EventRepository', () => {
         },
       } as unknown as PrismaClient;
       const repository = new EventRepository(prisma);
-      const ship = new Ship(1, 'Logger', new Position(1, 1), null);
+      const ship = ModelFactory.createShip({ id: 1 });
       const location = new Location('earth', 'Earth', new Position(1, 1));
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 

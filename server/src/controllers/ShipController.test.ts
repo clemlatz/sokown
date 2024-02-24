@@ -4,12 +4,12 @@ import { Response } from 'express';
 
 import { ShipController } from './ShipController';
 import ShipRepository from '../repositories/ShipRepository';
-import Ship from '../models/Ship';
 import Position from '../models/Position';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
 import { HttpStatus } from '@nestjs/common';
 import EventRepository from '../repositories/EventRepository';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -41,8 +41,17 @@ describe('ShipController', () => {
         json: jest.fn(),
       } as unknown as Response;
       const ships = [
-        new Ship(1, 'Discovery One', new Position(1, 1), null),
-        new Ship(2, 'Europa Report', new Position(3, 4), new Position(23, 17)),
+        ModelFactory.createShip({
+          id: 1,
+          name: 'Discovery One',
+          currentPosition: new Position(1, 1),
+        }),
+        ModelFactory.createShip({
+          id: 2,
+          name: 'Europa Report',
+          currentPosition: new Position(3, 4),
+          destinationPosition: new Position(23, 17),
+        }),
       ];
       jest
         .spyOn(shipRepository, 'getAll')
@@ -92,7 +101,11 @@ describe('ShipController', () => {
       const response = {
         json: jest.fn(),
       } as unknown as Response;
-      const ship = new Ship(1, 'Discovery One', new Position(1, 1), null);
+      const ship = ModelFactory.createShip({
+        id: 1,
+        name: 'Discovery One',
+        currentPosition: new Position(1, 1),
+      });
       jest
         .spyOn(shipRepository, 'getById')
         .mockImplementation(async () => ship);
@@ -128,7 +141,11 @@ describe('ShipController', () => {
       const earthLocation = new Location('earth', 'Earth', earthPosition);
       const marsPosition = new Position(3, 4);
       const marsLocation = new Location('mars', 'Mars', marsPosition);
-      const ship = new Ship(1, 'Discovery One', earthPosition, null);
+      const ship = ModelFactory.createShip({
+        id: 1,
+        name: 'Discovery One',
+        currentPosition: earthPosition,
+      });
       jest
         .spyOn(shipRepository, 'getById')
         .mockImplementation(async () => ship);
@@ -155,12 +172,12 @@ describe('ShipController', () => {
       await shipController.update({ id: '1' }, payload, response);
 
       // then
-      const updatedShip = new Ship(
-        1,
-        'Discovery One',
-        earthPosition,
-        marsPosition,
-      );
+      const updatedShip = ModelFactory.createShip({
+        id: 1,
+        name: 'Discovery One',
+        currentPosition: earthPosition,
+        destinationPosition: marsPosition,
+      });
       expect(shipRepository.update).toHaveBeenCalledWith(updatedShip);
       expect(eventRepository.create).toHaveBeenCalledWith(
         'has departed from Earth to Mars',
