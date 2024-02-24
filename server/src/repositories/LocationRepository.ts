@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 
 const spaceLocation = new Location('space', 'Space', new Position(0, 0));
 const locations = [
-  new Location('earth', 'Earth', new Position(1, 1)),
-  new Location('moon', 'Moon', new Position(3, 3)),
-  new Location('mars', 'Mars', new Position(23, 17)),
+  new Location('sun', 'Sun', new Position(0, 0)),
+  new Location('earth', 'Earth', new Position(758, 653)),
+  new Location('moon', 'Moon', new Position(759, 655)),
+  new Location('mars', 'Mars', new Position(318, 931)),
 ];
 
 @Injectable()

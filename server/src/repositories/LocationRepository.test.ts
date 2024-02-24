@@ -30,7 +30,7 @@ describe('LocationRepository', () => {
     test('it returns a location matching position', () => {
       // given
       const locationRepository = new LocationRepository();
-      const earthPosition = new Position(1, 1);
+      const earthPosition = new Position(758, 653);
 
       // when
       const location = locationRepository.findByPosition(earthPosition);
