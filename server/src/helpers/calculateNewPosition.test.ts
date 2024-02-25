@@ -11,12 +11,12 @@ describe('calculateNewPosition', () => {
     const newPosition = calculateNewPosition(
       startPosition,
       destinationPosition,
-      1,
+      100,
     );
 
     // then
-    expect(newPosition.x).toBe(1.5547001962252291);
-    expect(newPosition.y).toBe(1.8320502943378436);
+    expect(newPosition.x).toBe(1.0003707937837683);
+    expect(newPosition.y).toBe(1.0005561906756524);
   });
 
   test('it does not go further than destination', () => {
@@ -28,7 +28,7 @@ describe('calculateNewPosition', () => {
     const newPosition = calculateNewPosition(
       startPosition,
       destinationPosition,
-      5,
+      500000,
     );
 
     // then

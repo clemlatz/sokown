@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
 
 import Position from '../models/Position';
 import Ship from '../models/Ship';
-import { Injectable } from '@nestjs/common';
+import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 
 type ShipDTO = {
   id: number;
@@ -78,7 +79,7 @@ export default class ShipRepository {
     return new Ship(
       ship.id,
       ship.name || 'Unnamed ship',
-      ship.speed,
+      new SpeedInKilometersPerSecond(ship.speed),
       currentPosition,
       destination,
     );

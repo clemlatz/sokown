@@ -1,16 +1,17 @@
 import Position from './Position';
+import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 
 export default class Ship {
   private readonly _id: number;
   private readonly _name: string;
-  private readonly _speed: number;
+  private readonly _speed: SpeedInKilometersPerSecond;
   private _currentPosition: Position = new Position(0, 0);
   private _destinationPosition: Position | null;
 
   constructor(
     id: number,
     name: string,
-    speed: number,
+    speed: SpeedInKilometersPerSecond,
     currentPosition: Position,
     destinationPosition: Position | null,
   ) {
@@ -29,7 +30,7 @@ export default class Ship {
     return this._name;
   }
 
-  get speed(): number {
+  get speed(): SpeedInKilometersPerSecond {
     return this._speed;
   }
 

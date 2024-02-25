@@ -8,10 +8,12 @@ export default async function moveShipTowardsDestinationUsecase(
   locationRepository: LocationRepository,
   eventRepository: EventRepository,
 ): Promise<Ship> {
+  const timeElapsedInSeconds = 1;
+  const distanceTraveledInKm = ship.speed.value * timeElapsedInSeconds;
   const newPosition = calculateNewPosition(
     ship.currentPosition,
     ship.destinationPosition,
-    ship.speed,
+    distanceTraveledInKm,
   );
   if (
     newPosition.x === ship.currentPosition.x &&

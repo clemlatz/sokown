@@ -12,7 +12,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const currentPosition = new Position(1, 1);
       const destinationPosition = new Position(3, 4);
       const ship = ModelFactory.createShip({
-        speed: 0.1,
+        speed: 100,
         currentPosition,
         destinationPosition,
       });
@@ -34,8 +34,8 @@ describe('moveShipTowardsDestinationUsecase', () => {
 
       // then
       expect(eventRepository.create).not.toHaveBeenCalled();
-      expect(updatedShip.currentPosition.x).toBe(1.0554700196225228);
-      expect(updatedShip.currentPosition.y).toBe(1.0832050294337843);
+      expect(updatedShip.currentPosition.x).toBe(1.0003707937837683);
+      expect(updatedShip.currentPosition.y).toBe(1.0005561906756524);
     });
   });
 

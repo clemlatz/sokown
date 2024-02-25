@@ -1,4 +1,4 @@
-import convertKilometersToSokownUnits from "./convertKilometersToSokownUnits";
+import convertKilometersToSokownUnits from './convertKilometersToSokownUnits';
 
 describe('convertKilometersToSokownUnits', () => {
   test('it converts kilometers to sokown units', () => {

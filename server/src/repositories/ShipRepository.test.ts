@@ -66,7 +66,7 @@ describe('ShipRepository', () => {
         {
           id: 1,
           name: 'Ship',
-          speed: 1,
+          speed: 100,
           currentPositionX: 1,
           currentPositionY: 2,
           destinationPositionX: 3,
@@ -88,6 +88,7 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
+        speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
         destinationPosition: expectedDestination,
@@ -108,7 +109,7 @@ describe('ShipRepository', () => {
       const givenShip = {
         id: 1,
         name: 'Ship',
-        speed: 1,
+        speed: 100,
         currentPositionX: 1,
         currentPositionY: 2,
         destinationPositionX: 3,
@@ -130,6 +131,7 @@ describe('ShipRepository', () => {
       const expectedShip = ModelFactory.createShip({
         id: 1,
         name: 'Ship',
+        speed: 100,
         currentPosition: expectedPosition,
         destinationPosition: expectedDestination,
       });
