@@ -109,6 +109,9 @@ describe('ShipController', () => {
       jest
         .spyOn(shipRepository, 'getById')
         .mockImplementation(async () => ship);
+      jest
+        .spyOn(locationRepository, 'findByPosition')
+        .mockReturnValue(new Location('earth', 'Earth', new Position(1, 1)));
 
       // when
       await shipController.get(response, { id: '1' });
