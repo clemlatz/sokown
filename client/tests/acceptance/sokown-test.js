@@ -19,8 +19,14 @@ module('Acceptance | sokown', function (hooks) {
       .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
       .exists();
     assert
-      .dom(screen.getByRole('heading', { name: 'Home', level: 2 }))
+      .dom(
+        screen.getByRole('heading', {
+          name: 'Welcome to The Sokown Company',
+          level: 2,
+        }),
+      )
       .exists();
+    assert.dom(screen.getByRole('link', { name: 'Join now' })).exists();
   });
 
   test('visiting /about', async function (assert) {
