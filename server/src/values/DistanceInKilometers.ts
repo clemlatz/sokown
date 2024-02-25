@@ -8,7 +8,7 @@ export default class DistanceInKilometers {
   }
 
   get valueInSokownUnits(): DistanceInSokownUnits {
-    return new DistanceInSokownUnits(this._value);
+    return new DistanceInSokownUnits(this._value * 0.00000668458);
   }
 
   constructor(value: number) {
