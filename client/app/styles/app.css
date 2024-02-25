@@ -7,7 +7,7 @@ dl dt {
   margin-bottom: 4px;
 }
 
-@media(min-width: 768px) {
+@media (width >= 768px) {
   dl {
     display: flex;
     flex-wrap: wrap;
@@ -23,31 +23,6 @@ dl dt {
     padding-left: 8px;
     width: 75%;
   }
-}
-
-/* Position */
-
-.Position {
-  border: 1px solid lightgrey;
-  border-radius: 4px;
-  display: inline-flex;
-  font-size: 0.85rem;
-}
-
-.Position__label {
-  background: rgba(0, 0, 0, 0.05);
-  padding: 2px 8px;
-}
-
-.Position__coordinate {
-  padding: 2px 0;
-  display: inline-block;
-  text-align: center;
-  width: 75px;
-}
-
-.Position__coordinate:first-child {
-  border-right: 1px solid lightgrey;
 }
 
 /* Position */
