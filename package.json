@@ -1,0 +1,19 @@
+{
+  "name": "sokown",
+  "version": "0.0.0",
+  "description": "A Space Game",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clemlatz/sokown.git"
+  },
+  "author": "Clément Latzarus <c@ltzr.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/clemlatz/sokown/issues"
+  },
+  "homepage": "https://github.com/clemlatz/sokown#readme"
+}

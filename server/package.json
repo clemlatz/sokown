@@ -1,8 +1,7 @@
 {
-  "name": "sokown",
-  "version": "0.1.0",
+  "name": "sokown-server",
+  "version": "0.0.0",
   "description": "A space game",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
     "dev": "nodemon app.ts",
