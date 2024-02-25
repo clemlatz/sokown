@@ -3,6 +3,7 @@ import Position from '../models/Position';
 import EventRepository from '../repositories/EventRepository';
 import Location from '../models/Location';
 import ModelFactory from '../../test/ModelFactory';
+import LocationRepository from '../repositories/LocationRepository';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
@@ -15,6 +16,11 @@ describe('moveShipTowardsDestinationUsecase', () => {
         currentPosition,
         destinationPosition,
       });
+      const locationRepository = {
+        findByPosition: jest.fn(
+          () => new Location('mars', 'Mars', destinationPosition),
+        ),
+      } as unknown as LocationRepository;
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
@@ -22,6 +28,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       // when
       const updatedShip = await moveShipTowardsDestinationUsecase(
         ship,
+        locationRepository,
         eventRepository,
       );
 
@@ -41,6 +48,11 @@ describe('moveShipTowardsDestinationUsecase', () => {
         currentPosition,
         destinationPosition,
       });
+      const locationRepository = {
+        findByPosition: jest.fn(
+          () => new Location('mars', 'Mars', destinationPosition),
+        ),
+      } as unknown as LocationRepository;
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
@@ -48,6 +60,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       // when
       const updatedShip = await moveShipTowardsDestinationUsecase(
         ship,
+        locationRepository,
         eventRepository,
       );
 

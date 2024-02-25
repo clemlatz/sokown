@@ -5,6 +5,7 @@ import EventRepository from '../repositories/EventRepository';
 
 export default async function moveShipTowardsDestinationUsecase(
   ship: Ship,
+  locationRepository: LocationRepository,
   eventRepository: EventRepository,
 ): Promise<Ship> {
   const newPosition = calculateNewPosition(
@@ -16,7 +17,6 @@ export default async function moveShipTowardsDestinationUsecase(
     newPosition.x === ship.currentPosition.x &&
     newPosition.y === ship.currentPosition.y
   ) {
-    const locationRepository = new LocationRepository();
     const destinationLocation = locationRepository.findByPosition(newPosition);
     if (destinationLocation) {
       await eventRepository.create(

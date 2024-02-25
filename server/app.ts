@@ -3,9 +3,11 @@ import ShipRepository from "./src/repositories/ShipRepository";
 import moveShipTowardsDestinationUsecase from "./src/usescases/moveShipTowardsDestinationUsecase";
 import server from "./src/server";
 import EventRepository from "./src/repositories/EventRepository";
+import LocationRepository from "./src/repositories/LocationRepository";
 
 const prisma = new PrismaClient()
 const shipRepository = new ShipRepository(prisma);
+const locationRepository = new LocationRepository();
 const eventRepository = new EventRepository(prisma);
 
 main()
@@ -27,7 +29,7 @@ async function main() {
 async function tick() {
   const ships = await shipRepository.getShipsWithDestination();
   for (const ship of ships) {
-    const updatedShip = await moveShipTowardsDestinationUsecase(ship, eventRepository);
+    const updatedShip = await moveShipTowardsDestinationUsecase(ship, locationRepository, eventRepository);
     await shipRepository.update(updatedShip);
   }
 }
