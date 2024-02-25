@@ -2,6 +2,8 @@ import Ship from '../models/Ship';
 import calculateNewPosition from '../helpers/calculateNewPosition';
 import LocationRepository from '../repositories/LocationRepository';
 import EventRepository from '../repositories/EventRepository';
+import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
+import DistanceInKilometers from '../values/DistanceInKilometers';
 
 export default async function moveShipTowardsDestinationUsecase(
   ship: Ship,
@@ -9,7 +11,10 @@ export default async function moveShipTowardsDestinationUsecase(
   eventRepository: EventRepository,
 ): Promise<Ship> {
   const timeElapsedInSeconds = 1;
-  const distanceTraveledInKm = ship.speed.value * timeElapsedInSeconds;
+  const distanceTraveledInKm = _getDistanceAtSpeedInTime(
+    ship.speed,
+    timeElapsedInSeconds,
+  );
   const newPosition = calculateNewPosition(
     ship.currentPosition,
     ship.destinationPosition,
@@ -33,4 +38,11 @@ export default async function moveShipTowardsDestinationUsecase(
 
   ship.currentPosition = newPosition;
   return ship;
+}
+
+function _getDistanceAtSpeedInTime(
+  speed: SpeedInKilometersPerSecond,
+  timeElapsedInSeconds: number,
+): DistanceInKilometers {
+  return new DistanceInKilometers(speed.value * timeElapsedInSeconds);
 }

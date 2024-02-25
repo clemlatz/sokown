@@ -1,5 +1,6 @@
 import calculateNewPosition from './calculateNewPosition';
 import Position from '../models/Position';
+import DistanceInKilometers from '../values/DistanceInKilometers';
 
 describe('calculateNewPosition', () => {
   test('it calculates new position', () => {
@@ -11,7 +12,7 @@ describe('calculateNewPosition', () => {
     const newPosition = calculateNewPosition(
       startPosition,
       destinationPosition,
-      100,
+      new DistanceInKilometers(100),
     );
 
     // then
@@ -28,7 +29,7 @@ describe('calculateNewPosition', () => {
     const newPosition = calculateNewPosition(
       startPosition,
       destinationPosition,
-      500000,
+      new DistanceInKilometers(300000),
     );
 
     // then

@@ -1,9 +1,10 @@
 import convertKilometersToSokownUnits from './convertKilometersToSokownUnits';
+import DistanceInKilometers from '../values/DistanceInKilometers';
 
 describe('convertKilometersToSokownUnits', () => {
   test('it converts kilometers to sokown units', () => {
     // given
-    const kilometers = 1;
+    const kilometers = new DistanceInKilometers(1);
 
     // when
     const sokownUnits = convertKilometersToSokownUnits(kilometers);

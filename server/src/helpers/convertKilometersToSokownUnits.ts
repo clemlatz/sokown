@@ -1,3 +1,7 @@
-export default function convertKilometersToSokownUnits(kilometers: number) {
-  return kilometers * 0.00000668458;
+import DistanceInKilometers from '../values/DistanceInKilometers';
+
+export default function convertKilometersToSokownUnits(
+  distance: DistanceInKilometers,
+) {
+  return distance.value * 0.00000668458;
 }
