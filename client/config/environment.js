@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   const ENV = {
-    modulePrefix: 'sokown',
+    modulePrefix: 'sokown-client',
     environment,
     rootURL: '/',
     locationType: 'history',

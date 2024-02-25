@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'sokown/tests/helpers';
+import { setupTest } from 'sokown-client/tests/helpers';
 
 module('Unit | Route | ships/get', function (hooks) {
   setupTest(hooks);

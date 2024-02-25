@@ -1,5 +1,5 @@
-import Application from 'sokown/app';
-import config from 'sokown/config/environment';
+import Application from 'sokown-client/app';
+import config from 'sokown-client/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';
