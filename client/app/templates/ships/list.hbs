@@ -19,13 +19,14 @@
         </LinkTo>
       </td>
       <td>
+        <Position @position={{ship.currentPosition}} />
         {{ship.currentLocation.name}}
-        ({{ship.currentPosition.x}},{{ship.currentPosition.y}})
       </td>
       <td>
         {{#if ship.isStationary}}
           -
         {{else}}
+          <Position @position={{ship.destinationPosition}} />
           {{ship.destinationLocation.name}}
         {{/if}}
       </td>

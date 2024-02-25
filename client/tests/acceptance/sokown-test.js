@@ -71,7 +71,7 @@ module('Acceptance | sokown', function (hooks) {
       .exists();
     assert
       .dom(screen.getByRole('definition', { name: 'Current location' }))
-      .hasText('Moon (3,3)');
+      .hasText('3 3 Moon');
     assert
       .dom(screen.getByRole('definition', { name: 'Current destination' }))
       .hasText('—');
@@ -91,6 +91,6 @@ module('Acceptance | sokown', function (hooks) {
     assert.strictEqual(currentURL(), '/ships/1');
     assert
       .dom(screen.getByRole('definition', { name: 'Current destination' }))
-      .hasText('(17,23)');
+      .hasText('17 23');
   });
 });

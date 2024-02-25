@@ -5,17 +5,14 @@
 <dl>
     <dt id="current-location">Current location</dt>
     <dd aria-labelledby="current-location">
+        <Position @position={{@model.currentPosition}} />
         {{@model.currentLocation.name}}
-        ({{@model.currentPosition.x}},{{@model.currentPosition.y}})
     </dd>
 
     <dt id="current-destination">Current destination</dt>
     <dd aria-labelledby="current-destination">
-        {{#if @model.isStationary}}
-            —
-        {{else}}
-            {{@model.destinationLocation.name}} ({{@model.destinationPosition.x}},{{@model.destinationPosition.y}})
-        {{/if}}
+        <Position @position={{@model.destinationPosition}} />
+        {{@model.destinationLocation.name}}
     </dd>
 </dl>
 
