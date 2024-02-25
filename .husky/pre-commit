@@ -1,0 +1,2 @@
+cd server && npm run lint
+cd ../client && npm run lint:fix
