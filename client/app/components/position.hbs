@@ -2,9 +2,11 @@
     <span role="group" aria-label="Position" class="Position">
         <span class="Position__coordinate Position__coordinate__x" role="definition" aria-label="Coordinate X">
             {{this.format @position.x}}
+            <EmberTooltip @event="click" @side="top" @text={{@position.x}} />
         </span>
         <span class="Position__coordinate Position__coordinate__y" role="definition" aria-label="Coordinate Y">
             {{this.format @position.y}}
+            <EmberTooltip @event="click" @side="top" @text={{@position.y}} />
         </span>
     </span>
 {{else}}
