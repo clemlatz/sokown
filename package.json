@@ -2,9 +2,12 @@
   "name": "sokown",
   "version": "0.0.0",
   "description": "A Space Game",
-  "devDependencies": {},
+  "devDependencies": {
+    "husky": "^9.0.11"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
