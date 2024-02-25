@@ -43,11 +43,13 @@ describe('ShipController', () => {
       const ships = [
         ModelFactory.createShip({
           id: 1,
+          speed: 100,
           name: 'Discovery One',
           currentPosition: new Position(1, 1),
         }),
         ModelFactory.createShip({
           id: 2,
+          speed: 200,
           name: 'Europa Report',
           currentPosition: new Position(3, 4),
           destinationPosition: new Position(23, 17),
@@ -73,6 +75,7 @@ describe('ShipController', () => {
             type: 'ship',
             attributes: {
               name: 'Discovery One',
+              speedInKilometersPerSecond: 100,
               currentPosition: { x: 1, y: 1 },
               currentLocation: { name: 'Earth' },
               destinationPosition: null,
@@ -84,6 +87,7 @@ describe('ShipController', () => {
             type: 'ship',
             attributes: {
               name: 'Europa Report',
+              speedInKilometersPerSecond: 200,
               currentPosition: { x: 3, y: 4 },
               currentLocation: { name: 'Earth' },
               destinationPosition: { x: 23, y: 17 },
@@ -103,6 +107,7 @@ describe('ShipController', () => {
       } as unknown as Response;
       const ship = ModelFactory.createShip({
         id: 1,
+        speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 1),
       });
@@ -123,6 +128,7 @@ describe('ShipController', () => {
           type: 'ship',
           attributes: {
             name: 'Discovery One',
+            speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 1 },
             currentLocation: { name: 'Earth' },
             destinationPosition: null,

@@ -93,6 +93,7 @@ export class ShipController {
       type: 'ship',
       attributes: {
         name: ship.name,
+        speedInKilometersPerSecond: ship.speed.value,
         currentPosition: {
           x: ship.currentPosition.x,
           y: ship.currentPosition.y,
