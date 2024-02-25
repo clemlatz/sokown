@@ -1,5 +1,6 @@
 import calculateDistanceBetweenPositions from './calculateDistanceBetweenPositions';
 import Position from '../models/Position';
+import DistanceInSokownUnits from '../values/DistanceInSokownUnits';
 
 describe('calculateDistanceBetweenPosition', () => {
   test('it calculates distance between two position2', () => {
@@ -11,6 +12,6 @@ describe('calculateDistanceBetweenPosition', () => {
     const distance = calculateDistanceBetweenPositions(position1, position2);
 
     // then
-    expect(distance).toBe(3.605551275463989);
+    expect(distance).toEqual(new DistanceInSokownUnits(3.605551275463989));
   });
 });
