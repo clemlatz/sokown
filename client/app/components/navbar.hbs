@@ -13,6 +13,15 @@
           <LinkTo class="nav-link" @route="about">About</LinkTo>
         </li>
       </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            {{#if this.isUserAuthenticated}}
+                <span class="nav-link">{{this.pilotName}}</span>
+            {{else}}
+                <a class="nav-link" href="/auth/openid/login">Login</a>
+            {{/if}}
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
