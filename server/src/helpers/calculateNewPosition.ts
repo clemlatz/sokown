@@ -15,18 +15,18 @@ export default function calculateNewPosition(
   const distanceTraveledInSU =
     convertKilometersToSokownUnits(distanceTraveledInKm);
 
-  if (distanceToDestinationInSU < distanceTraveledInSU) {
+  if (distanceToDestinationInSU.value < distanceTraveledInSU.value) {
     return destinationPosition;
   }
 
   const newX =
     startPosition.x +
-    ((destinationPosition.x - startPosition.x) * distanceTraveledInSU) /
-      distanceToDestinationInSU;
+    ((destinationPosition.x - startPosition.x) * distanceTraveledInSU.value) /
+      distanceToDestinationInSU.value;
   const newY =
     startPosition.y +
-    ((destinationPosition.y - startPosition.y) * distanceTraveledInSU) /
-      distanceToDestinationInSU;
+    ((destinationPosition.y - startPosition.y) * distanceTraveledInSU.value) /
+      distanceToDestinationInSU.value;
 
   return new Position(newX, newY);
 }
