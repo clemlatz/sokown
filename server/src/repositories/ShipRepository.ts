@@ -68,7 +68,7 @@ export default class ShipRepository {
 
   private static buildShipModel(ship: ShipDTO) {
     const destination =
-      ship.destinationPositionX && ship.destinationPositionY
+      ship.destinationPositionX !== null && ship.destinationPositionY !== null
         ? new Position(ship.destinationPositionX, ship.destinationPositionY)
         : null;
     const currentPosition = new Position(

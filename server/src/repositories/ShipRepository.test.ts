@@ -10,12 +10,21 @@ describe('ShipRepository', () => {
       const givenShips = [
         {
           id: 1,
-          name: 'Ship',
+          name: 'Ship 1',
           speed: 1,
           currentPositionX: 1,
           currentPositionY: 2,
           destinationPositionX: 3,
           destinationPositionY: 4,
+        },
+        {
+          id: 2,
+          name: 'Ship 2',
+          speed: 0.5,
+          currentPositionX: 5,
+          currentPositionY: 6,
+          destinationPositionX: 0,
+          destinationPositionY: 0,
         },
       ];
       const prisma = {
@@ -29,14 +38,24 @@ describe('ShipRepository', () => {
       const ships = await repository.getAll();
 
       // then
-      const expectedShip = ModelFactory.createShip({
+      expect(prisma.ship.findMany).toHaveBeenCalledWith();
+      const expectedShip1 = ModelFactory.createShip({
         id: 1,
-        name: 'Ship',
+        name: 'Ship 1',
+        speed: 1,
         currentPosition: new Position(1, 2),
         destinationPosition: new Position(3, 4),
       });
-      expect(prisma.ship.findMany).toHaveBeenCalledWith();
-      expect(ships[0]).toStrictEqual(expectedShip);
+      const expectedShip2 = ModelFactory.createShip({
+        id: 2,
+        name: 'Ship 2',
+        speed: 0.5,
+        currentPosition: new Position(5, 6),
+        destinationPosition: new Position(0, 0),
+      });
+      expect(ships.length).toEqual(2);
+      expect(ships).toContainEqual(expectedShip1);
+      expect(ships).toContainEqual(expectedShip2);
     });
   });
 
@@ -79,7 +98,7 @@ describe('ShipRepository', () => {
           destinationPositionY: { not: null },
         },
       });
-      expect(ships[0]).toStrictEqual(expectedShip);
+      expect(ships).toContainEqual(expectedShip);
     });
   });
 
