@@ -30,6 +30,7 @@ function routes() {
           type: 'ship',
           attributes: {
             name: 'Artémis',
+            speedInKilometersPerSecond: 100,
             currentPosition: { x: 3, y: 3 },
             currentLocation: { name: 'Moon' },
             destinationPosition: null,
@@ -41,6 +42,7 @@ function routes() {
           type: 'ship',
           attributes: {
             name: 'Bebop',
+            speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 1 },
             currentLocation: { name: 'Earth' },
             destinationPosition: null,
@@ -58,6 +60,7 @@ function routes() {
         type: 'ship',
         attributes: {
           name: 'Artémis',
+          speedInKilometersPerSecond: 100,
           currentPosition: { x: 3, y: 3 },
           currentLocation: { name: 'Moon' },
           destinationPosition: null,

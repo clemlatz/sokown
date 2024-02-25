@@ -3,6 +3,11 @@
 <h2>{{@model.name}}</h2>
 
 <dl>
+    <dt id="speed">Speed</dt>
+    <dd aria-labelledby="speed">
+        {{@model.speedInKilometersPerSecond}} km/s
+    </dd>
+
     <dt id="current-location">Current location</dt>
     <dd aria-labelledby="current-location">
         <Position @position={{@model.currentPosition}} />

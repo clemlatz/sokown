@@ -70,6 +70,9 @@ module('Acceptance | sokown', function (hooks) {
       .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
       .exists();
     assert
+      .dom(screen.getByRole('definition', { name: 'Speed' }))
+      .hasText('100 km/s');
+    assert
       .dom(screen.getByRole('definition', { name: 'Current location' }))
       .hasText('3 3 Moon');
     assert

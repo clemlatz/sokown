@@ -2,6 +2,7 @@ import Model, { attr } from '@ember-data/model';
 
 export default class ShipModel extends Model {
   @attr name;
+  @attr speedInKilometersPerSecond;
   @attr currentPosition;
   @attr currentLocation;
   @attr destinationPosition;
