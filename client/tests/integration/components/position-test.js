@@ -8,7 +8,7 @@ module('Integration | Component | position', function (hooks) {
 
   test('it displays coordinates for given position', async function (assert) {
     // given
-    const position = { x: 1, y: 2 };
+    const position = { x: 1.23456, y: 9.87654 };
     this.set('position', position);
 
     // when
@@ -17,10 +17,10 @@ module('Integration | Component | position', function (hooks) {
     // then
     assert
       .dom(screen.getByRole('definition', { name: 'Coordinate X' }))
-      .hasText('1');
+      .hasText('1.234');
     assert
       .dom(screen.getByRole('definition', { name: 'Coordinate Y' }))
-      .hasText('2');
+      .hasText('9.876');
   });
 
   test('it displays an hyphen if position is null', async function (assert) {
