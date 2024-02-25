@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { ShipController } from './controllers/ShipController';
+import OpenIDConnectController from './controllers/OpenIDConnectController';
 
 import { PrismaClient } from '@prisma/client';
 import ShipRepository from './repositories/ShipRepository';
@@ -12,8 +13,12 @@ import { CookieSessionModule } from 'nestjs-cookie-session';
 import * as process from 'process';
 
 @Module({
-  imports: [],
-  controllers: [ShipController],
+  imports: [
+    CookieSessionModule.forRoot({
+      session: { secret: process.env.COOKIE_SECRET },
+    }),
+  ],
+  controllers: [ShipController, OpenIDConnectController],
   providers: [
     PrismaClient,
     ShipRepository,
