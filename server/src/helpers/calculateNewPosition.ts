@@ -1,13 +1,14 @@
 import Position from '../models/Position';
+import calculateDistanceBetweenPositions from './calculateDistanceBetweenPositions';
 
 export default function calculateNewPosition(
   startPosition: Position,
   destinationPosition: Position,
   distanceTraveled: number,
 ): Position {
-  const distanceToDestination = Math.sqrt(
-    Math.pow(destinationPosition.x - startPosition.x, 2) +
-      Math.pow(destinationPosition.y - startPosition.y, 2),
+  const distanceToDestination = calculateDistanceBetweenPositions(
+    startPosition,
+    destinationPosition,
   );
 
   if (distanceToDestination < distanceTraveled) {
