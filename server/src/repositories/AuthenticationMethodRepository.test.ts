@@ -5,6 +5,50 @@ import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
 
 describe('AuthenticationMethodRepository', () => {
+  describe('existsById', () => {
+    describe('when authentication method exists for given id', () => {
+      it('returns true', async () => {
+        // given
+        const prisma = {
+          authenticationMethod: {
+            findUnique: jest.fn().mockResolvedValue({}),
+          },
+        } as unknown as PrismaClient;
+        const repository = new AuthenticationMethodRepository(prisma);
+
+        // when
+        const exists = await repository.existsById(1);
+
+        // then
+        expect(exists).toBe(true);
+        expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
+          where: { id: 1 },
+        });
+      });
+    });
+
+    describe('when authentication method does not exist for given id', () => {
+      it('returns false', async () => {
+        // given
+        const prisma = {
+          authenticationMethod: {
+            findUnique: jest.fn().mockResolvedValue(null),
+          },
+        } as unknown as PrismaClient;
+        const repository = new AuthenticationMethodRepository(prisma);
+
+        // when
+        const exists = await repository.existsById(1);
+
+        // then
+        expect(exists).toBe(false);
+        expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
+          where: { id: 1 },
+        });
+      });
+    });
+  });
+
   describe('findByProviderAndExternalId', () => {
     it('returns authentication method if it exists for given external id', async () => {
       // given
