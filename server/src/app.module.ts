@@ -11,6 +11,7 @@ import AuthenticationMethodRepository from './repositories/AuthenticationMethodR
 import OpenIDConnectService from './services/OpenIDConnectService';
 import { CookieSessionModule } from 'nestjs-cookie-session';
 import * as process from 'process';
+import AuthenticationGuard from './guards/AuthenticationGuard';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import * as process from 'process';
     EventRepository,
     AuthenticationMethodRepository,
     OpenIDConnectService.factory,
+    AuthenticationGuard,
   ],
 })
 export class AppModule {}
