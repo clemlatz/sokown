@@ -11,6 +11,8 @@ import AuthenticationMethodRepository from './repositories/AuthenticationMethodR
 import OpenIDConnectService from './services/OpenIDConnectService';
 import { CookieSessionModule } from 'nestjs-cookie-session';
 import * as process from 'process';
+import UserController from './controllers/UserController';
+import UserRepository from './repositories/UserRepository';
 import AuthenticationGuard from './guards/AuthenticationGuard';
 
 @Module({
@@ -19,7 +21,7 @@ import AuthenticationGuard from './guards/AuthenticationGuard';
       session: { secret: process.env.COOKIE_SECRET },
     }),
   ],
-  controllers: [ShipController, OpenIDConnectController],
+  controllers: [ShipController, OpenIDConnectController, UserController],
   providers: [
     PrismaClient,
     ShipRepository,
