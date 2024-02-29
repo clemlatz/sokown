@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 
 export default class PositionComponent extends Component {
   format(coordinate) {
-    return Math.trunc(coordinate * 1000) / 1000;
+    const truncatedNumber = Math.trunc(coordinate * 1000) / 1000;
+    return truncatedNumber.toFixed(3);
   }
 }
