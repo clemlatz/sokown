@@ -4,29 +4,68 @@ import { setupApplicationTest } from 'sokown-client/tests/helpers';
 import { visit } from '@1024pix/ember-testing-library';
 import { click, fillIn } from '@ember/test-helpers';
 import { setupMirage } from 'ember-cli-mirage/test-support';
+import { Response } from 'miragejs';
 
 module('Acceptance | sokown', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('visiting /', async function (assert) {
-    // when
-    const screen = await visit('/');
+  module('visiting /', function () {
+    test('it displays home page', async function (assert) {
+      // when
+      const screen = await visit('/');
 
-    // then
-    assert.strictEqual(currentURL(), '/');
-    assert
-      .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
-      .exists();
-    assert
-      .dom(
-        screen.getByRole('heading', {
-          name: 'Welcome to The Sokown Company',
-          level: 2,
-        }),
-      )
-      .exists();
-    assert.dom(screen.getByRole('link', { name: 'Join now' })).exists();
+      // then
+      assert.strictEqual(currentURL(), '/');
+      assert
+        .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
+        .exists();
+      assert
+        .dom(
+          screen.getByRole('heading', {
+            name: 'Welcome to The Sokown Company',
+            level: 2,
+          }),
+        )
+        .exists();
+      assert.dom(screen.getByRole('link', { name: 'Join now' })).exists();
+    });
+
+    module('when user is authenticated', function () {
+      test('it displays pilot name', async function (assert) {
+        // when
+        const screen = await visit('/');
+
+        // then
+        assert.dom(screen.getByText('Amy Johnson')).exists();
+      });
+    });
+
+    module('when user is not authenticated', function () {
+      test('it displays login link', async function (assert) {
+        // given
+        this.server.get('/api/users/me', () => {
+          return new Response(
+            401,
+            {},
+            {
+              errors: [
+                {
+                  status: 401,
+                  title: 'Unauthorized',
+                },
+              ],
+            },
+          );
+        });
+
+        // when
+        const screen = await visit('/');
+
+        // then
+        assert.dom(screen.getByRole('link', { name: 'Login' })).exists();
+      });
+    });
   });
 
   test('visiting /about', async function (assert) {

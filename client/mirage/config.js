@@ -22,6 +22,18 @@ export default function (config) {
 }
 
 function routes() {
+  this.get('/api/users/me', () => {
+    return {
+      data: {
+        id: 'me',
+        type: 'user',
+        attributes: {
+          pilotName: 'Amy Johnson',
+        },
+      },
+    };
+  });
+
   this.get('/api/ships', () => {
     return {
       data: [
