@@ -26,6 +26,7 @@ import AuthenticationGuard from './guards/AuthenticationGuard';
     LocationRepository,
     EventRepository,
     AuthenticationMethodRepository,
+    UserRepository,
     OpenIDConnectService.factory,
     AuthenticationGuard,
   ],
