@@ -176,4 +176,23 @@ module('Acceptance | sokown', function (hooks) {
       )
       .exists();
   });
+
+  test('visiting /user/profile', async function (assert) {
+    // when
+    const screen = await visit('/');
+    await click(screen.getByRole('link', { name: 'Amy Johnson' }));
+
+    // then
+    assert.strictEqual(currentURL(), '/user/profile');
+    assert
+      .dom(screen.getByRole('heading', { name: 'Profile', level: 2 }))
+      .exists();
+    assert
+      .dom(
+        screen.getByRole('link', {
+          name: 'Logout',
+        }),
+      )
+      .exists();
+  });
 });

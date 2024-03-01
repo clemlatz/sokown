@@ -16,7 +16,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
             {{#if this.isUserAuthenticated}}
-                <span class="nav-link">{{this.pilotName}}</span>
+                <LinkTo class="nav-link" @route="user.profile">{{this.pilotName}}</LinkTo>
             {{else}}
                 <LinkTo class="nav-link" @route="user.login">Login</LinkTo>
             {{/if}}
