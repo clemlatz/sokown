@@ -18,7 +18,7 @@
             {{#if this.isUserAuthenticated}}
                 <span class="nav-link">{{this.pilotName}}</span>
             {{else}}
-                <a class="nav-link" href="/auth/openid/login">Login</a>
+                <LinkTo class="nav-link" @route="user.login">Login</LinkTo>
             {{/if}}
         </li>
       </ul>

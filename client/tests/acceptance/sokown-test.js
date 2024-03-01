@@ -141,4 +141,39 @@ module('Acceptance | sokown', function (hooks) {
       .dom(screen.getByRole('definition', { name: 'Current destination' }))
       .hasText('17.000 23.000');
   });
+
+  test('visiting /user/login', async function (assert) {
+    // given
+    this.server.get('/api/users/me', () => {
+      return new Response(
+        401,
+        {},
+        {
+          errors: [
+            {
+              status: 401,
+              title: 'Unauthorized',
+            },
+          ],
+        },
+      );
+    });
+
+    // when
+    const screen = await visit('/');
+    await click(screen.getByRole('link', { name: 'Login' }));
+
+    // then
+    assert.strictEqual(currentURL(), '/user/login');
+    assert
+      .dom(screen.getByRole('heading', { name: 'Login', level: 2 }))
+      .exists();
+    assert
+      .dom(
+        screen.getByRole('link', {
+          name: 'Login / Sign up with Axys',
+        }),
+      )
+      .exists();
+  });
 });

@@ -1,5 +1,11 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
 
+h2 {
+  margin: 24px 0;
+}
+
+/* Definitions */
+
 dl dt {
   padding: 4px;
   padding-right: 8px;

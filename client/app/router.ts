@@ -13,4 +13,8 @@ Router.map(function () {
     this.route('get', { path: '/:id' });
   });
   this.route('about');
+
+  this.route('user', function () {
+    this.route('login');
+  });
 });
