@@ -27,8 +27,8 @@ export default class AuthenticationGuard implements CanActivate {
       );
     }
 
-    const now = new Date().getTime();
-    if (expiresAt === undefined || expiresAt < now) {
+    const nowInSeconds = new Date().getTime() / 1000;
+    if (expiresAt === undefined || expiresAt < nowInSeconds) {
       throw new JsonApiError(HttpStatus.UNAUTHORIZED, 'Session is expired');
     }
 

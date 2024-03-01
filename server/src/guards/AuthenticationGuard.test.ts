@@ -88,12 +88,15 @@ describe('AuthenticationGuard', () => {
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
+      const expiresAtTimestamp = new Date('2048-01-01').getTime();
+      const expiresAtClaim = expiresAtTimestamp / 1000;
+
       const context = {
         switchToHttp: () => ({
           getRequest: () => ({
             session: {
               authenticationMethodId: 1,
-              expiresAt: new Date('2048-01-01').getTime(),
+              expiresAt: expiresAtClaim,
             },
           }),
         }),
