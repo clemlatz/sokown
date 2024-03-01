@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import ShipRepository from '../repositories/ShipRepository';
@@ -13,6 +14,7 @@ import LocationRepository from '../repositories/LocationRepository';
 import Ship from '../models/Ship';
 import Position from '../models/Position';
 import EventRepository from '../repositories/EventRepository';
+import AuthenticationGuard from '../guards/AuthenticationGuard';
 
 class UpdateShipDTO {
   readonly data: {
@@ -50,6 +52,7 @@ export class ShipController {
     res.json({ data: shipData });
   }
 
+  @UseGuards(AuthenticationGuard)
   @Patch('api/ships/:id')
   async update(
     @Param() params: { id: string },

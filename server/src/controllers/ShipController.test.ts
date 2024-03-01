@@ -1,15 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
 import { Response } from 'express';
+import { HttpStatus } from '@nestjs/common';
 
 import { ShipController } from './ShipController';
 import ShipRepository from '../repositories/ShipRepository';
 import Position from '../models/Position';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
-import { HttpStatus } from '@nestjs/common';
 import EventRepository from '../repositories/EventRepository';
 import ModelFactory from '../../test/ModelFactory';
+import AuthenticationGuard from '../guards/AuthenticationGuard';
+import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -25,6 +27,8 @@ describe('ShipController', () => {
         ShipRepository,
         LocationRepository,
         EventRepository,
+        AuthenticationGuard,
+        AuthenticationMethodRepository,
       ],
     }).compile();
 
