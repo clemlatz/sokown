@@ -1,7 +1,6 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
 
 dl dt {
-  background: lightgray;
   padding: 4px;
   padding-right: 8px;
   margin-bottom: 4px;
