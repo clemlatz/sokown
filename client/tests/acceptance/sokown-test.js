@@ -44,20 +44,7 @@ module('Acceptance | sokown', function (hooks) {
     module('when user is not authenticated', function () {
       test('it displays login link', async function (assert) {
         // given
-        this.server.get('/api/users/me', () => {
-          return new Response(
-            401,
-            {},
-            {
-              errors: [
-                {
-                  status: 401,
-                  title: 'Unauthorized',
-                },
-              ],
-            },
-          );
-        });
+        _userIsAnonymous(this);
 
         // when
         const screen = await visit('/');
@@ -100,29 +87,61 @@ module('Acceptance | sokown', function (hooks) {
     assert.dom(screen.getByRole('cell', { name: 'Bebop' })).exists();
   });
 
-  test('visiting /ships/:id', async function (assert) {
-    // when
-    const screen = await visit('/');
-    await click(screen.getByRole('link', { name: 'Ships' }));
-    await click(screen.getByRole('link', { name: 'Artémis' }));
+  module('visiting /ships/:id', function () {
+    test('it displays ship public information', async function (assert) {
+      // when
+      const screen = await visit('/');
+      await click(screen.getByRole('link', { name: 'Ships' }));
+      await click(screen.getByRole('link', { name: 'Artémis' }));
 
-    // then
-    assert.strictEqual(currentURL(), '/ships/1');
-    assert
-      .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
-      .exists();
-    assert
-      .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
-      .exists();
-    assert
-      .dom(screen.getByRole('definition', { name: 'Speed' }))
-      .hasText('100 km/s');
-    assert
-      .dom(screen.getByRole('definition', { name: 'Current location' }))
-      .hasText('3.000 3.000 Moon');
-    assert
-      .dom(screen.getByRole('definition', { name: 'Current destination' }))
-      .hasText('—');
+      // then
+      assert.strictEqual(currentURL(), '/ships/1');
+      assert
+        .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
+        .exists();
+      assert
+        .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
+        .exists();
+      assert
+        .dom(screen.getByRole('definition', { name: 'Speed' }))
+        .hasText('100 km/s');
+      assert
+        .dom(screen.getByRole('definition', { name: 'Current location' }))
+        .hasText('3.000 3.000 Moon');
+      assert
+        .dom(screen.getByRole('definition', { name: 'Current destination' }))
+        .hasText('—');
+    });
+
+    module('when user is anonymous', function () {
+      test('it does not display autopilot form', async function (assert) {
+        // given
+        _userIsAnonymous(this);
+
+        // when
+        const screen = await visit('/ships/1');
+
+        // then
+        assert.dom(screen.getByRole('link', { name: 'Log in' })).exists();
+        assert
+          .dom(screen.queryByRole('button', { name: 'Set Autopilot' }))
+          .doesNotExist();
+      });
+    });
+
+    module('when user is authenticated', function () {
+      test('it displays autopilot form', async function (assert) {
+        // when
+        const screen = await visit('/ships/1');
+
+        // then
+        assert.dom(screen.getByRole('textbox', { name: 'X' })).exists();
+        assert.dom(screen.getByRole('textbox', { name: 'Y' })).exists();
+        assert
+          .dom(screen.getByRole('button', { name: 'Set Autopilot' }))
+          .exists();
+      });
+    });
   });
 
   test('visiting /ships/:id and updating destination', async function (assert) {
@@ -144,20 +163,7 @@ module('Acceptance | sokown', function (hooks) {
 
   test('visiting /user/login', async function (assert) {
     // given
-    this.server.get('/api/users/me', () => {
-      return new Response(
-        401,
-        {},
-        {
-          errors: [
-            {
-              status: 401,
-              title: 'Unauthorized',
-            },
-          ],
-        },
-      );
-    });
+    _userIsAnonymous(this);
 
     // when
     const screen = await visit('/');
@@ -196,3 +202,20 @@ module('Acceptance | sokown', function (hooks) {
       .exists();
   });
 });
+
+function _userIsAnonymous(context) {
+  context.server.get('/api/users/me', () => {
+    return new Response(
+      401,
+      {},
+      {
+        errors: [
+          {
+            status: 401,
+            title: 'Unauthorized',
+          },
+        ],
+      },
+    );
+  });
+}

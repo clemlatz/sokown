@@ -22,24 +22,30 @@
 </dl>
 
 <h3>Autopilot</h3>
-<form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
-    <div class="col-12">
-        <label class="visually-hidden" for="newDestinationPositionX">X</label>
-        <div class="input-group">
-            <div class="input-group-text">X</div>
-            <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} />
+{{#if this.currentUser.isAuthenticated}}
+    <form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
+        <div class="col-12">
+            <label class="visually-hidden" for="newDestinationPositionX">X</label>
+            <div class="input-group">
+                <div class="input-group-text">X</div>
+                <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} />
+            </div>
         </div>
-    </div>
 
-    <div class="col-12">
-        <label class="visually-hidden" for="newDestinationPositionY">Y</label>
-        <div class="input-group">
-            <div class="input-group-text">Y</div>
-            <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} />
+        <div class="col-12">
+            <label class="visually-hidden" for="newDestinationPositionY">Y</label>
+            <div class="input-group">
+                <div class="input-group-text">Y</div>
+                <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} />
+            </div>
         </div>
-    </div>
 
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Set Autopilot</button>
-    </div>
-</form>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Set Autopilot</button>
+        </div>
+    </form>
+{{else}}
+    <p>
+        Is this your ship? <LinkTo @route="user.login" class="btn btn-sm btn-primary btn-xs">Log in</LinkTo> to set the autopilot.
+    </p>
+{{/if}}
