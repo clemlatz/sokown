@@ -2,6 +2,7 @@ import AuthenticationGuard from './AuthenticationGuard';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import { ExecutionContext } from '@nestjs/common';
 import { JsonApiError } from '../errors';
+import SessionToken from '../models/SessionToken';
 
 describe('AuthenticationGuard', () => {
   describe('when there is no authentication method id in session', () => {
@@ -38,8 +39,8 @@ describe('AuthenticationGuard', () => {
 
       const context = {
         switchToHttp: () => ({
-          getRequest: () => ({
-            session: { authenticationMethodId: 1, expiresAt: 1 },
+          getRequest: (): { session: SessionToken } => ({
+            session: new SessionToken({ sub: 1, duration: 0 }),
           }),
         }),
       } as unknown as ExecutionContext;
@@ -64,8 +65,8 @@ describe('AuthenticationGuard', () => {
 
       const context = {
         switchToHttp: () => ({
-          getRequest: () => ({
-            session: { authenticationMethodId: 1, expiresAt: 1 },
+          getRequest: (): { session: SessionToken } => ({
+            session: new SessionToken({ sub: 1, duration: 0 }),
           }),
         }),
       } as unknown as ExecutionContext;
@@ -88,16 +89,10 @@ describe('AuthenticationGuard', () => {
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
-      const expiresAtTimestamp = new Date('2048-01-01').getTime();
-      const expiresAtClaim = expiresAtTimestamp / 1000;
-
       const context = {
         switchToHttp: () => ({
-          getRequest: () => ({
-            session: {
-              authenticationMethodId: 1,
-              expiresAt: expiresAtClaim,
-            },
+          getRequest: (): { session: SessionToken } => ({
+            session: new SessionToken({ sub: 1 }),
           }),
         }),
       } as unknown as ExecutionContext;

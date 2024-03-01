@@ -8,7 +8,7 @@ import { TokenSet } from 'openid-client';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
-import { CookieSession } from '../types';
+import SessionToken from '../models/SessionToken';
 
 describe('OpenIDConnectController', () => {
   let openIDConnectController: OpenIDConnectController;
@@ -42,7 +42,7 @@ describe('OpenIDConnectController', () => {
   describe('login', () => {
     it('it redirects to oidc provider authorization url', async () => {
       // given
-      const session: CookieSession = {};
+      const session = new SessionToken({});
       const response = {
         redirect: jest.fn(),
       } as unknown as Response;
@@ -74,9 +74,8 @@ describe('OpenIDConnectController', () => {
           'external-id',
           givenUser,
         );
-        const session: CookieSession = {
-          state: 'state-from-cookie',
-        };
+        const session = new SessionToken({ state: 'state-from-cookie' });
+
         const request = {} as Request;
         const response = {
           redirect: jest.fn(),
@@ -84,7 +83,6 @@ describe('OpenIDConnectController', () => {
         const tokenSet = {
           claims: jest.fn().mockReturnValue({
             sub: 1,
-            exp: 1709702870,
           }),
         } as unknown as TokenSet;
         jest
@@ -93,6 +91,7 @@ describe('OpenIDConnectController', () => {
         jest
           .spyOn(authenticationMethodRepository, 'findByProviderAndExternalId')
           .mockResolvedValue(givenAuthenticationMethod);
+        jest.useFakeTimers().setSystemTime(new Date('2019-04-28'));
 
         // when
         await openIDConnectController.callback(session, request, response);
@@ -105,8 +104,8 @@ describe('OpenIDConnectController', () => {
         expect(
           authenticationMethodRepository.findByProviderAndExternalId,
         ).toHaveBeenCalledWith('axys', '1');
-        expect(session.authenticationMethodId).toEqual(2);
-        expect(session.sessionExpiresAt).toEqual(1709702870);
+        expect(session.sub).toEqual(2);
+        expect(session.exp).toEqual(1556496000);
         expect(response.redirect).toHaveBeenCalledWith('/');
       });
     });
@@ -114,9 +113,8 @@ describe('OpenIDConnectController', () => {
     describe('when user does not exist', () => {
       it('it returns 401', async () => {
         // given
-        const session: CookieSession = {
-          state: 'state-from-cookie',
-        };
+        const session = new SessionToken({ state: 'state-from-cookie' });
+
         const request = {} as Request;
         const response = {
           status: jest.fn(),

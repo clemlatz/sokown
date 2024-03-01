@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 
 import OpenIDConnectService from '../services/OpenIDConnectService';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
-import { CookieSession } from '../types';
+import SessionToken from '../models/SessionToken';
 
 @Controller()
 export default class OpenIDConnectController {
@@ -16,10 +16,14 @@ export default class OpenIDConnectController {
 
   @Get('auth/openid/login')
   async login(
-    @Session() session: CookieSession,
+    @Session() session: SessionToken,
     @Res() response: Response,
   ): Promise<void> {
-    session.state = crypto.randomBytes(16).toString('hex');
+    const randomState = crypto.randomBytes(16).toString('hex');
+
+    const sessionToken = new SessionToken({ state: randomState });
+    sessionToken.writeTo(session);
+
     const authorizationUrl = this.openIDConnectService.getAuthorizationUrl(
       session.state,
     );
@@ -29,7 +33,7 @@ export default class OpenIDConnectController {
 
   @Get('auth/openid/callback')
   async callback(
-    @Session() session: CookieSession,
+    @Session() session: SessionToken,
     @Req() request: Request,
     @Res() response: Response,
   ): Promise<void> {
@@ -37,7 +41,7 @@ export default class OpenIDConnectController {
       request,
       session.state,
     );
-    const { sub, exp } = tokenSet.claims();
+    const { sub } = tokenSet.claims();
     const externalId = isNumber(sub) ? (sub as number).toString() : sub;
     const authenticationMethod =
       await this.authenticationMethodRepository.findByProviderAndExternalId(
@@ -51,8 +55,8 @@ export default class OpenIDConnectController {
       return;
     }
 
-    session.authenticationMethodId = authenticationMethod.id;
-    session.sessionExpiresAt = exp;
+    const sessionToken = new SessionToken({ sub: authenticationMethod.id });
+    sessionToken.writeTo(session);
 
     response.redirect('/');
   }

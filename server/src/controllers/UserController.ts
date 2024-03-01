@@ -1,8 +1,8 @@
 import { Controller, Get, Res, Session, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
-import { CookieSession } from '../types';
 import UserRepository from '../repositories/UserRepository';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
+import SessionToken from '../models/SessionToken';
 
 @Controller()
 export default class UserController {
@@ -11,11 +11,11 @@ export default class UserController {
   @Get('api/users/me')
   @UseGuards(AuthenticationGuard)
   async me(
-    @Session() session: CookieSession,
+    @Session() session: SessionToken,
     @Res() res: Response,
   ): Promise<void> {
     const user = await this.userRepository.getByAuthenticationMethodId(
-      session.authenticationMethodId,
+      session.sub,
     );
     res.json({
       data: {

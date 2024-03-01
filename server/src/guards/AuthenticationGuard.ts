@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import { JsonApiError } from '../errors';
+import SessionToken from '../models/SessionToken';
 
 @Injectable()
 export default class AuthenticationGuard implements CanActivate {
@@ -18,9 +19,9 @@ export default class AuthenticationGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const { authenticationMethodId, expiresAt } = request.session;
+    const { sub, exp } = request.session as SessionToken;
 
-    if (!this._authenticationMethodExists(authenticationMethodId)) {
+    if (!this._authenticationMethodExists(sub)) {
       throw new JsonApiError(
         HttpStatus.UNAUTHORIZED,
         'Unknown authentication method',
@@ -28,7 +29,7 @@ export default class AuthenticationGuard implements CanActivate {
     }
 
     const nowInSeconds = new Date().getTime() / 1000;
-    if (expiresAt === undefined || expiresAt < nowInSeconds) {
+    if (exp === undefined || exp < nowInSeconds) {
       throw new JsonApiError(HttpStatus.UNAUTHORIZED, 'Session is expired');
     }
 

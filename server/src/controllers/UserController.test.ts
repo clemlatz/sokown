@@ -5,9 +5,9 @@ import { Response } from 'express';
 import UserController from './UserController';
 import User from '../models/User';
 import UserRepository from '../repositories/UserRepository';
-import { CookieSession } from '../types';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
+import SessionToken from '../models/SessionToken';
 
 describe('UserController', () => {
   let userController: UserController;
@@ -31,9 +31,7 @@ describe('UserController', () => {
   describe('me', () => {
     it('it returns current user', async () => {
       // given
-      const session: CookieSession = {
-        authenticationMethodId: 1,
-      };
+      const session = new SessionToken({ sub: 1 });
       const response = {
         json: jest.fn(),
       } as unknown as Response;
