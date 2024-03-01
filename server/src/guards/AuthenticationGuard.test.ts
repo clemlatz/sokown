@@ -55,6 +55,32 @@ describe('AuthenticationGuard', () => {
     });
   });
 
+  describe('when session was erased', () => {
+    it('throws an JsonApiError', () => {
+      // given
+      const authenticationMethodRepository = {
+        existsById: jest.fn().mockReturnValue(false),
+      } as unknown as AuthenticationMethodRepository;
+      const guard = new AuthenticationGuard(authenticationMethodRepository);
+
+      const context = {
+        switchToHttp: () => ({
+          getRequest: (): { session: SessionToken } => ({
+            session: new SessionToken({ sub: null }),
+          }),
+        }),
+      } as unknown as ExecutionContext;
+
+      // when
+      const tested = () => guard.canActivate(context);
+
+      // then
+      expect(tested).toThrow(JsonApiError);
+      expect(tested).toThrow('Unknown authentication method');
+      expect(authenticationMethodRepository.existsById).not.toHaveBeenCalled();
+    });
+  });
+
   describe('when expiresAt is in the past', () => {
     it('throws an JsonApiError', () => {
       // given

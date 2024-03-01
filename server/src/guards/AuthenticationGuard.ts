@@ -37,7 +37,7 @@ export default class AuthenticationGuard implements CanActivate {
   }
 
   _authenticationMethodExists(id: number): boolean | Promise<boolean> {
-    if (id === undefined) {
+    if (id === undefined || id === null) {
       return false;
     }
 
