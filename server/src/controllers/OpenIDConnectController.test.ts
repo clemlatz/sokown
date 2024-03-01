@@ -148,4 +148,21 @@ describe('OpenIDConnectController', () => {
       });
     });
   });
+
+  describe('logout', () => {
+    it('it erases session and redirects to /', async () => {
+      // given
+      const session = new SessionToken({ sub: 1 });
+      const response = {
+        redirect: jest.fn(),
+      } as unknown as Response;
+
+      // when
+      await openIDConnectController.logout(session, response);
+
+      // then
+      expect(session.sub).toBeNull();
+      expect(response.redirect).toHaveBeenCalledWith('/');
+    });
+  });
 });

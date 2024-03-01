@@ -60,4 +60,14 @@ export default class OpenIDConnectController {
 
     response.redirect('/');
   }
+
+  @Get('auth/openid/logout')
+  async logout(
+    @Session() session: SessionToken,
+    @Res() response: Response,
+  ): Promise<void> {
+    const sessionToken = new SessionToken({});
+    sessionToken.writeTo(session);
+    response.redirect('/');
+  }
 }
