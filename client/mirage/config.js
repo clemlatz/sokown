@@ -41,6 +41,10 @@ function routes() {
           id: 1,
           type: 'ship',
           attributes: {
+            owner: {
+              id: 3,
+              pilotName: 'Anne Morrow Lindbergh',
+            },
             name: 'Artémis',
             speedInKilometersPerSecond: 100,
             currentPosition: { x: 3, y: 3 },
@@ -53,6 +57,10 @@ function routes() {
           id: 2,
           type: 'ship',
           attributes: {
+            owner: {
+              id: 3,
+              pilotName: 'Anne Morrow Lindbergh',
+            },
             name: 'Bebop',
             speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 1 },
@@ -71,6 +79,10 @@ function routes() {
         id: 1,
         type: 'ship',
         attributes: {
+          owner: {
+            id: 3,
+            pilotName: 'Anne Morrow Lindbergh',
+          },
           name: 'Artémis',
           speedInKilometersPerSecond: 100,
           currentPosition: { x: 3, y: 3 },

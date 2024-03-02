@@ -3,6 +3,11 @@
 <h2>{{@model.name}}</h2>
 
 <dl>
+    <dt id="owner">Owner</dt>
+    <dd aria-labelledby="owner">
+        {{@model.owner.pilotName}}
+    </dd>
+
     <dt id="speed">Speed</dt>
     <dd aria-labelledby="speed">
         {{@model.speedInKilometersPerSecond}} km/s

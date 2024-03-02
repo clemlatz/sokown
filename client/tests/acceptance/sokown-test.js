@@ -103,6 +103,9 @@ module('Acceptance | sokown', function (hooks) {
         .dom(screen.getByRole('heading', { name: 'Artémis', level: 2 }))
         .exists();
       assert
+        .dom(screen.getByRole('definition', { name: 'Owner' }))
+        .hasText('Anne Morrow Lindbergh');
+      assert
         .dom(screen.getByRole('definition', { name: 'Speed' }))
         .hasText('100 km/s');
       assert
