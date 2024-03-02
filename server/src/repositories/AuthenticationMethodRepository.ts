@@ -11,6 +11,20 @@ export default class AuthenticationMethodRepository {
     this.prisma = prisma;
   }
 
+  async create(provider: string, externalId: string) {
+    const authenticationMethod = await this.prisma.authenticationMethod.create({
+      data: {
+        provider,
+        externalId,
+        userId: null,
+      },
+    });
+    return new AuthenticationMethod(
+      authenticationMethod.id,
+      authenticationMethod.externalId,
+    );
+  }
+
   async existsById(id: number): Promise<boolean> {
     const method = await this.prisma.authenticationMethod.findUnique({
       where: { id },
