@@ -95,6 +95,7 @@ export class ShipController {
       id: ship.id,
       type: 'ship',
       attributes: {
+        owner: { id: ship.owner.id, pilotName: ship.owner.pilotName },
         name: ship.name,
         speedInKilometersPerSecond: ship.speed.value,
         currentPosition: {

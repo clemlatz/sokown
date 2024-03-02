@@ -12,6 +12,7 @@ import EventRepository from '../repositories/EventRepository';
 import ModelFactory from '../../test/ModelFactory';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
+import User from '../models/User';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -47,12 +48,14 @@ describe('ShipController', () => {
       const ships = [
         ModelFactory.createShip({
           id: 1,
+          owner: new User(3, 'David Bowman'),
           speed: 100,
           name: 'Discovery One',
           currentPosition: new Position(1, 1),
         }),
         ModelFactory.createShip({
           id: 2,
+          owner: new User(4, 'James Corrigan'),
           speed: 200,
           name: 'Europa Report',
           currentPosition: new Position(3, 4),
@@ -78,6 +81,10 @@ describe('ShipController', () => {
             id: 1,
             type: 'ship',
             attributes: {
+              owner: {
+                id: 3,
+                pilotName: 'David Bowman',
+              },
               name: 'Discovery One',
               speedInKilometersPerSecond: 100,
               currentPosition: { x: 1, y: 1 },
@@ -90,6 +97,10 @@ describe('ShipController', () => {
             id: 2,
             type: 'ship',
             attributes: {
+              owner: {
+                id: 4,
+                pilotName: 'James Corrigan',
+              },
               name: 'Europa Report',
               speedInKilometersPerSecond: 200,
               currentPosition: { x: 3, y: 4 },
@@ -111,6 +122,7 @@ describe('ShipController', () => {
       } as unknown as Response;
       const ship = ModelFactory.createShip({
         id: 1,
+        owner: new User(2, 'David Bowman'),
         speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 1),
@@ -131,6 +143,7 @@ describe('ShipController', () => {
           id: 1,
           type: 'ship',
           attributes: {
+            owner: { id: 2, pilotName: 'David Bowman' },
             name: 'Discovery One',
             speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 1 },
