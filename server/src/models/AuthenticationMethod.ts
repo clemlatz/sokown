@@ -3,9 +3,9 @@ import User from './User';
 export default class AuthenticationMethod {
   private readonly _id: number;
   private readonly _externalId: string;
-  private readonly _user: User;
+  private readonly _user?: User = null;
 
-  constructor(id: number, externalId: string, user: User) {
+  constructor(id: number, externalId: string, user: User = null) {
     this._id = id;
     this._externalId = externalId;
     this._user = user;
@@ -13,10 +13,6 @@ export default class AuthenticationMethod {
 
   get id(): number {
     return this._id;
-  }
-
-  get externalId(): string {
-    return this._externalId;
   }
 
   get user(): User {
