@@ -31,6 +31,8 @@ model Event {
 
 model Ship {
   id                   Int       @id @default(autoincrement())
+  owner                User      @relation(fields: [ownerId], references: [id])
+  ownerId              Int       @default(1)
   name                 String
   speed                Float     @default(1)
   currentPositionX     Float
@@ -50,4 +52,5 @@ model User {
   createdAt             DateTime               @default(now())
   updatedAt             DateTime?
   authenticationMethods AuthenticationMethod[]
+  ships                 Ship[]
 }
