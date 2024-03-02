@@ -9,7 +9,7 @@ describe('AuthenticationGuard', () => {
     it('throws an JsonApiError', () => {
       // given
       const authenticationMethodRepository = {
-        existsById: jest.fn().mockReturnValue(false),
+        findById: jest.fn().mockReturnValue(false),
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
@@ -25,7 +25,7 @@ describe('AuthenticationGuard', () => {
       // then
       expect(tested).toThrow(JsonApiError);
       expect(tested).toThrow('Unknown authentication method');
-      expect(authenticationMethodRepository.existsById).not.toHaveBeenCalled();
+      expect(authenticationMethodRepository.findById).not.toHaveBeenCalled();
     });
   });
 
@@ -33,7 +33,7 @@ describe('AuthenticationGuard', () => {
     it('throws an JsonApiError', () => {
       // given
       const authenticationMethodRepository = {
-        existsById: jest.fn().mockReturnValue(false),
+        findById: jest.fn().mockReturnValue(null),
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
@@ -51,7 +51,7 @@ describe('AuthenticationGuard', () => {
       // then
       expect(tested).toThrow(JsonApiError);
       expect(tested).toThrow('Unknown authentication method');
-      expect(authenticationMethodRepository.existsById).toHaveBeenCalledWith(1);
+      expect(authenticationMethodRepository.findById).toHaveBeenCalledWith(1);
     });
   });
 
@@ -59,7 +59,7 @@ describe('AuthenticationGuard', () => {
     it('throws an JsonApiError', () => {
       // given
       const authenticationMethodRepository = {
-        existsById: jest.fn().mockReturnValue(false),
+        findById: jest.fn().mockReturnValue(false),
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
@@ -77,7 +77,7 @@ describe('AuthenticationGuard', () => {
       // then
       expect(tested).toThrow(JsonApiError);
       expect(tested).toThrow('Unknown authentication method');
-      expect(authenticationMethodRepository.existsById).not.toHaveBeenCalled();
+      expect(authenticationMethodRepository.findById).not.toHaveBeenCalled();
     });
   });
 
@@ -85,7 +85,7 @@ describe('AuthenticationGuard', () => {
     it('throws an JsonApiError', () => {
       // given
       const authenticationMethodRepository = {
-        existsById: jest.fn().mockReturnValue(true),
+        findById: jest.fn().mockReturnValue(true),
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
@@ -103,7 +103,7 @@ describe('AuthenticationGuard', () => {
       // then
       expect(tested).toThrow(JsonApiError);
       expect(tested).toThrow('Session is expired');
-      expect(authenticationMethodRepository.existsById).toHaveBeenCalledWith(1);
+      expect(authenticationMethodRepository.findById).toHaveBeenCalledWith(1);
     });
   });
 
@@ -111,7 +111,7 @@ describe('AuthenticationGuard', () => {
     it('returns true', () => {
       // given
       const authenticationMethodRepository = {
-        existsById: jest.fn().mockReturnValue(true),
+        findById: jest.fn().mockReturnValue(true),
       } as unknown as AuthenticationMethodRepository;
       const guard = new AuthenticationGuard(authenticationMethodRepository);
 
@@ -127,7 +127,7 @@ describe('AuthenticationGuard', () => {
       const result = guard.canActivate(context);
 
       // then
-      expect(authenticationMethodRepository.existsById).toHaveBeenCalledWith(1);
+      expect(authenticationMethodRepository.findById).toHaveBeenCalledWith(1);
       expect(result).toBe(true);
     });
   });

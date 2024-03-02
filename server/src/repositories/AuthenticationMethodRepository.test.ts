@@ -37,24 +37,38 @@ describe('AuthenticationMethodRepository', () => {
     });
   });
 
-  describe('existsById', () => {
+  describe('findById', () => {
     describe('when authentication method exists for given id', () => {
-      it('returns true', async () => {
+      it('returns authentication method', async () => {
         // given
         const prisma = {
           authenticationMethod: {
-            findUnique: jest.fn().mockResolvedValue({}),
+            findUnique: jest.fn().mockResolvedValue({
+              id: 1,
+              externalId: 'external-id',
+              user: {
+                id: 2,
+                pilotName: 'Chuck Yeager',
+              },
+            }),
           },
         } as unknown as PrismaClient;
         const repository = new AuthenticationMethodRepository(prisma);
 
         // when
-        const exists = await repository.existsById(1);
+        const authMethod = await repository.findById(1);
 
         // then
-        expect(exists).toBe(true);
+        expect(authMethod).toStrictEqual(
+          new AuthenticationMethod(
+            1,
+            'external-id',
+            new User(2, 'Chuck Yeager'),
+          ),
+        );
         expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
           where: { id: 1 },
+          include: { user: true },
         });
       });
     });
@@ -88,7 +102,7 @@ describe('AuthenticationMethodRepository', () => {
     });
 
     describe('when authentication method does not exist for given id', () => {
-      it('returns false', async () => {
+      it('returns null', async () => {
         // given
         const prisma = {
           authenticationMethod: {
@@ -98,13 +112,10 @@ describe('AuthenticationMethodRepository', () => {
         const repository = new AuthenticationMethodRepository(prisma);
 
         // when
-        const exists = await repository.existsById(1);
+        const authMethod = await repository.findById(1);
 
         // then
-        expect(exists).toBe(false);
-        expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
-          where: { id: 1 },
-        });
+        expect(authMethod).toBe(null);
       });
     });
   });

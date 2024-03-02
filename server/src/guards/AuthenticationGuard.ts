@@ -41,6 +41,6 @@ export default class AuthenticationGuard implements CanActivate {
       return false;
     }
 
-    return this.authenticationMethodRepository.existsById(id);
+    return this.authenticationMethodRepository.findById(id) !== null;
   }
 }
