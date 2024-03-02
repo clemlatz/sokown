@@ -5,7 +5,7 @@
   <tr>
     <th>Name</th>
     <th>Location</th>
-    <th>Destination</th>
+    <th class="d-none d-sm-block">Destination</th>
   </tr>
   </thead>
   <tbody>
@@ -20,7 +20,7 @@
         <Position @position={{ship.currentPosition}} />
         {{ship.currentLocation.name}}
       </td>
-      <td>
+      <td class="d-none d-sm-block">
         {{#if ship.isStationary}}
           -
         {{else}}
