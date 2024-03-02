@@ -4,7 +4,6 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import { JsonApiError } from '../errors';
 import SessionToken from '../models/SessionToken';
@@ -15,13 +14,11 @@ export default class AuthenticationGuard implements CanActivate {
     private readonly authenticationMethodRepository: AuthenticationMethodRepository,
   ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const { sub, exp } = request.session as SessionToken;
 
-    if (!this._authenticationMethodExists(sub)) {
+    if (!(await this._authenticationMethodExists(sub))) {
       throw new JsonApiError(
         HttpStatus.UNAUTHORIZED,
         'Unknown authentication method',
@@ -36,11 +33,17 @@ export default class AuthenticationGuard implements CanActivate {
     return true;
   }
 
-  _authenticationMethodExists(id: number): boolean | Promise<boolean> {
+  async _authenticationMethodExists(id: number): Promise<boolean> {
     if (id === undefined || id === null) {
       return false;
     }
 
-    return this.authenticationMethodRepository.findById(id) !== null;
+    const authMethod = await this.authenticationMethodRepository.findById(id);
+
+    if (authMethod === null) {
+      return false;
+    }
+
+    return authMethod.user !== null;
   }
 }
