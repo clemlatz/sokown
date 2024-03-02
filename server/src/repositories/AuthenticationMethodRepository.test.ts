@@ -59,6 +59,34 @@ describe('AuthenticationMethodRepository', () => {
       });
     });
 
+    describe('when authentication method exists but without user', () => {
+      it('returns authentication method without user', async () => {
+        // given
+        const prisma = {
+          authenticationMethod: {
+            findUnique: jest.fn().mockResolvedValue({
+              id: 1,
+              externalId: 'external-id',
+              user: null,
+            }),
+          },
+        } as unknown as PrismaClient;
+        const repository = new AuthenticationMethodRepository(prisma);
+
+        // when
+        const authMethod = await repository.findById(1);
+
+        // then
+        expect(authMethod).toStrictEqual(
+          new AuthenticationMethod(1, 'external-id', null),
+        );
+        expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
+          where: { id: 1 },
+          include: { user: true },
+        });
+      });
+    });
+
     describe('when authentication method does not exist for given id', () => {
       it('returns false', async () => {
         // given

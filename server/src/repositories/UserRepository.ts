@@ -26,6 +26,12 @@ export default class UserRepository {
       );
     }
 
+    if (authenticationMethod.user === null) {
+      throw new UnknownAuthenticationMethodError(
+        'No user found for given authentication method id',
+      );
+    }
+
     const { user } = authenticationMethod;
     return new User(user.id, user.pilotName);
   }

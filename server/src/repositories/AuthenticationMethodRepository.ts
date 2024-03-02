@@ -25,11 +25,18 @@ export default class AuthenticationMethodRepository {
     );
   }
 
-  async existsById(id: number): Promise<boolean> {
-    const method = await this.prisma.authenticationMethod.findUnique({
-      where: { id },
-    });
-    return !!method;
+  async existsById(id: number): Promise<AuthenticationMethod> {
+    const authenticationMethod =
+      await this.prisma.authenticationMethod.findUnique({
+        where: { id },
+        include: { user: true },
+      });
+
+    if (authenticationMethod === null) {
+      return null;
+    }
+
+    return _buildAuthenticationMethod(authenticationMethod);
   }
 
   async findByProviderAndExternalId(provider: string, externalId: string) {
@@ -48,11 +55,26 @@ export default class AuthenticationMethodRepository {
       return null;
     }
 
-    const { user } = authenticationMethod;
-    return new AuthenticationMethod(
-      authenticationMethod.id,
-      authenticationMethod.externalId,
-      new User(user.id, user.pilotName),
-    );
+    return _buildAuthenticationMethod(authenticationMethod);
   }
+}
+
+export type AuthenticationMethodDTO = {
+  id: number;
+  externalId: string;
+  user: {
+    id: number;
+    pilotName: string;
+  };
+};
+
+function _buildAuthenticationMethod(
+  authenticationMethod: AuthenticationMethodDTO,
+) {
+  const { user } = authenticationMethod;
+  return new AuthenticationMethod(
+    authenticationMethod.id,
+    authenticationMethod.externalId,
+    user === null ? null : new User(user.id, user.pilotName),
+  );
 }
