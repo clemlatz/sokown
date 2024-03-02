@@ -43,20 +43,26 @@ export default class OpenIDConnectController {
     );
     const { sub } = tokenSet.claims();
     const externalId = isNumber(sub) ? (sub as number).toString() : sub;
-    const authenticationMethod =
+    let authenticationMethod =
       await this.authenticationMethodRepository.findByProviderAndExternalId(
         'axys',
         externalId,
       );
 
-    if (!authenticationMethod) {
-      response.status(401);
-      response.send();
-      return;
+    if (authenticationMethod === null) {
+      authenticationMethod = await this.authenticationMethodRepository.create(
+        'axys',
+        externalId,
+      );
     }
 
     const sessionToken = new SessionToken({ sub: authenticationMethod.id });
     sessionToken.writeTo(session);
+
+    if (authenticationMethod.user === null) {
+      response.redirect('/user/signup');
+      return;
+    }
 
     response.redirect('/');
   }
