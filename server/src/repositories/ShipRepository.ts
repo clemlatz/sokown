@@ -4,9 +4,14 @@ import { Injectable } from '@nestjs/common';
 import Position from '../models/Position';
 import Ship from '../models/Ship';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
+import User from '../models/User';
 
-type ShipDTO = {
+export type ShipDTO = {
   id: number;
+  owner: {
+    id: number;
+    pilotName: string;
+  };
   name: string;
   speed: number;
   currentPositionX: number;
@@ -24,7 +29,11 @@ export default class ShipRepository {
   }
 
   async getAll() {
-    const ships = await this.prisma.ship.findMany();
+    const ships = await this.prisma.ship.findMany({
+      include: {
+        owner: true,
+      },
+    });
     return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
@@ -34,15 +43,17 @@ export default class ShipRepository {
         destinationPositionX: { not: null },
         destinationPositionY: { not: null },
       },
+      include: {
+        owner: true,
+      },
     });
     return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
   async getById(id: number) {
     const ship = await this.prisma.ship.findFirst({
-      where: {
-        id,
-      },
+      where: { id },
+      include: { owner: true },
     });
 
     return ShipRepository.buildShipModel(ship);
@@ -76,8 +87,11 @@ export default class ShipRepository {
       ship.currentPositionX,
       ship.currentPositionY,
     );
+
+    const owner = new User(ship.owner.id, ship.owner.pilotName);
     return new Ship(
       ship.id,
+      owner,
       ship.name || 'Unnamed ship',
       new SpeedInKilometersPerSecond(ship.speed),
       currentPosition,

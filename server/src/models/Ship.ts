@@ -1,8 +1,10 @@
 import Position from './Position';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
+import User from './User';
 
 export default class Ship {
   private readonly _id: number;
+  private readonly _owner: User;
   private readonly _name: string;
   private readonly _speed: SpeedInKilometersPerSecond;
   private _currentPosition: Position = new Position(0, 0);
@@ -10,12 +12,14 @@ export default class Ship {
 
   constructor(
     id: number,
+    owner: User,
     name: string,
     speed: SpeedInKilometersPerSecond,
     currentPosition: Position,
     destinationPosition: Position | null,
   ) {
     this._id = id;
+    this._owner = owner;
     this._name = name;
     this._speed = speed;
     this._currentPosition = currentPosition;
@@ -24,6 +28,10 @@ export default class Ship {
 
   get id(): number {
     return this._id;
+  }
+
+  get owner(): User {
+    return this._owner;
   }
 
   get name(): string {

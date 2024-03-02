@@ -1,15 +1,20 @@
-import ShipRepository from './ShipRepository';
+import ShipRepository, { ShipDTO } from './ShipRepository';
 import { PrismaClient } from '@prisma/client';
 import Position from '../models/Position';
 import ModelFactory from '../../test/ModelFactory';
+import User from '../models/User';
 
 describe('ShipRepository', () => {
   describe('getAll', () => {
     test('it gets all the ships', async () => {
       // given
-      const givenShips = [
+      const givenShips: ShipDTO[] = [
         {
           id: 1,
+          owner: {
+            id: 3,
+            pilotName: 'Owner 3',
+          },
           name: 'Ship 1',
           speed: 1,
           currentPositionX: 1,
@@ -19,6 +24,10 @@ describe('ShipRepository', () => {
         },
         {
           id: 2,
+          owner: {
+            id: 4,
+            pilotName: 'Owner 4',
+          },
           name: 'Ship 2',
           speed: 0.5,
           currentPositionX: 5,
@@ -38,9 +47,14 @@ describe('ShipRepository', () => {
       const ships = await repository.getAll();
 
       // then
-      expect(prisma.ship.findMany).toHaveBeenCalledWith();
+      expect(prisma.ship.findMany).toHaveBeenCalledWith({
+        include: {
+          owner: true,
+        },
+      });
       const expectedShip1 = ModelFactory.createShip({
         id: 1,
+        owner: new User(3, 'Owner 3'),
         name: 'Ship 1',
         speed: 1,
         currentPosition: new Position(1, 2),
@@ -48,6 +62,7 @@ describe('ShipRepository', () => {
       });
       const expectedShip2 = ModelFactory.createShip({
         id: 2,
+        owner: new User(4, 'Owner 4'),
         name: 'Ship 2',
         speed: 0.5,
         currentPosition: new Position(5, 6),
@@ -62,9 +77,13 @@ describe('ShipRepository', () => {
   describe('getShipsWithDestination', () => {
     test('it gets all the ships with a destination set', async () => {
       // given
-      const givenShips = [
+      const givenShips: ShipDTO[] = [
         {
           id: 1,
+          owner: {
+            id: 2,
+            pilotName: 'Owner 2',
+          },
           name: 'Ship',
           speed: 100,
           currentPositionX: 1,
@@ -88,6 +107,7 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
+        owner: new User(2, 'Owner 2'),
         speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
@@ -98,6 +118,7 @@ describe('ShipRepository', () => {
           destinationPositionX: { not: null },
           destinationPositionY: { not: null },
         },
+        include: { owner: true },
       });
       expect(ships).toContainEqual(expectedShip);
     });
@@ -106,8 +127,12 @@ describe('ShipRepository', () => {
   describe('getById', () => {
     test('it returns ship for given id', async () => {
       // given
-      const givenShip = {
+      const givenShip: ShipDTO = {
         id: 1,
+        owner: {
+          id: 2,
+          pilotName: 'Owner 2',
+        },
         name: 'Ship',
         speed: 100,
         currentPositionX: 1,
@@ -130,15 +155,15 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
+        owner: new User(2, 'Owner 2'),
         name: 'Ship',
         speed: 100,
         currentPosition: expectedPosition,
         destinationPosition: expectedDestination,
       });
       expect(prisma.ship.findFirst).toHaveBeenCalledWith({
-        where: {
-          id: 1,
-        },
+        where: { id: 1 },
+        include: { owner: true },
       });
       expect(ship).toStrictEqual(expectedShip);
     });
