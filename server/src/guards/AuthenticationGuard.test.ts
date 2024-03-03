@@ -69,6 +69,10 @@ describe('AuthenticationGuard', () => {
       const givenAuthMethod: AuthenticationMethodDTO = {
         id: 1,
         externalId: 'external-id',
+        idTokenClaims: {
+          email: 'user@example.net',
+          username: 'name',
+        },
         user: null,
       };
       const authenticationMethodRepository = {

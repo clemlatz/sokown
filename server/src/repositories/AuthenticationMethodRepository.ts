@@ -26,18 +26,15 @@ export default class AuthenticationMethodRepository {
         idTokenClaims,
       },
     });
-    return new AuthenticationMethod(
-      authenticationMethod.id,
-      authenticationMethod.externalId,
-    );
+    return new AuthenticationMethod(authenticationMethod.id, idTokenClaims);
   }
 
   async findById(id: number): Promise<AuthenticationMethod> {
     const authenticationMethod =
-      await this.prisma.authenticationMethod.findUnique({
+      (await this.prisma.authenticationMethod.findUnique({
         where: { id },
         include: { user: true },
-      });
+      })) as unknown as AuthenticationMethodDTO;
 
     if (authenticationMethod === null) {
       return null;
@@ -58,7 +55,7 @@ export default class AuthenticationMethodRepository {
 
   async findByProviderAndExternalId(provider: string, externalId: string) {
     const authenticationMethod =
-      await this.prisma.authenticationMethod.findFirst({
+      (await this.prisma.authenticationMethod.findFirst({
         where: {
           externalId,
           provider,
@@ -66,7 +63,7 @@ export default class AuthenticationMethodRepository {
         include: {
           user: true,
         },
-      });
+      })) as unknown as AuthenticationMethodDTO;
 
     if (authenticationMethod === null) {
       return null;
@@ -77,6 +74,7 @@ export default class AuthenticationMethodRepository {
 }
 
 export type AuthenticationMethodDTO = {
+  idTokenClaims: AxysIdTokenClaims;
   id: number;
   externalId: string;
   user: {
@@ -91,7 +89,7 @@ function _buildAuthenticationMethod(
   const { user } = authenticationMethod;
   return new AuthenticationMethod(
     authenticationMethod.id,
-    authenticationMethod.externalId,
+    authenticationMethod.idTokenClaims,
     user === null ? null : new User(user.id, user.pilotName),
   );
 }

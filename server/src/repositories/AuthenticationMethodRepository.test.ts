@@ -38,7 +38,10 @@ describe('AuthenticationMethodRepository', () => {
         },
       });
       expect(authenticationMethod).toEqual(
-        new AuthenticationMethod(1, 'external-id'),
+        new AuthenticationMethod(1, {
+          email: 'user@example.net',
+          username: 'name',
+        }),
       );
     });
   });
@@ -52,6 +55,10 @@ describe('AuthenticationMethodRepository', () => {
             findUnique: jest.fn().mockResolvedValue({
               id: 1,
               externalId: 'external-id',
+              idTokenClaims: {
+                email: 'user@example.net',
+                username: 'name',
+              },
               user: {
                 id: 2,
                 pilotName: 'Chuck Yeager',
@@ -68,7 +75,10 @@ describe('AuthenticationMethodRepository', () => {
         expect(authMethod).toStrictEqual(
           new AuthenticationMethod(
             1,
-            'external-id',
+            {
+              email: 'user@example.net',
+              username: 'name',
+            },
             new User(2, 'Chuck Yeager'),
           ),
         );
@@ -87,6 +97,10 @@ describe('AuthenticationMethodRepository', () => {
             findUnique: jest.fn().mockResolvedValue({
               id: 1,
               externalId: 'external-id',
+              idTokenClaims: {
+                email: 'user@example.net',
+                username: 'name',
+              },
               user: null,
             }),
           },
@@ -98,7 +112,10 @@ describe('AuthenticationMethodRepository', () => {
 
         // then
         expect(authMethod).toStrictEqual(
-          new AuthenticationMethod(1, 'external-id', null),
+          new AuthenticationMethod(1, {
+            email: 'user@example.net',
+            username: 'name',
+          }),
         );
         expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
           where: { id: 1 },
@@ -135,6 +152,10 @@ describe('AuthenticationMethodRepository', () => {
             findUnique: jest.fn().mockResolvedValue({
               id: 1,
               externalId: 'external-id',
+              idTokenClaims: {
+                email: 'user@example.net',
+                username: 'name',
+              },
               user: {
                 id: 2,
                 pilotName: 'Chuck Yeager',
@@ -151,7 +172,10 @@ describe('AuthenticationMethodRepository', () => {
         expect(authMethod).toStrictEqual(
           new AuthenticationMethod(
             1,
-            'external-id',
+            {
+              email: 'user@example.net',
+              username: 'name',
+            },
             new User(2, 'Chuck Yeager'),
           ),
         );
@@ -190,6 +214,10 @@ describe('AuthenticationMethodRepository', () => {
       const givenAuthenticationMethod = {
         id: 1,
         externalId: 'external-id',
+        idTokenClaims: {
+          email: 'user@example.net',
+          username: 'name',
+        },
         user: {
           id: 2,
           pilotName: 'Chuck Yeager',
@@ -211,7 +239,10 @@ describe('AuthenticationMethodRepository', () => {
       // then
       const expectedAuthenticationMethod = new AuthenticationMethod(
         1,
-        'external-id',
+        {
+          email: 'user@example.net',
+          username: 'name',
+        },
         new User(2, 'Chuck Yeager'),
       );
       expect(authenticationMethod).toEqual(expectedAuthenticationMethod);
