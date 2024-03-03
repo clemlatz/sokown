@@ -34,6 +34,22 @@ function routes() {
     };
   });
 
+  this.get('/api/authentication-methods/current', () => {
+    return {
+      data: {
+        id: 'current',
+        type: 'authenticationMethod',
+        attributes: {
+          idTokenClaims: {
+            sub: 1,
+            email: 'amy.johnson@example.net',
+            username: 'Amy Johnson',
+          },
+        },
+      },
+    };
+  });
+
   this.get('/api/ships', () => {
     return {
       data: [
