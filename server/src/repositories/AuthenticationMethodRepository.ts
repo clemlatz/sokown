@@ -46,6 +46,16 @@ export default class AuthenticationMethodRepository {
     return _buildAuthenticationMethod(authenticationMethod);
   }
 
+  async getById(id: number): Promise<AuthenticationMethod> {
+    const authenticationMethod = await this.findById(id);
+
+    if (authenticationMethod === null) {
+      throw new Error(`Authentication method not found for id ${id}`);
+    }
+
+    return authenticationMethod;
+  }
+
   async findByProviderAndExternalId(provider: string, externalId: string) {
     const authenticationMethod =
       await this.prisma.authenticationMethod.findFirst({

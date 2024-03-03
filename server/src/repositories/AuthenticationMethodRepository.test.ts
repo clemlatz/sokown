@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import AuthenticationMethodRepository from './AuthenticationMethodRepository';
 import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
+import { UnknownAuthenticationMethodError } from '../errors/UnknownAuthenticationMethodError';
 
 describe('AuthenticationMethodRepository', () => {
   describe('create', () => {
@@ -121,6 +122,64 @@ describe('AuthenticationMethodRepository', () => {
 
         // then
         expect(authMethod).toBe(null);
+      });
+    });
+  });
+
+  describe('getById', () => {
+    describe('when authentication method exists for given id', () => {
+      it('returns authentication method', async () => {
+        // given
+        const prisma = {
+          authenticationMethod: {
+            findUnique: jest.fn().mockResolvedValue({
+              id: 1,
+              externalId: 'external-id',
+              user: {
+                id: 2,
+                pilotName: 'Chuck Yeager',
+              },
+            }),
+          },
+        } as unknown as PrismaClient;
+        const repository = new AuthenticationMethodRepository(prisma);
+
+        // when
+        const authMethod = await repository.getById(1);
+
+        // then
+        expect(authMethod).toStrictEqual(
+          new AuthenticationMethod(
+            1,
+            'external-id',
+            new User(2, 'Chuck Yeager'),
+          ),
+        );
+        expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
+          where: { id: 1 },
+          include: { user: true },
+        });
+      });
+    });
+
+    describe('when authentication method does not exist for given id', () => {
+      it('throws UnknownAuthenticationMethodError', async () => {
+        // given
+        const prisma = {
+          authenticationMethod: {
+            findUnique: jest.fn().mockResolvedValue(null),
+          },
+        } as unknown as PrismaClient;
+        const repository = new AuthenticationMethodRepository(prisma);
+
+        // when
+        const tested = async () => await repository.getById(1);
+
+        // then
+        const expectedError = new UnknownAuthenticationMethodError(
+          'Authentication method not found for id 1',
+        );
+        await expect(tested).rejects.toEqual(expectedError);
       });
     });
   });
