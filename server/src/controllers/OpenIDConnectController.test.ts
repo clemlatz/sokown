@@ -122,6 +122,8 @@ describe('OpenIDConnectController', () => {
         const tokenSet = {
           claims: jest.fn().mockReturnValue({
             sub: 'external-id',
+            email: 'user@example.net',
+            username: 'user',
           }),
         } as unknown as TokenSet;
         jest
@@ -148,6 +150,10 @@ describe('OpenIDConnectController', () => {
         expect(authenticationMethodRepository.create).toHaveBeenCalledWith(
           'axys',
           'external-id',
+          {
+            email: 'user@example.net',
+            username: 'user',
+          },
         );
         expect(session.sub).toEqual(1);
         expect(session.exp).toEqual(1556496000);

@@ -1,5 +1,10 @@
 import User from './User';
 
+export type AxysIdTokenClaims = {
+  email: string;
+  username: string;
+};
+
 export default class AuthenticationMethod {
   private readonly _id: number;
   private readonly _externalId: string;
