@@ -11,13 +11,14 @@ datasource db {
 }
 
 model AuthenticationMethod {
-  id         Int       @id @default(autoincrement())
-  user       User?      @relation(fields: [userId], references: [id])
-  userId     Int?
-  provider   String
-  externalId String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  id            Int       @id @default(autoincrement())
+  user          User?     @relation(fields: [userId], references: [id])
+  userId        Int?
+  provider      String
+  externalId    String
+  idTokenClaims Json?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime?
 }
 
 model Event {
