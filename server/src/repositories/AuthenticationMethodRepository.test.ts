@@ -21,6 +21,7 @@ describe('AuthenticationMethodRepository', () => {
       const authenticationMethod = await repository.create(
         'axys',
         'external-id',
+        { email: 'user@example.net', username: 'name' },
       );
 
       // then
@@ -28,6 +29,10 @@ describe('AuthenticationMethodRepository', () => {
         data: {
           provider: 'axys',
           externalId: 'external-id',
+          idTokenClaims: {
+            email: 'user@example.net',
+            username: 'name',
+          },
           userId: null,
         },
       });

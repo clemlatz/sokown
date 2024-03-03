@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import AuthenticationMethod from '../models/AuthenticationMethod';
+import AuthenticationMethod, {
+  AxysIdTokenClaims,
+} from '../models/AuthenticationMethod';
 import User from '../models/User';
 
 @Injectable()
@@ -11,12 +13,17 @@ export default class AuthenticationMethodRepository {
     this.prisma = prisma;
   }
 
-  async create(provider: string, externalId: string) {
+  async create(
+    provider: string,
+    externalId: string,
+    idTokenClaims: AxysIdTokenClaims,
+  ) {
     const authenticationMethod = await this.prisma.authenticationMethod.create({
       data: {
         provider,
         externalId,
         userId: null,
+        idTokenClaims,
       },
     });
     return new AuthenticationMethod(

@@ -7,6 +7,12 @@ import OpenIDConnectService from '../services/OpenIDConnectService';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import SessionToken from '../models/SessionToken';
 
+type IdTokenClaims = {
+  sub: string;
+  email: string;
+  username: string;
+};
+
 @Controller()
 export default class OpenIDConnectController {
   constructor(
@@ -41,7 +47,8 @@ export default class OpenIDConnectController {
       request,
       session.state,
     );
-    const { sub } = tokenSet.claims();
+    const { sub, email, username } =
+      tokenSet.claims() as unknown as IdTokenClaims;
     const externalId = isNumber(sub) ? (sub as number).toString() : sub;
     let authenticationMethod =
       await this.authenticationMethodRepository.findByProviderAndExternalId(
@@ -53,6 +60,7 @@ export default class OpenIDConnectController {
       authenticationMethod = await this.authenticationMethodRepository.create(
         'axys',
         externalId,
+        { email, username },
       );
     }
 
