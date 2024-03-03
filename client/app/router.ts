@@ -15,6 +15,7 @@ Router.map(function () {
   this.route('about');
 
   this.route('user', function () {
+    this.route('signup');
     this.route('login');
     this.route('profile');
   });
