@@ -8,7 +8,7 @@ module('Unit | Model | authentication method', function (hooks) {
   // Replace this with your real tests.
   test('it exists', function (assert) {
     let store = this.owner.lookup('service:store');
-    let model = store.createRecord('authentication-method.ts', {});
+    let model = store.createRecord('authentication-method', {});
     assert.ok(model);
   });
 });

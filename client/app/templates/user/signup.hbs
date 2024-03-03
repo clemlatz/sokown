@@ -1,22 +1,50 @@
-{{page-title "Signup"}}
+{{page-title "Sign up"}}
 
-<h2>Signup</h2>
+<h2>Register new pilot</h2>
 
 <form>
-    <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="email" value="name@example.com" readonly>
-        <label for="email">Email address</label>
-    </div>
+    <p>
+        <strong>Welcome to The Sokown Company!</strong>
+    </p>
+    <p>
+        We are glad to have you on board.<br />
+        We know you are eager to head for the stars!<br />
+        Please fill in the form below to register as a pilot, and we'll have you ship ready in no time.
+    </p>
 
     <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="pilot-name" placeholder="Pilot name">
+        <input type="email" class="form-control" id="email"
+               value={{@model.idTokenClaims.email}} readonly disabled>
+        <label for="email">E-mail address</label>
+    </div>
+
+    <p id="pilot-name-question"><strong>How shall we call you?</strong></p>
+
+    <div class="form-floating mb-3">
+        <Input class="form-control" id="pilot-name" aria-describedby="pilot-name-question"
+               @value={{this.pilotName}} placeholder="Pilot name" required />
         <label for="pilot-name">Pilot name</label>
     </div>
 
+    <p id="ship-name-question"><strong>What will be you first ship's name?</strong></p>
+
     <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="ship-name" placeholder="Ship name">
+        <Input class="form-control" id="ship-name" aria-describedby="ship-name-question"
+               @value={{this.shipName}} placeholder="Ship name" required />
         <label for="ship-name">Ship name</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <p id="notifications-question">
+        <strong>Would you like to be notified when your ship arrives at destination?</strong>
+    </p>
+
+    <div class="form-check mb-3">
+        <Input class="form-check-input" @type="checkbox" aria-describedby="notifications-question"
+               id="notifications" @checked={{this.notificationsAreEnabled}} />
+        <label class="form-check-label" for="notifications">
+            Enable e-mail notifications
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register Pilot</button>
 </form>
