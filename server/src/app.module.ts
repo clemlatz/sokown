@@ -14,6 +14,7 @@ import * as process from 'process';
 import UserController from './controllers/UserController';
 import UserRepository from './repositories/UserRepository';
 import AuthenticationGuard from './guards/AuthenticationGuard';
+import AuthenticationMethodController from './controllers/AuthenticationMethodController';
 
 @Module({
   imports: [
@@ -21,7 +22,12 @@ import AuthenticationGuard from './guards/AuthenticationGuard';
       session: { secret: process.env.COOKIE_SECRET },
     }),
   ],
-  controllers: [ShipController, OpenIDConnectController, UserController],
+  controllers: [
+    ShipController,
+    OpenIDConnectController,
+    UserController,
+    AuthenticationMethodController,
+  ],
   providers: [
     PrismaClient,
     ShipRepository,
