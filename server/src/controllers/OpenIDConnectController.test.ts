@@ -71,7 +71,10 @@ describe('OpenIDConnectController', () => {
         const givenUser = new User(1, 'Jimmy Doolittle');
         const givenAuthenticationMethod = new AuthenticationMethod(
           2,
-          'external-id',
+          {
+            email: 'user@example.net',
+            username: 'name',
+          },
           givenUser,
         );
         const session = new SessionToken({ state: 'state-from-cookie' });
@@ -132,9 +135,12 @@ describe('OpenIDConnectController', () => {
         jest
           .spyOn(authenticationMethodRepository, 'findByProviderAndExternalId')
           .mockResolvedValue(null);
-        jest
-          .spyOn(authenticationMethodRepository, 'create')
-          .mockResolvedValue(new AuthenticationMethod(1, 'external-id'));
+        jest.spyOn(authenticationMethodRepository, 'create').mockResolvedValue(
+          new AuthenticationMethod(1, {
+            email: 'user@example.net',
+            username: 'name',
+          }),
+        );
 
         // when
         await openIDConnectController.callback(session, request, response);
