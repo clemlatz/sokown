@@ -5,6 +5,43 @@ import UserRepository from './UserRepository';
 import { UnknownAuthenticationMethodError } from '../errors/UnknownAuthenticationMethodError';
 
 describe('UserRepository', () => {
+  describe('create', () => {
+    test('it creates a new user', async () => {
+      // given
+      const prisma = {
+        user: {
+          create: jest
+            .fn()
+            .mockResolvedValue({ id: 1, pilotName: 'Valentina Terechkova' }),
+        },
+      } as unknown as PrismaClient;
+      const repository = new UserRepository(prisma);
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+      // when
+      const returnedUser = await repository.create(
+        prisma,
+        'valentina@example.org',
+        'Valentina Terechkova',
+        false,
+      );
+
+      // then
+      const expectedUser = new User(1, 'Valentina Terechkova');
+      expect(returnedUser).toEqual(expectedUser);
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: {
+          email: 'valentina@example.org',
+          pilotName: 'Valentina Terechkova',
+          hasEnabledNotifications: false,
+          lastLoggedAt: new Date('2020-01-01'),
+          createdAt: new Date('2020-01-01'),
+          updatedAt: new Date('2020-01-01'),
+        },
+      });
+    });
+  });
+
   describe('getByAuthenticationMethodId', () => {
     describe('when there is no auth method for given id', () => {
       it('throws an UnknownAuthenticationMethodError', async () => {
