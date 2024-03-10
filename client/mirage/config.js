@@ -34,6 +34,8 @@ function routes() {
     };
   });
 
+  this.post('/api/users');
+
   this.get('/api/authentication-methods/current', () => {
     return {
       data: {
