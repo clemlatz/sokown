@@ -46,12 +46,13 @@ model Ship {
 }
 
 model User {
-  id                    Int                    @id @default(autoincrement())
-  email                 String                 @unique
-  pilotName             String                 @unique
-  lastLoggedAt          DateTime
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime?
-  authenticationMethods AuthenticationMethod[]
-  ships                 Ship[]
+  id                      Int                    @id @default(autoincrement())
+  email                   String                 @unique
+  pilotName               String                 @unique
+  hasEnabledNotifications Boolean                @default(false)
+  lastLoggedAt            DateTime
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime?
+  authenticationMethods   AuthenticationMethod[]
+  ships                   Ship[]
 }
