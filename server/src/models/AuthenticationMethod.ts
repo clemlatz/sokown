@@ -8,7 +8,7 @@ export type AxysIdTokenClaims = {
 export default class AuthenticationMethod {
   private readonly _id: number;
   private readonly _idTokenClaims: AxysIdTokenClaims;
-  private readonly _user?: User = null;
+  private _user?: User = null;
 
   constructor(id: number, idTokenClaims: AxysIdTokenClaims, user: User = null) {
     this._id = id;
@@ -26,5 +26,9 @@ export default class AuthenticationMethod {
 
   get user(): User {
     return this._user;
+  }
+
+  set user(user: User) {
+    this._user = user;
   }
 }

@@ -4,10 +4,11 @@ import AuthenticationMethod, {
   AxysIdTokenClaims,
 } from '../models/AuthenticationMethod';
 import User from '../models/User';
+import { ITXClientDenyList } from 'prisma/prisma-client/runtime/library';
 
 @Injectable()
 export default class AuthenticationMethodRepository {
-  private prisma: PrismaClient;
+  private readonly prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
@@ -70,6 +71,20 @@ export default class AuthenticationMethodRepository {
     }
 
     return _buildAuthenticationMethod(authenticationMethod);
+  }
+
+  async update(
+    authenticationMethod: AuthenticationMethod,
+    transaction: Omit<PrismaClient, ITXClientDenyList> | null = null,
+  ) {
+    const prisma = transaction || this.prisma;
+    await prisma.authenticationMethod.update({
+      where: { id: authenticationMethod.id },
+      data: {
+        userId: authenticationMethod.user.id,
+        updatedAt: new Date(),
+      },
+    });
   }
 }
 
