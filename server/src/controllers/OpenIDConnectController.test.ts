@@ -6,9 +6,9 @@ import OpenIDConnectController from './OpenIDConnectController';
 import OpenIDConnectService from '../services/OpenIDConnectService';
 import { TokenSet } from 'openid-client';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
-import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
 import SessionToken from '../models/SessionToken';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('OpenIDConnectController', () => {
   let openIDConnectController: OpenIDConnectController;
@@ -69,14 +69,11 @@ describe('OpenIDConnectController', () => {
       it('it logs user in', async () => {
         // given
         const givenUser = new User(1, 'Jimmy Doolittle');
-        const givenAuthenticationMethod = new AuthenticationMethod(
-          2,
-          {
-            email: 'user@example.net',
-            username: 'name',
-          },
-          givenUser,
-        );
+        const givenAuthenticationMethod =
+          ModelFactory.createAuthenticationMethod({
+            id: 2,
+            user: givenUser,
+          });
         const session = new SessionToken({ state: 'state-from-cookie' });
 
         const request = {} as Request;
@@ -136,9 +133,12 @@ describe('OpenIDConnectController', () => {
           .spyOn(authenticationMethodRepository, 'findByProviderAndExternalId')
           .mockResolvedValue(null);
         jest.spyOn(authenticationMethodRepository, 'create').mockResolvedValue(
-          new AuthenticationMethod(1, {
-            email: 'user@example.net',
-            username: 'name',
+          ModelFactory.createAuthenticationMethod({
+            id: 1,
+            idTokenClaims: {
+              email: 'user@example.net',
+              username: 'name',
+            },
           }),
         );
 

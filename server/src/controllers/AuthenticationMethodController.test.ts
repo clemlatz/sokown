@@ -5,7 +5,7 @@ import { Response } from 'express';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import SessionToken from '../models/SessionToken';
 import AuthenticationMethodController from './AuthenticationMethodController';
-import AuthenticationMethod from '../models/AuthenticationMethod';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('AuthenticationMethod', () => {
   let authenticationMethodController: AuthenticationMethodController;
@@ -32,14 +32,12 @@ describe('AuthenticationMethod', () => {
       const response = {
         json: jest.fn(),
       } as unknown as Response;
-      const authMethod = new AuthenticationMethod(
-        1,
-        {
+      const authMethod = ModelFactory.createAuthenticationMethod({
+        idTokenClaims: {
           email: 'user@example.net',
           username: 'name',
         },
-        null,
-      );
+      });
       jest
         .spyOn(authenticationMethodRepository, 'getById')
         .mockImplementation(async () => authMethod);
