@@ -4,6 +4,7 @@ import AuthenticationMethodRepository from './AuthenticationMethodRepository';
 import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
 import { UnknownAuthenticationMethodError } from '../errors/UnknownAuthenticationMethodError';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('AuthenticationMethodRepository', () => {
   describe('create', () => {
@@ -274,6 +275,69 @@ describe('AuthenticationMethodRepository', () => {
 
       // then
       expect(authenticationMethod).toBeNull();
+    });
+  });
+
+  describe('update', () => {
+    test('it updates the authentication method', async () => {
+      // given
+      const authenticationMethod = ModelFactory.createAuthenticationMethod({
+        user: null,
+      });
+      const user = new User(1, 'Svetlana Savitskaïa');
+      const prisma = {
+        authenticationMethod: {
+          update: jest.fn(),
+        },
+      } as unknown as PrismaClient;
+      const repository = new AuthenticationMethodRepository(prisma);
+      jest.useFakeTimers().setSystemTime(new Date('2019-01-01'));
+
+      // when
+      authenticationMethod.user = user;
+      await repository.update(authenticationMethod);
+
+      // then
+      expect(prisma.authenticationMethod.update).toHaveBeenCalledWith({
+        where: {
+          id: authenticationMethod.id,
+        },
+        data: {
+          userId: 1,
+          updatedAt: new Date('2019-01-01'),
+        },
+      });
+    });
+
+    test('it updates the authentication method within a transaction', async () => {
+      // given
+      const authenticationMethod = ModelFactory.createAuthenticationMethod({
+        user: null,
+      });
+      const user = new User(1, 'Svetlana Savitskaïa');
+      const prisma = {} as unknown as PrismaClient;
+      const transaction = {
+        authenticationMethod: {
+          update: jest.fn(),
+        },
+      } as unknown as PrismaClient;
+      const repository = new AuthenticationMethodRepository(prisma);
+      jest.useFakeTimers().setSystemTime(new Date('2019-01-01'));
+
+      // when
+      authenticationMethod.user = user;
+      await repository.update(authenticationMethod, transaction);
+
+      // then
+      expect(transaction.authenticationMethod.update).toHaveBeenCalledWith({
+        where: {
+          id: authenticationMethod.id,
+        },
+        data: {
+          userId: 1,
+          updatedAt: new Date('2019-01-01'),
+        },
+      });
     });
   });
 });
