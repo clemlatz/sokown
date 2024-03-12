@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
-
-import { ShipController } from './controllers/ShipController';
-import OpenIDConnectController from './controllers/OpenIDConnectController';
-
-import { PrismaClient } from '@prisma/client';
-import ShipRepository from './repositories/ShipRepository';
-import LocationRepository from './repositories/LocationRepository';
-import EventRepository from './repositories/EventRepository';
-import AuthenticationMethodRepository from './repositories/AuthenticationMethodRepository';
-import OpenIDConnectService from './services/OpenIDConnectService';
 import { CookieSessionModule } from 'nestjs-cookie-session';
+import { PrismaClient } from '@prisma/client';
 import * as process from 'process';
-import UserController from './controllers/UserController';
-import UserRepository from './repositories/UserRepository';
-import AuthenticationGuard from './guards/AuthenticationGuard';
+
 import AuthenticationMethodController from './controllers/AuthenticationMethodController';
+import OpenIDConnectController from './controllers/OpenIDConnectController';
+import { ShipController } from './controllers/ShipController';
+import UserController from './controllers/UserController';
+
+import RegisterNewPilotUsecase from './usescases/RegisterNewPilotUsecase';
+
+import AuthenticationGuard from './guards/AuthenticationGuard';
+import OpenIDConnectService from './services/OpenIDConnectService';
+
+import AuthenticationMethodRepository from './repositories/AuthenticationMethodRepository';
+import EventRepository from './repositories/EventRepository';
+import LocationRepository from './repositories/LocationRepository';
+import ShipRepository from './repositories/ShipRepository';
+import UserRepository from './repositories/UserRepository';
 
 @Module({
   imports: [
@@ -37,6 +40,7 @@ import AuthenticationMethodController from './controllers/AuthenticationMethodCo
     UserRepository,
     OpenIDConnectService.factory,
     AuthenticationGuard,
+    RegisterNewPilotUsecase,
   ],
 })
 export class AppModule {}
