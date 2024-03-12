@@ -2,8 +2,20 @@ import Ship from '../src/models/Ship';
 import Position from '../src/models/Position';
 import SpeedInKilometersPerSecond from '../src/values/SpeedInKilometersPerSecond';
 import User from '../src/models/User';
+import AuthenticationMethod from '../src/models/AuthenticationMethod';
 
 export default class ModelFactory {
+  public static createAuthenticationMethod({
+    id = 1,
+    idTokenClaims = {
+      email: 'user@example.net',
+      username: 'name',
+    },
+    user = null,
+  }) {
+    return new AuthenticationMethod(id, idTokenClaims, user);
+  }
+
   public static createShip({
     id = 1,
     owner = new User(2, 'Eileen Collins'),

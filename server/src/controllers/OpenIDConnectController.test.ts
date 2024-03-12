@@ -6,9 +6,9 @@ import OpenIDConnectController from './OpenIDConnectController';
 import OpenIDConnectService from '../services/OpenIDConnectService';
 import { TokenSet } from 'openid-client';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
-import AuthenticationMethod from '../models/AuthenticationMethod';
 import User from '../models/User';
 import SessionToken from '../models/SessionToken';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('OpenIDConnectController', () => {
   let openIDConnectController: OpenIDConnectController;
@@ -65,15 +65,15 @@ describe('OpenIDConnectController', () => {
   });
 
   describe('callback', () => {
-    describe('when user already exists', () => {
+    describe('when auth method and user already exists', () => {
       it('it logs user in', async () => {
         // given
         const givenUser = new User(1, 'Jimmy Doolittle');
-        const givenAuthenticationMethod = new AuthenticationMethod(
-          2,
-          'external-id',
-          givenUser,
-        );
+        const givenAuthenticationMethod =
+          ModelFactory.createAuthenticationMethod({
+            id: 2,
+            user: givenUser,
+          });
         const session = new SessionToken({ state: 'state-from-cookie' });
 
         const request = {} as Request;
@@ -110,19 +110,20 @@ describe('OpenIDConnectController', () => {
       });
     });
 
-    describe('when user does not exist', () => {
-      it('it returns 401', async () => {
+    describe('when auth method does not exist', () => {
+      it('it creates it and redirects to signup page', async () => {
         // given
         const session = new SessionToken({ state: 'state-from-cookie' });
 
         const request = {} as Request;
         const response = {
-          status: jest.fn(),
-          send: jest.fn(),
+          redirect: jest.fn(),
         } as unknown as Response;
         const tokenSet = {
           claims: jest.fn().mockReturnValue({
-            sub: 1,
+            sub: 'external-id',
+            email: 'user@example.net',
+            username: 'user',
           }),
         } as unknown as TokenSet;
         jest
@@ -131,20 +132,38 @@ describe('OpenIDConnectController', () => {
         jest
           .spyOn(authenticationMethodRepository, 'findByProviderAndExternalId')
           .mockResolvedValue(null);
+        jest.spyOn(authenticationMethodRepository, 'create').mockResolvedValue(
+          ModelFactory.createAuthenticationMethod({
+            id: 1,
+            idTokenClaims: {
+              email: 'user@example.net',
+              username: 'name',
+            },
+          }),
+        );
 
         // when
         await openIDConnectController.callback(session, request, response);
 
         // then
-        expect(response.status).toHaveBeenCalledWith(401);
-        expect(response.send).toHaveBeenCalledWith();
         expect(openIDConnectService.getTokens).toHaveBeenCalledWith(
           request,
           'state-from-cookie',
         );
         expect(
           authenticationMethodRepository.findByProviderAndExternalId,
-        ).toHaveBeenCalledWith('axys', '1');
+        ).toHaveBeenCalledWith('axys', 'external-id');
+        expect(authenticationMethodRepository.create).toHaveBeenCalledWith(
+          'axys',
+          'external-id',
+          {
+            email: 'user@example.net',
+            username: 'user',
+          },
+        );
+        expect(session.sub).toEqual(1);
+        expect(session.exp).toEqual(1556496000);
+        expect(response.redirect).toHaveBeenCalledWith('/user/signup');
       });
     });
   });

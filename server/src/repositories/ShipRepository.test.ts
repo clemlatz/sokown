@@ -5,6 +5,36 @@ import ModelFactory from '../../test/ModelFactory';
 import User from '../models/User';
 
 describe('ShipRepository', () => {
+  describe('create', () => {
+    test('it creates a new ship', async () => {
+      // given
+      const prisma = {
+        ship: {
+          create: jest.fn(),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+      const owner = new User(1, 'Valentina Tereshkova');
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+      // when
+      await repository.create(prisma, 'Vostok 6', 100, 2, 3, owner);
+
+      // then
+      expect(prisma.ship.create).toHaveBeenCalledWith({
+        data: {
+          name: 'Vostok 6',
+          speed: 100,
+          currentPositionX: 2,
+          currentPositionY: 3,
+          ownerId: 1,
+          createdAt: new Date('2020-01-01'),
+          updatedAt: new Date('2020-01-01'),
+        },
+      });
+    });
+  });
+
   describe('getAll', () => {
     test('it gets all the ships', async () => {
       // given

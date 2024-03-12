@@ -5,6 +5,7 @@ import Position from '../models/Position';
 import Ship from '../models/Ship';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import User from '../models/User';
+import { ITXClientDenyList } from 'prisma/prisma-client/runtime/library';
 
 export type ShipDTO = {
   id: number;
@@ -26,6 +27,27 @@ export default class ShipRepository {
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
+  }
+
+  async create(
+    transaction: Omit<PrismaClient, ITXClientDenyList>,
+    name: string,
+    speed: number,
+    currentPositionX: number,
+    currentPositionY: number,
+    owner: User,
+  ): Promise<void> {
+    await transaction.ship.create({
+      data: {
+        name,
+        speed,
+        currentPositionX,
+        currentPositionY,
+        ownerId: owner.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
   }
 
   async getAll() {

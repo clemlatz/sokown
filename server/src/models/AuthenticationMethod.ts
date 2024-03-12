@@ -1,13 +1,18 @@
 import User from './User';
 
+export type AxysIdTokenClaims = {
+  email: string;
+  username: string;
+};
+
 export default class AuthenticationMethod {
   private readonly _id: number;
-  private readonly _externalId: string;
-  private readonly _user: User;
+  private readonly _idTokenClaims: AxysIdTokenClaims;
+  private _user?: User = null;
 
-  constructor(id: number, externalId: string, user: User) {
+  constructor(id: number, idTokenClaims: AxysIdTokenClaims, user: User = null) {
     this._id = id;
-    this._externalId = externalId;
+    this._idTokenClaims = idTokenClaims;
     this._user = user;
   }
 
@@ -15,11 +20,15 @@ export default class AuthenticationMethod {
     return this._id;
   }
 
-  get externalId(): string {
-    return this._externalId;
+  get idTokenClaims(): AxysIdTokenClaims {
+    return this._idTokenClaims;
   }
 
   get user(): User {
     return this._user;
+  }
+
+  set user(user: User) {
+    this._user = user;
   }
 }
