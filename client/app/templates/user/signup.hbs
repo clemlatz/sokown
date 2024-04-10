@@ -2,49 +2,66 @@
 
 <h2>Register new pilot</h2>
 
-<form {{ on "submit" this.register }}>
+{{#if this.registrationSuccessful}}
+  <div role="alert">
+    <p class="alert alert-success">
+      <strong>Registration successful!</strong>
+    </p>
+
     <p>
-        <strong>Welcome to The Sokown Company!</strong>
+      Welcome <strong>{{this.pilotName}}</strong>!<br />
+      You are now registered as a pilot for The Sokown Company.<br />
+      Your ship <strong>{{this.shipName}}</strong> is being prepared for launch.
+    </p>
+
+    <a href="/" class="btn btn-primary">Continue</a>
+  </div>
+{{else}}
+
+  <form {{ on "submit" this.register }}>
+    <p>
+      <strong>Welcome to The Sokown Company!</strong>
     </p>
     <p>
-        We are glad to have you on board.<br />
-        We know you are eager to head for the stars!<br />
-        Please fill in the form below to register as a pilot, and we'll have you ship ready in no time.
+      We are glad to have you on board.<br/>
+      We know you are eager to head for the stars!<br/>
+      Please fill in the form below to register as a pilot, and we'll have you ship ready in no time.
     </p>
 
     <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="email"
-               value={{@model.idTokenClaims.email}} readonly disabled>
-        <label for="email">E-mail address</label>
+      <input type="email" class="form-control" id="email"
+             value={{@model.idTokenClaims.email}} readonly disabled>
+      <label for="email">E-mail address</label>
     </div>
 
     <p id="pilot-name-question"><strong>How shall we call you?</strong></p>
 
     <div class="form-floating mb-3">
-        <Input class="form-control" id="pilot-name" aria-describedby="pilot-name-question"
-               @value={{this.pilotName}} placeholder="Pilot name" required />
-        <label for="pilot-name">Pilot name</label>
+      <Input class="form-control" id="pilot-name" aria-describedby="pilot-name-question"
+             @value={{this.pilotName}} placeholder="Pilot name" required/>
+      <label for="pilot-name">Pilot name</label>
     </div>
 
     <p id="ship-name-question"><strong>What will be you first ship's name?</strong></p>
 
     <div class="form-floating mb-3">
-        <Input class="form-control" id="ship-name" aria-describedby="ship-name-question"
-               @value={{this.shipName}} placeholder="Ship name" required />
-        <label for="ship-name">Ship name</label>
+      <Input class="form-control" id="ship-name" aria-describedby="ship-name-question"
+             @value={{this.shipName}} placeholder="Ship name" required/>
+      <label for="ship-name">Ship name</label>
     </div>
 
     <p id="notifications-question">
-        <strong>Would you like to be notified when your ship arrives at destination?</strong>
+      <strong>Would you like to be notified when your ship arrives at destination?</strong>
     </p>
 
     <div class="form-check mb-3">
-        <Input class="form-check-input" @type="checkbox" aria-describedby="notifications-question"
-               id="notifications" @checked={{this.notificationsAreEnabled}} />
-        <label class="form-check-label" for="notifications">
-            Enable e-mail notifications
-        </label>
+      <Input class="form-check-input" @type="checkbox" aria-describedby="notifications-question"
+             id="notifications" @checked={{this.notificationsAreEnabled}} />
+      <label class="form-check-label" for="notifications">
+        Enable e-mail notifications
+      </label>
     </div>
 
     <button type="submit" class="btn btn-primary">Register Pilot</button>
-</form>
+  </form>
+{{/if}}
