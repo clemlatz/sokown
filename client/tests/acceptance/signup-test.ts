@@ -53,6 +53,10 @@ module('Acceptance | signup', function (hooks) {
 
         // then
         assert.strictEqual(currentURL(), '/user/signup');
+        assert
+          .dom(await screen.findByText('Registration successful!'))
+          .exists();
+        assert.dom(screen.getByRole('link', { name: 'Continue' })).exists();
       });
     });
   });
