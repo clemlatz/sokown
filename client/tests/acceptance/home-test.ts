@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { currentURL, click } from '@ember/test-helpers';
+import { currentURL } from '@ember/test-helpers';
 import { visit } from '@1024pix/ember-testing-library';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import 'qunit-dom';
@@ -13,41 +13,54 @@ type TestContext = {
   };
 };
 
-module('Acceptance | user/login', function (hooks) {
+module('Acceptance | home', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  module('when user is anonymous', () => {
-    test('displays login button', async function (assert) {
+  module('when user is not authenticated', function () {
+    test('it displays home page', async function (assert) {
       // given
       _userIsAnonymous(this as unknown as TestContext);
 
       // when
       const screen = await visit('/');
-      await click(screen.getByRole('link', { name: 'Login' }));
 
       // then
-      assert.strictEqual(currentURL(), '/user/login');
+      assert.strictEqual(currentURL(), '/');
       assert
-        .dom(screen.getByRole('heading', { name: 'Login', level: 2 }))
+        .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
         .exists();
       assert
         .dom(
-          screen.getByRole('link', {
-            name: 'Login / Sign up with Axys',
+          screen.getByRole('heading', {
+            name: 'Welcome to The Sokown Company',
+            level: 2,
           }),
         )
         .exists();
+      assert.dom(screen.getByRole('link', { name: 'Join now' })).exists();
+    });
+
+    test('it displays login link', async function (assert) {
+      // given
+      _userIsAnonymous(this as unknown as TestContext);
+
+      // when
+      const screen = await visit('/');
+
+      // then
+      assert.dom(screen.getByRole('link', { name: 'Login' })).exists();
     });
   });
 
-  module('when user is already logged in', () => {
-    test('redirects to ships page', async function (assert) {
+  module('when user is authenticated', function () {
+    test('it redirects to ships page and displays pilot name', async function (assert) {
       // when
-      await visit('/user/login');
+      const screen = await visit('/');
 
       // then
       assert.strictEqual(currentURL(), '/ships');
+      assert.dom(screen.getByText('Amy Johnson')).exists();
     });
   });
 });
