@@ -34,7 +34,17 @@ function routes() {
     };
   });
 
-  this.post('/api/users');
+  this.post('/api/users', () => {
+    return {
+      data: {
+        id: 'me',
+        type: 'user',
+        attributes: {
+          pilotName: 'Amy Johnson',
+        },
+      },
+    };
+  });
 
   this.get('/api/authentication-methods/current', () => {
     return {
