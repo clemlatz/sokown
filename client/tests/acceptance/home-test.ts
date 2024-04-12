@@ -49,7 +49,7 @@ module('Acceptance | home', function (hooks) {
       const screen = await visit('/');
 
       // then
-      assert.dom(screen.getByRole('link', { name: 'Login' })).exists();
+      assert.dom(screen.getByRole('link', { name: 'Log in' })).exists();
     });
   });
 
