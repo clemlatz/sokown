@@ -16,6 +16,7 @@ export default class UserSignupController extends Controller {
   @tracked notificationsAreEnabled: boolean = false;
 
   @tracked registrationSuccessful = false;
+  @tracked registrationError: string | null = null;
 
   @action
   async register(event: Event) {
@@ -26,8 +27,13 @@ export default class UserSignupController extends Controller {
       shipName: this.shipName,
       hasEnabledNotifications: this.notificationsAreEnabled,
     })) as UserModel;
-    await user.save();
 
-    this.registrationSuccessful = true;
+    try {
+      this.registrationError = null;
+      await user.save();
+      this.registrationSuccessful = true;
+    } catch (error) {
+      this.registrationError = 'An error occurred!';
+    }
   }
 }

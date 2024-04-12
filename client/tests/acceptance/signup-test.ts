@@ -36,6 +36,41 @@ module('Acceptance | signup', function (hooks) {
     });
 
     module('when submitting the form', function () {
+      test('when an error occurs', async function (assert) {
+        // given
+        // @ts-expect-error missing type
+        this.server.post(
+          '/api/users',
+          () => ({
+            errors: [
+              {
+                statusCode: 500,
+                message: 'An error occurred!',
+              },
+            ],
+          }),
+          500,
+        );
+        const screen = await visit('/user/signup');
+
+        // when
+        await fillIn(
+          await screen.getByRole('textbox', { name: 'Pilot name' }),
+          'Bessie Coleman',
+        );
+        await fillIn(
+          await screen.getByRole('textbox', { name: 'Ship name' }),
+          'Jenny',
+        );
+        await screen.getByRole('button', { name: 'Register Pilot' }).click();
+
+        // then
+        assert.strictEqual(currentURL(), '/user/signup');
+        assert
+          .dom(await screen.findByText('Error: An error occurred!'))
+          .exists();
+      });
+
       test('it creates a new user', async function (assert) {
         // given
         const screen = await visit('/user/signup');
