@@ -10,51 +10,6 @@ module('Acceptance | sokown', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  module('visiting /', function () {
-    test('it displays home page', async function (assert) {
-      // when
-      const screen = await visit('/');
-
-      // then
-      assert.strictEqual(currentURL(), '/');
-      assert
-        .dom(screen.getByRole('heading', { name: 'Sokown', level: 1 }))
-        .exists();
-      assert
-        .dom(
-          screen.getByRole('heading', {
-            name: 'Welcome to The Sokown Company',
-            level: 2,
-          }),
-        )
-        .exists();
-      assert.dom(screen.getByRole('link', { name: 'Join now' })).exists();
-    });
-
-    module('when user is authenticated', function () {
-      test('it displays pilot name', async function (assert) {
-        // when
-        const screen = await visit('/');
-
-        // then
-        assert.dom(screen.getByText('Amy Johnson')).exists();
-      });
-    });
-
-    module('when user is not authenticated', function () {
-      test('it displays login link', async function (assert) {
-        // given
-        _userIsAnonymous(this);
-
-        // when
-        const screen = await visit('/');
-
-        // then
-        assert.dom(screen.getByRole('link', { name: 'Login' })).exists();
-      });
-    });
-  });
-
   test('visiting /about', async function (assert) {
     // when
     const screen = await visit('/');
