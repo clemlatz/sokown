@@ -25,7 +25,7 @@ module('Integration | Component | navbar', function (hooks) {
       const screen = await render(hbs`<Navbar />`);
 
       // then
-      assert.dom(screen.getByRole('link', { name: 'Login' })).exists();
+      assert.dom(screen.getByRole('link', { name: 'Log in' })).exists();
     });
   });
 
@@ -39,7 +39,7 @@ module('Integration | Component | navbar', function (hooks) {
 
       // when
       const screen = await render(hbs`<Navbar />`);
-      const loginLink = await screen.queryByRole('link', { name: 'Login' });
+      const loginLink = await screen.queryByRole('link', { name: 'Log in' });
 
       // then
       assert.dom(loginLink).doesNotExist();

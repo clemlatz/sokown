@@ -24,7 +24,7 @@ module('Acceptance | user/login', function (hooks) {
 
       // when
       const screen = await visit('/');
-      await click(screen.getByRole('link', { name: 'Login' }));
+      await click(screen.getByRole('link', { name: 'Log in' }));
 
       // then
       assert.strictEqual(currentURL(), '/user/login');
@@ -34,7 +34,7 @@ module('Acceptance | user/login', function (hooks) {
       assert
         .dom(
           screen.getByRole('link', {
-            name: 'Login / Sign up with Axys',
+            name: 'Log in / Sign up with Axys',
           }),
         )
         .exists();
