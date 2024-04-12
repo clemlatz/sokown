@@ -18,7 +18,9 @@ export default class UserSignupRoute extends Route {
     transition: Transition,
   ) {
     controller.pilotName = model.idTokenClaims.username;
-    controller.shipName = `${model.idTokenClaims.username}'s ship`;
+    controller.shipName = controller.pilotName
+      ? `${controller.pilotName}'s ship`
+      : '';
     super.setupController(controller, model, transition);
   }
 }
