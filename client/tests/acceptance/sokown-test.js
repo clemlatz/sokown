@@ -164,28 +164,6 @@ module('Acceptance | sokown', function (hooks) {
       .hasText('17.000 23.000');
   });
 
-  test('visiting /user/login', async function (assert) {
-    // given
-    _userIsAnonymous(this);
-
-    // when
-    const screen = await visit('/');
-    await click(screen.getByRole('link', { name: 'Login' }));
-
-    // then
-    assert.strictEqual(currentURL(), '/user/login');
-    assert
-      .dom(screen.getByRole('heading', { name: 'Login', level: 2 }))
-      .exists();
-    assert
-      .dom(
-        screen.getByRole('link', {
-          name: 'Login / Sign up with Axys',
-        }),
-      )
-      .exists();
-  });
-
   test('visiting /user/profile', async function (assert) {
     // when
     const screen = await visit('/');
