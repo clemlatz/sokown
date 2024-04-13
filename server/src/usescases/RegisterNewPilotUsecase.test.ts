@@ -8,41 +8,54 @@ import User from '../models/User';
 import { PrismaClient } from '@prisma/client';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import ModelFactory from '../../test/ModelFactory';
+import { InvalidParametersError } from '../errors/InvalidParametersError';
 
 describe('RegisterNewPilotUsecase', () => {
+  describe('when pilot name is taken', () => {
+    it('should throw an InvalidParametersError', async () => {
+      // given
+      const {
+        userRepository,
+        shipRepository,
+        locationRepository,
+        authenticationMethodRepository,
+        prisma,
+      } = _buildDependencies({ pilotNameIsTaken: true });
+      const usecase = new RegisterNewPilotUsecase(
+        prisma,
+        userRepository,
+        shipRepository,
+        locationRepository,
+        authenticationMethodRepository,
+      );
+
+      // when
+      const promise = usecase.execute(
+        1,
+        'Judith Resnik',
+        true,
+        'STS-41-D Discovery',
+      );
+
+      // then
+      await expect(promise).rejects.toStrictEqual(
+        new InvalidParametersError('This pilot name is already taken'),
+      );
+    });
+  });
+
   describe('success case', () => {
     it('should create a new user', async () => {
       // given
-      const moonPosition = new Position(1, 2);
-      const moonLocation = new Location('moon', 'Moon', moonPosition);
-      const createdUser = new User(1, 'Valentina Tereshkova');
-      const userRepository = {
-        create: jest.fn().mockResolvedValue(createdUser),
-      } as unknown as UserRepository;
-      const shipRepository = {
-        create: jest.fn(),
-      } as unknown as ShipRepository;
-      const locationRepository = {
-        getByCode: jest.fn().mockReturnValue(moonLocation),
-      } as unknown as LocationRepository;
-      const authenticationMethod = ModelFactory.createAuthenticationMethod({
-        id: 1,
-        idTokenClaims: {
-          username: '',
-          email: 'judith@example.net',
-        },
-        user: null,
-      });
-      const authenticationMethodRepository = {
-        getById: jest.fn().mockResolvedValue(authenticationMethod),
-        update: jest.fn(),
-      } as unknown as AuthenticationMethodRepository;
-      const transaction = jest.fn();
-      const prisma = {
-        $transaction: jest.fn().mockImplementation((callback) => {
-          callback(transaction);
-        }),
-      } as unknown as PrismaClient;
+      const {
+        createdUser,
+        userRepository,
+        shipRepository,
+        locationRepository,
+        authenticationMethodRepository,
+        transaction,
+        prisma,
+      } = _buildDependencies({ pilotNameIsTaken: false });
       const usecase = new RegisterNewPilotUsecase(
         prisma,
         userRepository,
@@ -55,6 +68,9 @@ describe('RegisterNewPilotUsecase', () => {
       await usecase.execute(1, 'Judith Resnik', true, 'STS-41-D Discovery');
 
       // then
+      expect(userRepository.existsByPilotName).toHaveBeenCalledWith(
+        'Judith Resnik',
+      );
       expect(userRepository.create).toHaveBeenCalledWith(
         transaction,
         'judith@example.net',
@@ -87,3 +103,50 @@ describe('RegisterNewPilotUsecase', () => {
     });
   });
 });
+
+function _buildDependencies(
+  { pilotNameIsTaken }: { pilotNameIsTaken: boolean } = {
+    pilotNameIsTaken: true,
+  },
+) {
+  const moonPosition = new Position(1, 2);
+  const moonLocation = new Location('moon', 'Moon', moonPosition);
+  const createdUser = new User(1, 'Valentina Tereshkova');
+  const userRepository = {
+    create: jest.fn().mockResolvedValue(createdUser),
+    existsByPilotName: jest.fn().mockResolvedValue(pilotNameIsTaken),
+  } as unknown as UserRepository;
+  const shipRepository = {
+    create: jest.fn(),
+  } as unknown as ShipRepository;
+  const locationRepository = {
+    getByCode: jest.fn().mockReturnValue(moonLocation),
+  } as unknown as LocationRepository;
+  const authenticationMethod = ModelFactory.createAuthenticationMethod({
+    id: 1,
+    idTokenClaims: {
+      username: '',
+      email: 'judith@example.net',
+    },
+    user: null,
+  });
+  const authenticationMethodRepository = {
+    getById: jest.fn().mockResolvedValue(authenticationMethod),
+    update: jest.fn(),
+  } as unknown as AuthenticationMethodRepository;
+  const transaction = jest.fn();
+  const prisma = {
+    $transaction: jest.fn().mockImplementation((callback) => {
+      callback(transaction);
+    }),
+  } as unknown as PrismaClient;
+  return {
+    createdUser,
+    userRepository,
+    shipRepository,
+    locationRepository,
+    authenticationMethodRepository,
+    transaction,
+    prisma,
+  };
+}

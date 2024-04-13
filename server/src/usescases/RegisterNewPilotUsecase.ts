@@ -5,6 +5,7 @@ import UserRepository from '../repositories/UserRepository';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
+import { InvalidParametersError } from '../errors/InvalidParametersError';
 
 @Injectable()
 export default class RegisterNewPilotUsecase {
@@ -24,6 +25,12 @@ export default class RegisterNewPilotUsecase {
   ): Promise<void> {
     const authenticationMethod =
       await this.authenticationMethodRepository.getById(authenticationMethodId);
+
+    const existsByPilotName =
+      await this.userRepository.existsByPilotName(pilotName);
+    if (existsByPilotName) {
+      throw new InvalidParametersError('This pilot name is already taken');
+    }
 
     await this.prisma.$transaction(async (transaction) => {
       const user = await this.userRepository.create(
