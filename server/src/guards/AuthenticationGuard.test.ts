@@ -3,8 +3,8 @@ import AuthenticationMethodRepository, {
   AuthenticationMethodDTO,
 } from '../repositories/AuthenticationMethodRepository';
 import { ExecutionContext } from '@nestjs/common';
-import { JsonApiError } from '../errors';
 import SessionToken from '../models/SessionToken';
+import { JsonApiError } from '../errors/JsonApiError';
 
 describe('AuthenticationGuard', () => {
   describe('when there is no authentication method id in session', () => {
