@@ -117,4 +117,49 @@ describe('UserRepository', () => {
       });
     });
   });
+
+  describe('existsByPilotName', () => {
+    it('returns false if user does not exist', async () => {
+      // given
+      const prisma = {
+        user: {
+          findUnique: jest.fn().mockResolvedValue(null),
+        },
+      } as unknown as PrismaClient;
+      const repository = new UserRepository(prisma);
+
+      // when
+      const result = await repository.existsByPilotName('Porco Rosso');
+
+      // then
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: {
+          pilotName: 'Porco Rosso',
+        },
+      });
+      expect(result).toBe(false);
+    });
+
+    it('returns true if user exists', async () => {
+      // given
+      const user = new User(1, 'Betty Skelton Erde');
+      const prisma = {
+        user: {
+          findUnique: jest.fn().mockResolvedValue(user),
+        },
+      } as unknown as PrismaClient;
+      const repository = new UserRepository(prisma);
+
+      // when
+      const result = await repository.existsByPilotName('Betty Skelton Erde');
+
+      // then
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: {
+          pilotName: 'Betty Skelton Erde',
+        },
+      });
+      expect(result).toBe(true);
+    });
+  });
 });

@@ -57,4 +57,12 @@ export default class UserRepository {
     const { user } = authenticationMethod;
     return new User(user.id, user.pilotName);
   }
+
+  async existsByPilotName(pilotName: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { pilotName },
+    });
+
+    return user !== null;
+  }
 }
