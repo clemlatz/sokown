@@ -5,8 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
-import { JsonApiError } from '../errors';
 import SessionToken from '../models/SessionToken';
+import { JsonApiError } from '../errors/JsonApiError';
 
 @Injectable()
 export default class AuthenticationGuard implements CanActivate {
