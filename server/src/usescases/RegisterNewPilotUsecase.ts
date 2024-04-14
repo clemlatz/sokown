@@ -32,6 +32,11 @@ export default class RegisterNewPilotUsecase {
       throw new InvalidParametersError('This pilot name is already taken');
     }
 
+    const shipExistsForName = await this.shipRepository.existsForName(shipName);
+    if (shipExistsForName) {
+      throw new InvalidParametersError('This ship name is already taken');
+    }
+
     await this.prisma.$transaction(async (transaction) => {
       const user = await this.userRepository.create(
         transaction,

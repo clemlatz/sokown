@@ -44,6 +44,39 @@ describe('RegisterNewPilotUsecase', () => {
     });
   });
 
+  describe('when ship name is taken', () => {
+    it('should throw an InvalidParametersError', async () => {
+      // given
+      const {
+        userRepository,
+        shipRepository,
+        locationRepository,
+        authenticationMethodRepository,
+        prisma,
+      } = _buildDependencies({ shipNameIsTaken: true });
+      const usecase = new RegisterNewPilotUsecase(
+        prisma,
+        userRepository,
+        shipRepository,
+        locationRepository,
+        authenticationMethodRepository,
+      );
+
+      // when
+      const promise = usecase.execute(
+        1,
+        'Judith Resnik',
+        true,
+        'STS-41-D Discovery',
+      );
+
+      // then
+      await expect(promise).rejects.toStrictEqual(
+        new InvalidParametersError('This ship name is already taken'),
+      );
+    });
+  });
+
   describe('success case', () => {
     it('should create a new user', async () => {
       // given
@@ -105,8 +138,12 @@ describe('RegisterNewPilotUsecase', () => {
 });
 
 function _buildDependencies(
-  { pilotNameIsTaken }: { pilotNameIsTaken: boolean } = {
+  {
+    pilotNameIsTaken,
+    shipNameIsTaken,
+  }: { pilotNameIsTaken?: boolean; shipNameIsTaken?: boolean } = {
     pilotNameIsTaken: true,
+    shipNameIsTaken: true,
   },
 ) {
   const moonPosition = new Position(1, 2);
@@ -118,6 +155,7 @@ function _buildDependencies(
   } as unknown as UserRepository;
   const shipRepository = {
     create: jest.fn(),
+    existsForName: jest.fn().mockResolvedValue(shipNameIsTaken),
   } as unknown as ShipRepository;
   const locationRepository = {
     getByCode: jest.fn().mockReturnValue(moonLocation),
