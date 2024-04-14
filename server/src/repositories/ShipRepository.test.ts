@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Position from '../models/Position';
 import ModelFactory from '../../test/ModelFactory';
 import User from '../models/User';
+import Location from '../models/Location';
 
 describe('ShipRepository', () => {
   describe('create', () => {
@@ -192,6 +193,56 @@ describe('ShipRepository', () => {
         where: {
           destinationPositionX: { not: null },
           destinationPositionY: { not: null },
+        },
+        include: { owner: true },
+      });
+      expect(ships).toContainEqual(expectedShip);
+    });
+  });
+
+  describe('getAllAtLocation', () => {
+    test('it gets all the ships at given location', async () => {
+      // given
+      const givenShips: ShipDTO[] = [
+        {
+          id: 1,
+          owner: {
+            id: 2,
+            pilotName: 'Owner 2',
+          },
+          name: 'Ship',
+          speed: 100,
+          currentPositionX: 1,
+          currentPositionY: 2,
+          destinationPositionX: 3,
+          destinationPositionY: 4,
+        },
+      ];
+      const prisma = {
+        ship: {
+          findMany: jest.fn(() => givenShips),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+      const location = new Location('earth', 'Earth', new Position(1, 2));
+
+      // when
+      const ships = await repository.getAllAtLocation(location);
+
+      // then
+      const expectedPosition = new Position(1, 2);
+      const expectedDestination = new Position(3, 4);
+      const expectedShip = ModelFactory.createShip({
+        id: 1,
+        owner: new User(2, 'Owner 2'),
+        speed: 100,
+        name: 'Ship',
+        currentPosition: expectedPosition,
+        destinationPosition: expectedDestination,
+      });
+      expect(prisma.ship.findMany).toHaveBeenCalledWith({
+        where: {
+          currentLocationCode: 'earth',
         },
         include: { owner: true },
       });
