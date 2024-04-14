@@ -35,6 +35,51 @@ describe('ShipRepository', () => {
     });
   });
 
+  describe('existsForName', () => {
+    it('returns false if ship does not exist', async () => {
+      // given
+      const prisma = {
+        ship: {
+          findFirst: jest.fn().mockResolvedValue(null),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+
+      // when
+      const result = await repository.existsForName('Flying Dutchman');
+
+      // then
+      expect(prisma.ship.findFirst).toHaveBeenCalledWith({
+        where: {
+          name: 'Flying Dutchman',
+        },
+      });
+      expect(result).toBe(false);
+    });
+
+    it('returns true if ship exists', async () => {
+      // given
+      const ship = ModelFactory.createShip({ name: 'HMS Discovery' });
+      const prisma = {
+        ship: {
+          findFirst: jest.fn().mockResolvedValue(ship),
+        },
+      } as unknown as PrismaClient;
+      const repository = new ShipRepository(prisma);
+
+      // when
+      const result = await repository.existsForName('HMS Discovery');
+
+      // then
+      expect(prisma.ship.findFirst).toHaveBeenCalledWith({
+        where: {
+          name: 'HMS Discovery',
+        },
+      });
+      expect(result).toBe(true);
+    });
+  });
+
   describe('getAll', () => {
     test('it gets all the ships', async () => {
       // given
