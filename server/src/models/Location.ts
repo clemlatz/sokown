@@ -3,7 +3,7 @@ import Position from './Position';
 export default class Location {
   private readonly _code: string;
   private readonly _name: string;
-  private readonly _position: Position = new Position(0, 0);
+  private _position: Position;
 
   constructor(code: string, name: string, position: Position) {
     this._code = code;
@@ -21,5 +21,9 @@ export default class Location {
 
   get position(): Position {
     return this._position;
+  }
+
+  setPosition(position: Position): void {
+    this._position = position;
   }
 }
