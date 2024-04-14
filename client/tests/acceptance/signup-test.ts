@@ -95,12 +95,12 @@ module('Acceptance | signup', function (hooks) {
           () => ({
             errors: [
               {
-                statusCode: 500,
-                message: 'An error occurred!',
+                statusCode: 400,
+                title: 'This pilot name is already taken',
               },
             ],
           }),
-          500,
+          400,
         );
         const screen = await visit('/user/signup');
 
@@ -118,7 +118,7 @@ module('Acceptance | signup', function (hooks) {
         // then
         assert.strictEqual(currentURL(), '/user/signup');
         assert
-          .dom(await screen.findByText('Error: An error occurred!'))
+          .dom(await screen.findByText('This pilot name is already taken'))
           .exists();
       });
 

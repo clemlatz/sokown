@@ -63,8 +63,9 @@
     </div>
 
     {{# if this.registrationError}}
-      <p class="alert alert-warning" role="alert">
-        Error: {{ this.registrationError }}
+      <p class="alert alert-danger" role="alert">
+        <strong>An error occurred</strong><br />
+        {{ this.registrationError }}
       </p>
     {{/if}}
 

@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 
 import type UserModel from 'sokown-client/models/user';
 import type CurrentUserService from 'sokown-client/services/current-user';
+import type { JsonApiError } from 'sokown-client/types';
 
 export default class UserSignupController extends Controller {
   @service declare store: Store;
@@ -33,7 +34,8 @@ export default class UserSignupController extends Controller {
       await user.save();
       this.registrationSuccessful = true;
     } catch (error) {
-      this.registrationError = 'An error occurred!';
+      const errorMessage = (error as JsonApiError).errors[0].title;
+      this.registrationError = errorMessage;
     }
   }
 }
