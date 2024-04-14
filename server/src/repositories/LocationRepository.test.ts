@@ -2,6 +2,19 @@ import LocationRepository from './LocationRepository';
 import Position from '../models/Position';
 
 describe('LocationRepository', () => {
+  describe('getAll', () => {
+    it('should return an array of locations', () => {
+      // given
+      const repository = new LocationRepository();
+
+      // when
+      const locations = repository.getAll();
+
+      // then
+      expect(locations[0].name).toStrictEqual('Sun');
+    });
+  });
+
   describe('getByCode', () => {
     test('it returns location matching code', () => {
       // given

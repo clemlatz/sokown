@@ -12,6 +12,10 @@ const locations = [
 
 @Injectable()
 export default class LocationRepository {
+  getAll(): Location[] {
+    return locations;
+  }
+
   getByCode(code: string): Location {
     const location = locations.find((location) => location.code === code);
     if (!location) {
