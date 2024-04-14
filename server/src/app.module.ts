@@ -18,6 +18,7 @@ import EventRepository from './repositories/EventRepository';
 import LocationRepository from './repositories/LocationRepository';
 import ShipRepository from './repositories/ShipRepository';
 import UserRepository from './repositories/UserRepository';
+import LocationController from './controllers/LocationController';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import UserRepository from './repositories/UserRepository';
     OpenIDConnectController,
     UserController,
     AuthenticationMethodController,
+    LocationController,
   ],
   providers: [
     PrismaClient,
