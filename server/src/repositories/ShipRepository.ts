@@ -50,6 +50,14 @@ export default class ShipRepository {
     });
   }
 
+  async existsForName(name: string): Promise<boolean> {
+    const ship = await this.prisma.ship.findFirst({
+      where: { name },
+    });
+
+    return ship !== null;
+  }
+
   async getAll() {
     const ships = await this.prisma.ship.findMany({
       include: {
