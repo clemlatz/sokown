@@ -1,0 +1,25 @@
+{{page-title "Locations"}}
+
+<h2>Locations</h2>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Position</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each @model as |location| }}
+    <tr>
+      <td>
+        {{location.name}}
+      </td>
+      <td>
+        <Position @position={{location.position}} />
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+
