@@ -12,6 +12,9 @@ Router.map(function () {
     this.route('list', { path: '/' });
     this.route('get', { path: '/:id' });
   });
+  this.route('locations', function () {
+    this.route('list', { path: '/' });
+  });
   this.route('about');
 
   this.route('user', function () {
