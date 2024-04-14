@@ -5,6 +5,8 @@ import ShipRepository from './src/repositories/ShipRepository';
 import EventRepository from './src/repositories/EventRepository';
 import LocationRepository from './src/repositories/LocationRepository';
 import moveShipTowardsDestinationUsecase from './src/usescases/moveShipTowardsDestinationUsecase';
+import UpdateLocationPositionUsecase from './src/usescases/UpdateLocationPositionUsecase';
+import AstronomyService from './src/services/AstronomyService';
 
 const prisma = new PrismaClient();
 const shipRepository = new ShipRepository(prisma);
@@ -22,12 +24,15 @@ main()
   });
 
 async function main() {
-  setInterval(tick, 1000);
-
+  await everySecond();
+  await everyMinute();
   await server();
+
+  setInterval(everySecond, 1000);
+  setInterval(everyMinute, 60000);
 }
 
-async function tick() {
+async function everySecond(): Promise<void> {
   const ships = await shipRepository.getShipsWithDestination();
   for (const ship of ships) {
     const updatedShip = await moveShipTowardsDestinationUsecase(
@@ -36,5 +41,16 @@ async function tick() {
       eventRepository,
     );
     await shipRepository.update(updatedShip);
+  }
+}
+
+const astronomyService = new AstronomyService();
+const updateLocationPositionUsecase = new UpdateLocationPositionUsecase(
+  astronomyService,
+);
+async function everyMinute(): Promise<void> {
+  const locations = locationRepository.getAll();
+  for (const location of locations) {
+    await updateLocationPositionUsecase.execute(location);
   }
 }
