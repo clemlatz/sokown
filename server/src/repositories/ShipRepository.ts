@@ -6,6 +6,7 @@ import Ship from '../models/Ship';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import User from '../models/User';
 import { ITXClientDenyList } from 'prisma/prisma-client/runtime/library';
+import Location from '../models/Location';
 
 export type ShipDTO = {
   id: number;
@@ -77,6 +78,19 @@ export default class ShipRepository {
         owner: true,
       },
     });
+    return ships.map((ship) => ShipRepository.buildShipModel(ship));
+  }
+
+  async getAllAtLocation(location: Location): Promise<Ship[]> {
+    const ships = await this.prisma.ship.findMany({
+      where: {
+        currentLocationCode: location.code,
+      },
+      include: {
+        owner: true,
+      },
+    });
+
     return ships.map((ship) => ShipRepository.buildShipModel(ship));
   }
 
