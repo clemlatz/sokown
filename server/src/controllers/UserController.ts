@@ -13,6 +13,8 @@ import UserRepository from '../repositories/UserRepository';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
 import SessionToken from '../models/SessionToken';
 import RegisterNewPilotUsecase from '../usescases/RegisterNewPilotUsecase';
+import { InvalidParametersError } from '../errors/InvalidParametersError';
+import { JsonApiError } from '../errors/JsonApiError';
 
 class UserToCreateDTO {
   data: {
@@ -38,12 +40,19 @@ export default class UserController {
     @Res() res: Response,
   ): Promise<void> {
     const { attributes } = body.data;
-    await this.registerNewPilotUsecase.execute(
-      session.sub,
-      attributes.pilotName,
-      attributes.hasEnabledNotifications,
-      attributes.shipName,
-    );
+
+    try {
+      await this.registerNewPilotUsecase.execute(
+        session.sub,
+        attributes.pilotName,
+        attributes.hasEnabledNotifications,
+        attributes.shipName,
+      );
+    } catch (error) {
+      if (error instanceof InvalidParametersError) {
+        throw new JsonApiError(400, error.message);
+      }
+    }
 
     res.send({
       data: {
