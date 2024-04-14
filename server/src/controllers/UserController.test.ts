@@ -12,6 +12,8 @@ import RegisterNewPilotUsecase from '../usescases/RegisterNewPilotUsecase';
 import ModelFactory from '../../test/ModelFactory';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
+import { InvalidParametersError } from '../errors/InvalidParametersError';
+import { JsonApiError } from '../errors/JsonApiError';
 
 describe('UserController', () => {
   let userController: UserController;
@@ -44,51 +46,95 @@ describe('UserController', () => {
   });
 
   describe('create', () => {
-    it('it registers a new pilot', async () => {
-      // given
-      const session = new SessionToken({ sub: 1 });
-      const authenticationMethod = ModelFactory.createAuthenticationMethod({
-        id: 1,
-        idTokenClaims: {
-          username: '',
-          email: 'sally@example.net',
-        },
+    describe('when pilot name is already taken', () => {
+      it('returns an error with status 409', async () => {
+        // given
+        const session = new SessionToken({ sub: 1 });
+        const authenticationMethod = ModelFactory.createAuthenticationMethod({
+          id: 1,
+          idTokenClaims: {
+            username: 'Sally Ride',
+            email: 'sally@example.net',
+          },
+        });
+        jest
+          .spyOn(authenticationMethodRepository, 'getById')
+          .mockResolvedValue(authenticationMethod);
+        jest
+          .spyOn(registerNewPilotUsecase, 'execute')
+          .mockRejectedValue(
+            new InvalidParametersError('This pilot name is already taken'),
+          );
+        const response = {
+          send: jest.fn(),
+        } as unknown as Response;
+        const payload = {
+          data: {
+            attributes: {
+              pilotName: 'Sally Ride',
+              hasEnabledNotifications: true,
+              shipName: 'STS-7 Challenger',
+            },
+          },
+        };
+
+        // when
+        const promise = userController.create(session, payload, response);
+
+        // then
+        await expect(promise).rejects.toStrictEqual(
+          new JsonApiError(400, 'This pilot name is already taken'),
+        );
       });
-      jest
-        .spyOn(authenticationMethodRepository, 'getById')
-        .mockResolvedValue(authenticationMethod);
-      jest.spyOn(registerNewPilotUsecase, 'execute').mockResolvedValue();
-      const response = {
-        send: jest.fn(),
-      } as unknown as Response;
-      const payload = {
-        data: {
-          attributes: {
-            pilotName: 'Sally Ride',
-            hasEnabledNotifications: true,
-            shipName: 'STS-7 Challenger',
-          },
-        },
-      };
+    });
 
-      // when
-      await userController.create(session, payload, response);
-
-      // then
-      expect(registerNewPilotUsecase.execute).toHaveBeenCalledWith(
-        1,
-        'Sally Ride',
-        true,
-        'STS-7 Challenger',
-      );
-      expect(response.send).toHaveBeenCalledWith({
-        data: {
-          id: 'me',
-          type: 'user',
-          attributes: {
-            pilotName: 'Sally Ride',
+    describe('success case', () => {
+      it('it registers a new pilot', async () => {
+        // given
+        const session = new SessionToken({ sub: 1 });
+        const authenticationMethod = ModelFactory.createAuthenticationMethod({
+          id: 1,
+          idTokenClaims: {
+            username: '',
+            email: 'sally@example.net',
           },
-        },
+        });
+        jest
+          .spyOn(authenticationMethodRepository, 'getById')
+          .mockResolvedValue(authenticationMethod);
+        jest.spyOn(registerNewPilotUsecase, 'execute').mockResolvedValue();
+        const response = {
+          send: jest.fn(),
+        } as unknown as Response;
+        const payload = {
+          data: {
+            attributes: {
+              pilotName: 'Sally Ride',
+              hasEnabledNotifications: true,
+              shipName: 'STS-7 Challenger',
+            },
+          },
+        };
+
+        // when
+        await userController.create(session, payload, response);
+
+        // then
+        expect(registerNewPilotUsecase.execute).toHaveBeenCalledWith(
+          1,
+          'Sally Ride',
+          true,
+          'STS-7 Challenger',
+        );
+        expect(response.send).toHaveBeenCalledWith({
+          data: {
+            id: 'me',
+            type: 'user',
+            attributes: {
+              pilotName: 'Sally Ride',
+            },
+          },
+        });
       });
     });
   });
