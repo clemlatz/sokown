@@ -1,9 +1,9 @@
-import moveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
 import Position from '../models/Position';
 import EventRepository from '../repositories/EventRepository';
 import Location from '../models/Location';
 import ModelFactory from '../../test/ModelFactory';
 import LocationRepository from '../repositories/LocationRepository';
+import MoveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
@@ -24,13 +24,14 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
+      const moveShipTowardsDestinationUsecase =
+        new MoveShipTowardsDestinationUsecase(
+          locationRepository,
+          eventRepository,
+        );
 
       // when
-      const updatedShip = await moveShipTowardsDestinationUsecase(
-        ship,
-        locationRepository,
-        eventRepository,
-      );
+      const updatedShip = await moveShipTowardsDestinationUsecase.execute(ship);
 
       // then
       expect(eventRepository.create).not.toHaveBeenCalled();
@@ -56,13 +57,14 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
+      const moveShipTowardsDestinationUsecase =
+        new MoveShipTowardsDestinationUsecase(
+          locationRepository,
+          eventRepository,
+        );
 
       // when
-      const updatedShip = await moveShipTowardsDestinationUsecase(
-        ship,
-        locationRepository,
-        eventRepository,
-      );
+      const updatedShip = await moveShipTowardsDestinationUsecase.execute(ship);
 
       // then
       const destinationLocation = new Location(
