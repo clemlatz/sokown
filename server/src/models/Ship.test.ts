@@ -15,6 +15,7 @@ describe('Ship', () => {
         new SpeedInKilometersPerSecond(1),
         new Position(1, 2),
         new Position(3, 4),
+        null,
       );
 
       // when
@@ -33,6 +34,7 @@ describe('Ship', () => {
         'Hermes',
         new SpeedInKilometersPerSecond(1),
         new Position(1, 2),
+        null,
         null,
       );
 
