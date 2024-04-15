@@ -9,6 +9,7 @@ export default class Ship {
   private readonly _speed: SpeedInKilometersPerSecond;
   private _currentPosition: Position = new Position(0, 0);
   private _destinationPosition: Position | null;
+  private _currentLocationCode: string | null;
 
   constructor(
     id: number,
@@ -17,6 +18,7 @@ export default class Ship {
     speed: SpeedInKilometersPerSecond,
     currentPosition: Position,
     destinationPosition: Position | null,
+    currentLocationCode: string | null,
   ) {
     this._id = id;
     this._owner = owner;
@@ -24,6 +26,7 @@ export default class Ship {
     this._speed = speed;
     this._currentPosition = currentPosition;
     this._destinationPosition = destinationPosition;
+    this._currentLocationCode = currentLocationCode;
   }
 
   get id(): number {
@@ -68,5 +71,13 @@ export default class Ship {
 
   get isStationary(): boolean {
     return this._destinationPosition === null;
+  }
+
+  get currentLocationCode(): string {
+    return this._currentLocationCode;
+  }
+
+  set currentLocationCode(value: string) {
+    this._currentLocationCode = value;
   }
 }

@@ -38,6 +38,7 @@ model Ship {
   speed                Float     @default(1)
   currentPositionX     Float
   currentPositionY     Float
+  currentLocationCode  String?
   destinationPositionX Float?
   destinationPositionY Float?
   createdAt            DateTime  @default(now())

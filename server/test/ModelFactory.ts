@@ -23,6 +23,7 @@ export default class ModelFactory {
     speed = 100,
     currentPosition = new Position(1, 1),
     destinationPosition = null,
+    currentLocationCode = null,
   }: {
     id?: number;
     owner?: User;
@@ -30,6 +31,7 @@ export default class ModelFactory {
     speed?: number;
     currentPosition?: Position;
     destinationPosition?: Position | null;
+    currentLocationCode?: string | null;
   } = {}): Ship {
     return new Ship(
       id,
@@ -38,6 +40,7 @@ export default class ModelFactory {
       new SpeedInKilometersPerSecond(speed),
       currentPosition,
       destinationPosition,
+      currentLocationCode,
     );
   }
 }
