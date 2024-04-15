@@ -4,7 +4,7 @@ import server from './src/server';
 import ShipRepository from './src/repositories/ShipRepository';
 import EventRepository from './src/repositories/EventRepository';
 import LocationRepository from './src/repositories/LocationRepository';
-import moveShipTowardsDestinationUsecase from './src/usescases/moveShipTowardsDestinationUsecase';
+import MoveShipTowardsDestinationUsecase from './src/usescases/moveShipTowardsDestinationUsecase';
 import UpdateLocationPositionUsecase from './src/usescases/UpdateLocationPositionUsecase';
 import AstronomyService from './src/services/AstronomyService';
 
@@ -34,12 +34,10 @@ async function main() {
 
 async function everySecond(): Promise<void> {
   const ships = await shipRepository.getShipsWithDestination();
+  const moveShipTowardsDestinationUsecase =
+    new MoveShipTowardsDestinationUsecase(locationRepository, eventRepository);
   for (const ship of ships) {
-    const updatedShip = await moveShipTowardsDestinationUsecase(
-      ship,
-      locationRepository,
-      eventRepository,
-    );
+    const updatedShip = await moveShipTowardsDestinationUsecase.execute(ship);
     await shipRepository.update(updatedShip);
   }
 }
