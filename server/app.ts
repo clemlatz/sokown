@@ -47,6 +47,7 @@ async function everySecond(): Promise<void> {
 const astronomyService = new AstronomyService();
 const updateLocationPositionUsecase = new UpdateLocationPositionUsecase(
   astronomyService,
+  shipRepository,
 );
 async function everyMinute(): Promise<void> {
   const locations = locationRepository.getAll();
