@@ -4,6 +4,7 @@ import LocationRepository from '../repositories/LocationRepository';
 import EventRepository from '../repositories/EventRepository';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import DistanceInKilometers from '../values/DistanceInKilometers';
+import Position from '../models/Position';
 
 export default class MoveShipTowardsDestinationUsecase {
   constructor(
@@ -23,10 +24,11 @@ export default class MoveShipTowardsDestinationUsecase {
       distanceTraveledInKm,
     );
 
-    if (
-      newPosition.x === ship.currentPosition.x &&
-      newPosition.y === ship.currentPosition.y
-    ) {
+    ship.currentLocationCode = this.locationRepository.findByPosition(
+      ship.currentPosition,
+    ).code;
+
+    if (this._shipDidNotMove(newPosition, ship)) {
       const destinationLocation =
         this.locationRepository.findByPosition(newPosition);
       if (destinationLocation) {
@@ -42,6 +44,13 @@ export default class MoveShipTowardsDestinationUsecase {
 
     ship.currentPosition = newPosition;
     return ship;
+  }
+
+  private _shipDidNotMove(newPosition: Position, ship: Ship) {
+    return (
+      newPosition.x === ship.currentPosition.x &&
+      newPosition.y === ship.currentPosition.y
+    );
   }
 
   private _getDistanceTraveledAtSpeedInTime(
