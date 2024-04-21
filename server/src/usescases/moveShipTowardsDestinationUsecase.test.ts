@@ -41,7 +41,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
   });
 
   describe('when ship is at destination', () => {
-    test('it does not move ship and reset ships destination', async () => {
+    test("it does not move ship and sets ship's location", async () => {
       // given
       const currentPosition = new Position(23, 17);
       const destinationPosition = new Position(23, 17);
@@ -80,6 +80,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       expect(updatedShip.currentPosition.x).toBe(23);
       expect(updatedShip.currentPosition.y).toBe(17);
       expect(updatedShip.isStationary).toBe(true);
+      expect(updatedShip.currentLocationCode).toBe('mars');
     });
   });
 });
