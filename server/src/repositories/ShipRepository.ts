@@ -20,6 +20,7 @@ export type ShipDTO = {
   currentPositionY: number;
   destinationPositionX: number;
   destinationPositionY: number;
+  currentLocationCode: string | null;
 };
 
 @Injectable()
@@ -117,6 +118,7 @@ export default class ShipRepository {
         destinationPositionY: ship.isStationary
           ? null
           : ship.destinationPosition.y,
+        currentLocationCode: ship.currentLocationCode,
         updatedAt: new Date(),
       },
     });
@@ -140,6 +142,7 @@ export default class ShipRepository {
       new SpeedInKilometersPerSecond(ship.speed),
       currentPosition,
       destination,
+      ship.currentLocationCode,
     );
   }
 }
