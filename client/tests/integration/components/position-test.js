@@ -17,10 +17,10 @@ module('Integration | Component | position', function (hooks) {
     // then
     assert
       .dom(screen.getByRole('definition', { name: 'Coordinate X' }))
-      .hasText('1.234');
+      .hasText('1.23');
     assert
       .dom(screen.getByRole('definition', { name: 'Coordinate Y' }))
-      .hasText('9.800');
+      .hasText('9.80');
   });
 
   test('it displays an hyphen if position is null', async function (assert) {
