@@ -97,6 +97,7 @@ describe('ShipRepository', () => {
           currentPositionY: 2,
           destinationPositionX: 3,
           destinationPositionY: 4,
+          currentLocationCode: null,
         },
         {
           id: 2,
@@ -110,6 +111,7 @@ describe('ShipRepository', () => {
           currentPositionY: 6,
           destinationPositionX: 0,
           destinationPositionY: 0,
+          currentLocationCode: null,
         },
       ];
       const prisma = {
@@ -166,6 +168,7 @@ describe('ShipRepository', () => {
           currentPositionY: 2,
           destinationPositionX: 3,
           destinationPositionY: 4,
+          currentLocationCode: null,
         },
       ];
       const prisma = {
@@ -216,6 +219,7 @@ describe('ShipRepository', () => {
           currentPositionY: 2,
           destinationPositionX: 3,
           destinationPositionY: 4,
+          currentLocationCode: null,
         },
       ];
       const prisma = {
@@ -265,6 +269,7 @@ describe('ShipRepository', () => {
         currentPositionY: 2,
         destinationPositionX: 3,
         destinationPositionY: 4,
+        currentLocationCode: null,
       };
       const prisma = {
         ship: {
@@ -303,6 +308,7 @@ describe('ShipRepository', () => {
           id: 1,
           name: 'Ship',
           currentPosition: new Position(1, 2),
+          currentLocationCode: 'mars',
         });
         const prisma = {
           ship: {
@@ -325,6 +331,7 @@ describe('ShipRepository', () => {
             currentPositionY: ship.currentPosition.y,
             destinationPositionX: null,
             destinationPositionY: null,
+            currentLocationCode: 'mars',
             updatedAt: new Date('2019-01-01'),
           },
         });
@@ -363,6 +370,7 @@ describe('ShipRepository', () => {
             currentPositionY: ship.currentPosition.y,
             destinationPositionX: ship.destinationPosition.x,
             destinationPositionY: ship.destinationPosition.y,
+            currentLocationCode: null,
             updatedAt: new Date('2019-01-01'),
           },
         });
