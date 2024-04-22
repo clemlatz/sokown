@@ -79,6 +79,7 @@ function routes() {
             currentLocation: { name: 'Moon' },
             destinationPosition: null,
             destinationLocation: null,
+            timeToDestination: 300,
           },
         },
         {
@@ -95,6 +96,7 @@ function routes() {
             currentLocation: { name: 'Earth' },
             destinationPosition: null,
             destinationLocation: null,
+            timeToDestination: 0,
           },
         },
       ],
@@ -117,6 +119,7 @@ function routes() {
           currentLocation: { name: 'Moon' },
           destinationPosition: null,
           destinationLocation: null,
+          timeToDestination: 300,
         },
       },
     };

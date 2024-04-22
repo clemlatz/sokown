@@ -44,6 +44,9 @@ module('Acceptance | ship', function (hooks) {
       assert
         .dom(screen.getByRole('definition', { name: 'Current destination' }))
         .hasText('—');
+      assert
+        .dom(screen.getByRole('definition', { name: 'Time to destination' }))
+        .hasText('300 seconds');
     });
 
     module('when user is anonymous', function () {

@@ -24,6 +24,15 @@
         <Position @position={{@model.destinationPosition}} />
         {{@model.destinationLocation.name}}
     </dd>
+
+  <dt id="time-to-destination">Time to destination</dt>
+  <dd aria-labelledby="time-to-destination">
+    {{#if @model.timeToDestination}}
+      {{@model.timeToDestination}} seconds
+    {{else}}
+      —
+    {{/if}}
+  </dd>
 </dl>
 
 <h3>Autopilot</h3>
