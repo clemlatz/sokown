@@ -15,6 +15,7 @@ import Ship from '../models/Ship';
 import Position from '../models/Position';
 import EventRepository from '../repositories/EventRepository';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
+import calculateTimeToDestination from '../helpers/calculateTimeToDestination';
 
 class UpdateShipDTO {
   readonly data: {
@@ -48,7 +49,14 @@ export class ShipController {
     @Param() params: { id: string },
   ): Promise<void> {
     const ship = await this.shipRepository.getById(parseInt(params.id));
-    const shipData = this._serializeShip(ship);
+    const timeToDestination = ship.isStationary
+      ? null
+      : calculateTimeToDestination(
+          ship.currentPosition,
+          ship.destinationPosition,
+          ship.speed,
+        );
+    const shipData = this._serializeShip(ship, timeToDestination);
     res.json({ data: shipData });
   }
 
@@ -84,7 +92,7 @@ export class ShipController {
     res.send();
   }
 
-  private _serializeShip(ship: Ship) {
+  private _serializeShip(ship: Ship, timeToDestination: number | null = null) {
     const currentLocation = this.locationRepository.findByPosition(
       ship.currentPosition,
     );
@@ -111,6 +119,7 @@ export class ShipController {
         destinationLocation: destinationLocation
           ? { name: destinationLocation.name }
           : null,
+        timeToDestination,
       },
     };
   }
