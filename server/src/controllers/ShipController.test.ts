@@ -91,6 +91,7 @@ describe('ShipController', () => {
               currentLocation: { name: 'Earth' },
               destinationPosition: null,
               destinationLocation: null,
+              timeToDestination: null,
             },
           },
           {
@@ -107,6 +108,7 @@ describe('ShipController', () => {
               currentLocation: { name: 'Earth' },
               destinationPosition: { x: 23, y: 17 },
               destinationLocation: { name: 'Earth' },
+              timeToDestination: null,
             },
           },
         ],
@@ -115,7 +117,7 @@ describe('ShipController', () => {
   });
 
   describe('get', () => {
-    it('it returns a ship for given id', async () => {
+    it('it returns a ship for without destination', async () => {
       // given
       const response = {
         json: jest.fn(),
@@ -125,14 +127,17 @@ describe('ShipController', () => {
         owner: new User(2, 'David Bowman'),
         speed: 100,
         name: 'Discovery One',
-        currentPosition: new Position(1, 1),
+        currentPosition: new Position(1, 2),
+        destinationPosition: null,
       });
       jest
         .spyOn(shipRepository, 'getById')
         .mockImplementation(async () => ship);
       jest
         .spyOn(locationRepository, 'findByPosition')
-        .mockReturnValue(new Location('earth', 'Earth', new Position(1, 1)));
+        .mockReturnValueOnce(
+          new Location('earth', 'Earth', new Position(1, 2)),
+        );
 
       // when
       await shipController.get(response, { id: '1' });
@@ -146,10 +151,54 @@ describe('ShipController', () => {
             owner: { id: 2, pilotName: 'David Bowman' },
             name: 'Discovery One',
             speedInKilometersPerSecond: 100,
-            currentPosition: { x: 1, y: 1 },
+            currentPosition: { x: 1, y: 2 },
             currentLocation: { name: 'Earth' },
             destinationPosition: null,
             destinationLocation: null,
+            timeToDestination: null,
+          },
+        },
+      });
+    });
+
+    it('it returns a ship with a destination', async () => {
+      // given
+      const response = {
+        json: jest.fn(),
+      } as unknown as Response;
+      const ship = ModelFactory.createShip({
+        id: 1,
+        owner: new User(2, 'David Bowman'),
+        speed: 100,
+        name: 'Discovery One',
+        currentPosition: new Position(1, 2),
+        destinationPosition: new Position(3, 4),
+      });
+      jest
+        .spyOn(shipRepository, 'getById')
+        .mockImplementation(async () => ship);
+      jest
+        .spyOn(locationRepository, 'findByPosition')
+        .mockReturnValueOnce(new Location('earth', 'Earth', new Position(1, 2)))
+        .mockReturnValueOnce(new Location('moon', 'Moon', new Position(3, 4)));
+
+      // when
+      await shipController.get(response, { id: '1' });
+
+      // then
+      expect(response.json).toHaveBeenCalledWith({
+        data: {
+          id: 1,
+          type: 'ship',
+          attributes: {
+            owner: { id: 2, pilotName: 'David Bowman' },
+            name: 'Discovery One',
+            speedInKilometersPerSecond: 100,
+            currentPosition: { x: 1, y: 2 },
+            currentLocation: { name: 'Earth' },
+            destinationPosition: { x: 3, y: 4 },
+            destinationLocation: { name: 'Moon' },
+            timeToDestination: 4231,
           },
         },
       });
