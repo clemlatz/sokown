@@ -36,6 +36,7 @@ dl dt {
   border: 1px solid lightgrey;
   border-radius: 4px;
   display: inline-flex;
+  font-family: monospace;
   font-size: 0.85rem;
 }
 
@@ -45,9 +46,9 @@ dl dt {
 }
 
 .Position__coordinate {
-  padding: 2px 0;
+  padding: 2px 4px 0 0;
   display: inline-block;
-  text-align: center;
+  text-align: right;
   width: 75px;
 }
 
