@@ -34,7 +34,7 @@ module('Acceptance | ship', function (hooks) {
         .exists();
       assert
         .dom(screen.getByRole('definition', { name: 'Owner' }))
-        .hasText('Anne Morrow Lindbergh');
+        .hasText('Kathryn D. Sullivan');
       assert
         .dom(screen.getByRole('definition', { name: 'Speed' }))
         .hasText('100 km/s');
@@ -46,7 +46,25 @@ module('Acceptance | ship', function (hooks) {
         .hasText('—');
       assert
         .dom(screen.getByRole('definition', { name: 'Time to destination' }))
-        .hasText('300 seconds');
+        .hasText('—');
+    });
+
+    module('when ship is moving', function () {
+      test('it displays destination and time to destination', async function (assert) {
+        const screen = await visit('/');
+        await click(screen.getByRole('link', { name: 'Ships' }));
+        await click(screen.getByRole('link', { name: 'Bebop' }));
+
+        assert
+          .dom(screen.getByRole('heading', { name: 'Bebop', level: 2 }))
+          .exists();
+        assert
+          .dom(screen.getByRole('definition', { name: 'Current destination' }))
+          .hasText('3.000 3.000 Moon');
+        assert
+          .dom(screen.getByRole('definition', { name: 'Time to destination' }))
+          .hasText('312 seconds');
+      });
     });
 
     module('when user is anonymous', function () {
