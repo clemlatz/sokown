@@ -40,7 +40,7 @@ module('Acceptance | ship', function (hooks) {
         .hasText('100 km/s');
       assert
         .dom(screen.getByRole('definition', { name: 'Current location' }))
-        .hasText('3.000 3.000 Moon');
+        .hasText('3.000 4.000 Moon');
       assert
         .dom(screen.getByRole('definition', { name: 'Current destination' }))
         .hasText('—');
@@ -63,7 +63,7 @@ module('Acceptance | ship', function (hooks) {
           .exists();
         assert
           .dom(screen.getByRole('definition', { name: 'Current destination' }))
-          .hasText('3.000 3.000 Moon');
+          .hasText('3.000 4.000 Moon');
         assert
           .dom(screen.getByRole('definition', { name: 'Time to destination' }))
           .hasText('312 seconds');
@@ -92,11 +92,11 @@ module('Acceptance | ship', function (hooks) {
     module('when user is authenticated', function () {
       test('it displays autopilot form', async function (assert) {
         // when
-        const screen = await visit('/ships/1');
+        const screen = await visit('/ships/2');
 
         // then
-        assert.dom(screen.getByRole('textbox', { name: 'X' })).exists();
-        assert.dom(screen.getByRole('textbox', { name: 'Y' })).exists();
+        assert.dom(screen.getByRole('textbox', { name: 'X' })).hasValue('3');
+        assert.dom(screen.getByRole('textbox', { name: 'Y' })).hasValue('4');
         assert
           .dom(screen.getByRole('button', { name: 'Set Autopilot' }))
           .exists();

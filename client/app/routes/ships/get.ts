@@ -3,6 +3,9 @@ import { service } from '@ember/service';
 import type Store from '@ember-data/store';
 
 import ENV from 'sokown-client/config/environment';
+import type Transition from '@ember/routing/transition';
+import type ShipsGetController from 'sokown-client/controllers/ships/get';
+import type ShipModel from 'sokown-client/models/ship';
 
 export default class ShipsGetRoute extends Route {
   @service declare store: Store;
@@ -16,5 +19,19 @@ export default class ShipsGetRoute extends Route {
     if (this.autoRefresh === 0 && ENV.environment !== 'test') {
       this.autoRefresh = setInterval(() => this.refresh(), 1000);
     }
+  }
+
+  setupController(
+    controller: ShipsGetController,
+    model: ShipModel,
+    transition: Transition,
+  ) {
+    if (model.destinationPosition) {
+      controller.newDestinationPositionX =
+        model.destinationPosition.x.toString();
+      controller.newDestinationPositionY =
+        model.destinationPosition.y.toString();
+    }
+    super.setupController(controller, model, transition);
   }
 }
