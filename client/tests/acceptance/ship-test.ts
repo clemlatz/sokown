@@ -47,6 +47,9 @@ module('Acceptance | ship', function (hooks) {
       assert
         .dom(screen.getByRole('definition', { name: 'Time to destination' }))
         .hasText('—');
+      assert
+        .dom(screen.getByRole('definition', { name: 'Est. time of arrival' }))
+        .hasText('—');
     });
 
     module('when ship is moving', function () {
@@ -64,6 +67,9 @@ module('Acceptance | ship', function (hooks) {
         assert
           .dom(screen.getByRole('definition', { name: 'Time to destination' }))
           .hasText('312 seconds');
+        assert
+          .dom(screen.getByRole('definition', { name: 'Est. time of arrival' }))
+          .doesNotHaveTextContaining('—');
       });
     });
 
