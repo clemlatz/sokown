@@ -1,7 +1,4 @@
-import {
-  discoverEmberDataModels,
-  // applyEmberDataSerializers,
-} from 'ember-cli-mirage';
+import { discoverEmberDataModels } from 'ember-cli-mirage';
 import { createServer } from 'miragejs';
 
 export default function (config) {
@@ -62,68 +59,9 @@ function routes() {
     };
   });
 
-  this.get('/api/ships', () => {
-    return {
-      data: [
-        {
-          id: 1,
-          type: 'ship',
-          attributes: {
-            owner: {
-              id: 3,
-              pilotName: 'Anne Morrow Lindbergh',
-            },
-            name: 'Artémis',
-            speedInKilometersPerSecond: 100,
-            currentPosition: { x: 3, y: 3 },
-            currentLocation: { name: 'Moon' },
-            destinationPosition: null,
-            destinationLocation: null,
-            timeToDestination: 300,
-          },
-        },
-        {
-          id: 2,
-          type: 'ship',
-          attributes: {
-            owner: {
-              id: 3,
-              pilotName: 'Anne Morrow Lindbergh',
-            },
-            name: 'Bebop',
-            speedInKilometersPerSecond: 100,
-            currentPosition: { x: 1, y: 1 },
-            currentLocation: { name: 'Earth' },
-            destinationPosition: null,
-            destinationLocation: null,
-            timeToDestination: 0,
-          },
-        },
-      ],
-    };
-  });
+  this.get('/api/ships');
 
-  this.get('/api/ships/1', () => {
-    return {
-      data: {
-        id: 1,
-        type: 'ship',
-        attributes: {
-          owner: {
-            id: 3,
-            pilotName: 'Anne Morrow Lindbergh',
-          },
-          name: 'Artémis',
-          speedInKilometersPerSecond: 100,
-          currentPosition: { x: 3, y: 3 },
-          currentLocation: { name: 'Moon' },
-          destinationPosition: null,
-          destinationLocation: null,
-          timeToDestination: 300,
-        },
-      },
-    };
-  });
+  this.get('/api/ships/:id');
 
   this.patch('/api/ships/:id');
 

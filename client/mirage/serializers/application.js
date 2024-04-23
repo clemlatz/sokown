@@ -1,3 +1,7 @@
 import { JSONAPISerializer } from 'miragejs';
 
-export default JSONAPISerializer.extend({});
+export default class ApplicationSerializer extends JSONAPISerializer {
+  keyForAttribute(attributeKey) {
+    return attributeKey;
+  }
+}
