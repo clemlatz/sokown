@@ -17,4 +17,15 @@ export default class ShipModel extends Model {
   get isStationary() {
     return this.destinationPosition === null;
   }
+
+  get timeOfArrival(): string | null {
+    if (this.timeToDestination === null) {
+      return null;
+    }
+
+    const nowInSeconds = Math.round(Date.now() / 1000);
+    const timeOfArrivalInSeconds = nowInSeconds + this.timeToDestination;
+    const timeOfArrival = new Date(timeOfArrivalInSeconds * 1000);
+    return timeOfArrival.toLocaleString();
+  }
 }

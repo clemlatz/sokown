@@ -33,6 +33,15 @@
       —
     {{/if}}
   </dd>
+
+  <dt id="time-of-arrival">Est. time of arrival</dt>
+  <dd aria-labelledby="time-of-arrival">
+    {{#if @model.timeOfArrival}}
+      {{@model.timeOfArrival}}
+    {{else}}
+      —
+    {{/if}}
+  </dd>
 </dl>
 
 <h3>Autopilot</h3>

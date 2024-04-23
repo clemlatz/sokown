@@ -11,7 +11,7 @@ export default [
     currentLocation: { name: 'Moon' },
     destinationPosition: null,
     destinationLocation: null,
-    timeToDestination: 0,
+    timeToDestination: null,
   },
   {
     id: 2,
