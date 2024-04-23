@@ -1,8 +1,9 @@
 export default [
   {
+    id: 1,
     owner: {
       id: 3,
-      pilotName: 'Anne Morrow Lindbergh',
+      pilotName: 'Kathryn D. Sullivan',
     },
     name: 'Artémis',
     speedInKilometersPerSecond: 100,
@@ -10,19 +11,20 @@ export default [
     currentLocation: { name: 'Moon' },
     destinationPosition: null,
     destinationLocation: null,
-    timeToDestination: 300,
+    timeToDestination: 0,
   },
   {
+    id: 2,
     owner: {
-      id: 3,
-      pilotName: 'Anne Morrow Lindbergh',
+      id: 4,
+      pilotName: 'Anna Fisher',
     },
     name: 'Bebop',
     speedInKilometersPerSecond: 100,
     currentPosition: { x: 1, y: 1 },
     currentLocation: { name: 'Earth' },
-    destinationPosition: null,
-    destinationLocation: null,
-    timeToDestination: 0,
+    destinationPosition: { x: 3, y: 3 },
+    destinationLocation: { name: 'Moon' },
+    timeToDestination: 312,
   },
 ];
