@@ -3,27 +3,27 @@
 <h2>{{@model.name}}</h2>
 
 <dl>
-    <dt id="owner">Owner</dt>
-    <dd aria-labelledby="owner">
-        {{@model.owner.pilotName}}
-    </dd>
+  <dt id="owner">Owner</dt>
+  <dd aria-labelledby="owner">
+    {{@model.owner.pilotName}}
+  </dd>
 
-    <dt id="speed">Speed</dt>
-    <dd aria-labelledby="speed">
-        {{@model.speedInKilometersPerSecond}} km/s
-    </dd>
+  <dt id="speed">Speed</dt>
+  <dd aria-labelledby="speed">
+    {{@model.speedInKilometersPerSecond}} km/s
+  </dd>
 
-    <dt id="current-location">Current location</dt>
-    <dd aria-labelledby="current-location">
-        <Position @position={{@model.currentPosition}} />
-        {{@model.currentLocation.name}}
-    </dd>
+  <dt id="current-location">Current location</dt>
+  <dd aria-labelledby="current-location">
+    <Position @position={{@model.currentPosition}} />
+    {{@model.currentLocation.name}}
+  </dd>
 
-    <dt id="current-destination">Current destination</dt>
-    <dd aria-labelledby="current-destination">
-        <Position @position={{@model.destinationPosition}} />
-        {{@model.destinationLocation.name}}
-    </dd>
+  <dt id="current-destination">Current destination</dt>
+  <dd aria-labelledby="current-destination">
+    <Position @position={{@model.destinationPosition}} />
+    {{@model.destinationLocation.name}}
+  </dd>
 
   <dt id="time-to-destination">Time to destination</dt>
   <dd aria-labelledby="time-to-destination">
@@ -46,30 +46,31 @@
 
 <h3>Autopilot</h3>
 {{#if this.currentUser.isAuthenticated}}
-    <form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
-        <div class="col-12">
-            <label class="visually-hidden" for="newDestinationPositionX">X</label>
-            <div class="input-group">
-                <div class="input-group-text">X</div>
-                <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} />
-            </div>
-        </div>
+  <form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
+    <div class="col-12">
+      <label class="visually-hidden" for="newDestinationPositionX">X</label>
+      <div class="input-group">
+        <div class="input-group-text">X</div>
+        <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} required/>
+      </div>
+    </div>
 
-        <div class="col-12">
-            <label class="visually-hidden" for="newDestinationPositionY">Y</label>
-            <div class="input-group">
-                <div class="input-group-text">Y</div>
-                <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} />
-            </div>
-        </div>
+    <div class="col-12">
+      <label class="visually-hidden" for="newDestinationPositionY">Y</label>
+      <div class="input-group">
+        <div class="input-group-text">Y</div>
+        <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} required/>
+      </div>
+    </div>
 
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Set Autopilot</button>
-        </div>
-    </form>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Set Autopilot</button>
+    </div>
+  </form>
 {{else}}
-    <p>
-        Is this your ship?
-        <LinkTo @route="user.login" class="btn btn-sm btn-primary btn-xs">Log in now</LinkTo> to set the autopilot.
-    </p>
+  <p>
+    Is this your ship?
+    <LinkTo @route="user.login" class="btn btn-sm btn-primary btn-xs">Log in now</LinkTo>
+    to set the autopilot.
+  </p>
 {{/if}}
