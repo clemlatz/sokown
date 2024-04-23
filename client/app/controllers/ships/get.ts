@@ -9,8 +9,8 @@ import type CurrentUserService from 'sokown-client/services/current-user';
 export default class ShipsGetController extends Controller {
   @service declare currentUser: CurrentUserService;
   declare model: Ship;
-  @tracked newDestinationPositionX = '0';
-  @tracked newDestinationPositionY = '0';
+  @tracked newDestinationPositionX = '';
+  @tracked newDestinationPositionY = '';
 
   @action
   async setDestination(event: Event) {
