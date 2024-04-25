@@ -119,6 +119,7 @@
     "edition": "octane"
   },
   "dependencies": {
+    "dayjs": "^1.11.10",
     "sinon": "^17.0.1"
   }
 }
