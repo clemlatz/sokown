@@ -34,4 +34,20 @@ module('Unit | Model | ship', function (hooks) {
       assert.false(isStationary);
     });
   });
+
+  module('getRelativeTimeOfArrival', () => {
+    test('it returns the time of arrival relative to now', function (assert) {
+      // given
+      const store = this.owner.lookup('service:store');
+      const ship = store.createRecord('ship', {
+        timeToDestination: 300,
+      });
+
+      // when
+      const relativeTimeOfArrival = ship.relativeTimeOfArrival;
+
+      // then
+      assert.strictEqual(relativeTimeOfArrival, '5 minutes');
+    });
+  });
 });
