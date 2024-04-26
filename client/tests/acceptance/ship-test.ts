@@ -66,7 +66,7 @@ module('Acceptance | ship', function (hooks) {
           .hasText('3.000 4.000 Moon');
         assert
           .dom(screen.getByRole('definition', { name: 'Time to destination' }))
-          .hasText('312 seconds');
+          .hasText('≃ 5 minutes');
         assert
           .dom(screen.getByRole('definition', { name: 'Est. time of arrival' }))
           .doesNotHaveTextContaining('—');

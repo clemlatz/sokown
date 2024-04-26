@@ -28,7 +28,7 @@
   <dt id="time-to-destination">Time to destination</dt>
   <dd aria-labelledby="time-to-destination">
     {{#if @model.timeToDestination}}
-      {{@model.timeToDestination}} seconds
+      ≃ {{@model.relativeTimeOfArrival}}
     {{else}}
       —
     {{/if}}
