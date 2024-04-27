@@ -30,6 +30,16 @@ describe('LocationController', () => {
 
     locationController = app.get<LocationController>(LocationController);
     locationRepository = app.get<LocationRepository>(LocationRepository);
+    const locations = [
+      new Location('earth', 'Earth', new Position(1, 2)),
+      new Location('moon', 'Moon', new Position(3, 4)),
+    ];
+    jest
+      .spyOn(locationRepository, 'getAll')
+      .mockImplementation(() => locations);
+    jest
+      .spyOn(locationRepository, 'getByCode')
+      .mockImplementation(() => locations[0]);
   });
 
   describe('index', () => {
@@ -38,13 +48,6 @@ describe('LocationController', () => {
       const response = {
         json: jest.fn(),
       } as unknown as Response;
-      const locations = [
-        new Location('earth', 'Earth', new Position(1, 2)),
-        new Location('moon', 'Moon', new Position(3, 4)),
-      ];
-      jest
-        .spyOn(locationRepository, 'getAll')
-        .mockImplementation(() => locations);
 
       // when
       await locationController.index(response);
@@ -69,6 +72,32 @@ describe('LocationController', () => {
             },
           },
         ],
+      });
+    });
+  });
+
+  describe('get', () => {
+    describe('when there is a location for given code', () => {
+      it('returns a single location', async () => {
+        // given
+        const response = {
+          json: jest.fn(),
+        } as unknown as Response;
+
+        // when
+        await locationController.get({ code: 'earth' }, response);
+
+        // then
+        expect(response.json).toHaveBeenCalledWith({
+          data: {
+            id: 'earth',
+            type: 'location',
+            attributes: {
+              name: 'Earth',
+              position: { x: 1, y: 2 },
+            },
+          },
+        });
       });
     });
   });

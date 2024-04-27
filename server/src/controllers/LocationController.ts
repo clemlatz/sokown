@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
@@ -14,6 +14,15 @@ export default class LocationController {
       this._serializeLocation(location),
     );
     res.json({ data: locationsData });
+  }
+
+  @Get('api/locations/:code')
+  async get(
+    @Param() params: { code: string },
+    @Res() res: Response,
+  ): Promise<void> {
+    const location = this.locationRepository.getByCode(params.code);
+    res.json({ data: this._serializeLocation(location) });
   }
 
   private _serializeLocation(location: Location) {
