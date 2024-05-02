@@ -1,0 +1,10 @@
+{{page-title @model.name " · Locations"}}
+
+<h2>{{ @model.name }}</h2>
+
+<dl>
+  <dt id="current-position">Current position</dt>
+  <dd aria-labelledby="current-position">
+    <Position @position={{@model.position}} />
+  </dd>
+</dl>

@@ -13,7 +13,9 @@
   {{#each @model as |location| }}
     <tr>
       <td>
-        {{location.name}}
+        <LinkTo @route="locations.get" @model={{location}}>
+          {{location.name}}
+        </LinkTo>
       </td>
       <td>
         <Position @position={{location.position}} />
