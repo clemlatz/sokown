@@ -43,7 +43,9 @@ describe('LocationRepository', () => {
     test('it returns a location matching position', () => {
       // given
       const locationRepository = new LocationRepository();
+      const earth = locationRepository.getByCode('earth');
       const earthPosition = new Position(758, 653);
+      earth.setPosition(earthPosition);
 
       // when
       const location = locationRepository.findByPosition(earthPosition);
