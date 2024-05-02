@@ -24,8 +24,8 @@ export default class Location {
   }
 
   setPosition(position: Position): void {
-    const xWithTwoDigits = Math.round(position.x * 100) / 100;
-    const yWithTwoDigits = Math.round(position.y * 100) / 100;
-    this._position = new Position(xWithTwoDigits, yWithTwoDigits);
+    const xWithThreeDigits = Math.round(position.x * 1000) / 1000;
+    const yWithThreeDigits = Math.round(position.y * 1000) / 1000;
+    this._position = new Position(xWithThreeDigits, yWithThreeDigits);
   }
 }
