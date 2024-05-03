@@ -2,7 +2,11 @@ import AstronomicalObject from 'astronomy-bundle/astronomicalObject/Astronomical
 import { createEarth } from 'astronomy-bundle/earth';
 import { createSun } from 'astronomy-bundle/sun';
 import { createMoon } from 'astronomy-bundle/moon';
-import { createMars } from 'astronomy-bundle/planets';
+import {
+  createMars,
+  createMercury,
+  createVenus,
+} from 'astronomy-bundle/planets';
 
 import Position from '../models/Position';
 import { createTimeOfInterest } from 'astronomy-bundle/time';
@@ -33,20 +37,28 @@ export default class AstronomyService {
     locationCode: string,
     timeOfInterest: TimeOfInterest,
   ): AstronomicalObject {
-    if (locationCode === 'earth') {
-      return createEarth(timeOfInterest);
+    if (locationCode === 'sun') {
+      return createSun(timeOfInterest);
     }
 
-    if (locationCode === 'mars') {
-      return createMars(timeOfInterest);
+    if (locationCode === 'mercury') {
+      return createMercury(timeOfInterest);
+    }
+
+    if (locationCode === 'venus') {
+      return createVenus(timeOfInterest);
+    }
+
+    if (locationCode === 'earth') {
+      return createEarth(timeOfInterest);
     }
 
     if (locationCode === 'moon') {
       return createMoon(timeOfInterest);
     }
 
-    if (locationCode === 'sun') {
-      return createSun(timeOfInterest);
+    if (locationCode === 'mars') {
+      return createMars(timeOfInterest);
     }
   }
 }

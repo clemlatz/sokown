@@ -5,6 +5,8 @@ import { Injectable } from '@nestjs/common';
 const spaceLocation = new Location('space', 'Space', new Position(0, 0));
 const locations = [
   new Location('sun', 'Sun', new Position(0, 0)),
+  new Location('mercury', 'Mercury', new Position(0, 0)),
+  new Location('venus', 'Venus', new Position(0, 0)),
   new Location('earth', 'Earth', new Position(0, 0)),
   new Location('moon', 'Moon', new Position(0, 0)),
   new Location('mars', 'Mars', new Position(0, 0)),
