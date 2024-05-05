@@ -65,28 +65,7 @@ function routes() {
 
   this.patch('/api/ships/:id');
 
-  this.get('/api/locations', () => {
-    return {
-      data: [
-        {
-          id: 'earth',
-          type: 'location',
-          attributes: {
-            name: 'Earth',
-            position: { x: 1, y: 2 },
-          },
-        },
-        {
-          id: 'moon',
-          type: 'location',
-          attributes: {
-            name: 'Moon',
-            position: { x: 1, y: 2 },
-          },
-        },
-      ],
-    };
-  });
+  this.get('/api/locations');
 
   // These comments are here to help you get started. Feel free to delete them.
 
