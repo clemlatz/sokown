@@ -19,6 +19,7 @@ import LocationRepository from './repositories/LocationRepository';
 import ShipRepository from './repositories/ShipRepository';
 import UserRepository from './repositories/UserRepository';
 import LocationController from './controllers/LocationController';
+import AstronomyService from './services/AstronomyService';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import LocationController from './controllers/LocationController';
     OpenIDConnectService.factory,
     AuthenticationGuard,
     RegisterNewPilotUsecase,
+    AstronomyService,
   ],
 })
 export class AppModule {}

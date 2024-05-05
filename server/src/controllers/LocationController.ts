@@ -1,11 +1,15 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
+import AstronomyService from '../services/AstronomyService';
 
 @Controller()
 export default class LocationController {
-  constructor(private readonly locationRepository: LocationRepository) {}
+  constructor(
+    private readonly locationRepository: LocationRepository,
+    private readonly astronomyService: AstronomyService,
+  ) {}
 
   @Get('api/locations')
   async index(@Res() res: Response): Promise<void> {
@@ -23,6 +27,25 @@ export default class LocationController {
   ): Promise<void> {
     const location = this.locationRepository.getByCode(params.code);
     res.json({ data: this._serializeLocation(location) });
+  }
+
+  @Get('api/locations/:code/position')
+  async getPosition(
+    @Param() params: { code: string },
+    @Query() query: { targetDate: string },
+    @Res() res: Response,
+  ): Promise<void> {
+    const { x, y } = await this.astronomyService.getPositionFor(
+      params.code,
+      new Date(parseInt(query.targetDate)),
+    );
+    res.json({
+      data: {
+        id: params.code,
+        type: 'position',
+        attributes: { x, y },
+      },
+    });
   }
 
   private _serializeLocation(location: Location) {
