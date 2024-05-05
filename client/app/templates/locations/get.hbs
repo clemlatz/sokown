@@ -8,3 +8,35 @@
     <Position @position={{@model.position}} />
   </dd>
 </dl>
+
+<h3>Calculate future position</h3>
+
+<form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.calculateFuturePosition}}>
+  <div class="col-12">
+    <label class="visually-hidden" for="targetDate">Target date</label>
+    <div class="input-group">
+      <div class="input-group-text">Date</div>
+      <input
+        type="datetime-local"
+        class="form-control"
+        id="targetDate"
+        value={{this.targetDate}}
+        oninput={{this.setTargetDate}}
+        required
+      />
+    </div>
+  </div>
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Calculate</button>
+  </div>
+</form>
+
+{{#if this.futurePosition}}
+  <dl>
+    <dt id="future-position">Future position</dt>
+    <dd aria-labelledby="future-position">
+      <Position @position={{this.futurePosition}} />
+    </dd>
+  </dl>
+{{/if}}
