@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { visit } from '@1024pix/ember-testing-library';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { click } from '@ember/test-helpers';
+import { click, fillIn } from '@ember/test-helpers';
 import 'qunit-dom';
 
 import { setupApplicationTest } from 'sokown-client/tests/helpers';
@@ -47,6 +47,28 @@ module('Acceptance | locations', function (hooks) {
       assert
         .dom(screen.getByRole('definition', { name: 'Current position' }))
         .hasText('1.000 2.000');
+      assert
+        .dom(screen.queryByRole('definition', { name: 'Future position' }))
+        .doesNotExist();
+    });
+
+    module('calculating future position', function () {
+      test('it queries and displays future position for target date', async function (assert) {
+        // when
+        const screen = await visit('/locations/moon');
+        await fillIn(
+          screen.getByLabelText('Target date'),
+          '2019-04-28T02:42:00',
+        );
+        await click(screen.getByRole('button', { name: 'Calculate' }));
+
+        // then
+        assert
+          .dom(
+            await screen.findByRole('definition', { name: 'Future position' }),
+          )
+          .hasText('1.000 2.000');
+      });
     });
   });
 });
