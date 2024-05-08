@@ -26,6 +26,9 @@ module('Acceptance | locations', function (hooks) {
         .exists();
       assert.dom(screen.getByRole('cell', { name: 'Earth' })).exists();
       assert.dom(screen.getByRole('cell', { name: 'Moon' })).exists();
+      assert.dom(
+        screen.getByRole('img', { name: 'A star map of the solar system' }),
+      );
     });
   });
 

@@ -55,3 +55,10 @@ dl dt {
 .Position__coordinate:first-child {
   border-right: 1px solid lightgrey;
 }
+
+/* StarMap */
+
+.StarMap {
+  margin: auto;
+  max-width: 768px;
+}
