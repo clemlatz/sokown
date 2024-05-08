@@ -49,6 +49,13 @@ export default class LocationController {
   }
 
   private _serializeLocation(location: Location) {
+    const primaryBodyPosition = location.primaryBody
+      ? {
+          x: location.primaryBody.position.x,
+          y: location.primaryBody.position.y,
+        }
+      : null;
+
     return {
       id: location.code,
       type: 'location',
@@ -58,6 +65,8 @@ export default class LocationController {
           x: location.position.x,
           y: location.position.y,
         },
+        primaryBodyPosition,
+        distanceFromPrimaryBody: location.distanceFromPrimaryBody.value,
       },
     };
   }

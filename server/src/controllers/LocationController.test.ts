@@ -5,8 +5,8 @@ import { Response } from 'express';
 import LocationController from './LocationController';
 import LocationRepository from '../repositories/LocationRepository';
 import Position from '../models/Position';
-import Location from '../models/Location';
 import AstronomyService from '../services/AstronomyService';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('LocationController', () => {
   let locationController: LocationController;
@@ -22,9 +22,22 @@ describe('LocationController', () => {
     locationController = app.get<LocationController>(LocationController);
     locationRepository = app.get<LocationRepository>(LocationRepository);
     astronomyService = app.get<AstronomyService>(AstronomyService);
+    const sun = ModelFactory.createLocation({
+      code: 'sun',
+      name: 'Sun',
+      position: new Position(0, 0),
+      primaryBody: null,
+      distanceFromPrimaryBody: 0,
+    });
     const locations = [
-      new Location('earth', 'Earth', new Position(1, 2)),
-      new Location('moon', 'Moon', new Position(3, 4)),
+      sun,
+      ModelFactory.createLocation({
+        code: 'earth',
+        name: 'Earth',
+        position: new Position(1, 2),
+        primaryBody: sun,
+        distanceFromPrimaryBody: 1,
+      }),
     ];
     jest
       .spyOn(locationRepository, 'getAll')
@@ -51,19 +64,23 @@ describe('LocationController', () => {
       expect(response.json).toHaveBeenCalledWith({
         data: [
           {
+            id: 'sun',
+            type: 'location',
+            attributes: {
+              name: 'Sun',
+              position: { x: 0, y: 0 },
+              primaryBodyPosition: null,
+              distanceFromPrimaryBody: 0,
+            },
+          },
+          {
             id: 'earth',
             type: 'location',
             attributes: {
               name: 'Earth',
               position: { x: 1, y: 2 },
-            },
-          },
-          {
-            id: 'moon',
-            type: 'location',
-            attributes: {
-              name: 'Moon',
-              position: { x: 3, y: 4 },
+              primaryBodyPosition: { x: 0, y: 0 },
+              distanceFromPrimaryBody: 1,
             },
           },
         ],
@@ -85,11 +102,13 @@ describe('LocationController', () => {
         // then
         expect(response.json).toHaveBeenCalledWith({
           data: {
-            id: 'earth',
+            id: 'sun',
             type: 'location',
             attributes: {
-              name: 'Earth',
-              position: { x: 1, y: 2 },
+              name: 'Sun',
+              position: { x: 0, y: 0 },
+              primaryBodyPosition: null,
+              distanceFromPrimaryBody: 0,
             },
           },
         });

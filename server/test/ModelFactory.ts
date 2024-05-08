@@ -1,8 +1,10 @@
 import Ship from '../src/models/Ship';
 import Position from '../src/models/Position';
-import SpeedInKilometersPerSecond from '../src/values/SpeedInKilometersPerSecond';
+import Location from '../src/models/Location';
 import User from '../src/models/User';
 import AuthenticationMethod from '../src/models/AuthenticationMethod';
+import SpeedInKilometersPerSecond from '../src/values/SpeedInKilometersPerSecond';
+import DistanceInSokownUnits from '../src/values/DistanceInSokownUnits';
 
 export default class ModelFactory {
   public static createAuthenticationMethod({
@@ -42,5 +44,17 @@ export default class ModelFactory {
       destinationPosition,
       currentLocationCode,
     );
+  }
+
+  public static createLocation({
+    code = 'earth',
+    name = 'Earth',
+    position = new Position(3, 4),
+    primaryBody = null,
+    distanceFromPrimaryBody: orbitRadius = 5,
+  }) {
+    const location = new Location(code, name, position, primaryBody);
+    location.distanceFromPrimaryBody = new DistanceInSokownUnits(orbitRadius);
+    return location;
   }
 }
