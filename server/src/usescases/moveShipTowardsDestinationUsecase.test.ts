@@ -3,16 +3,18 @@ import EventRepository from '../repositories/EventRepository';
 import ModelFactory from '../../test/ModelFactory';
 import LocationRepository from '../repositories/LocationRepository';
 import MoveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
-    test('it move ship towards destination', async () => {
+    test('it updates position and course towards destination', async () => {
       // given
       const currentPosition = new Position(1, 1);
       const destinationPosition = new Position(3, 4);
       const ship = ModelFactory.createShip({
         speed: 100,
         currentPosition,
+        currentCourse: new OrientationInDegrees(0),
         destinationPosition,
       });
       const locationRepository = {
@@ -39,6 +41,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       expect(eventRepository.create).not.toHaveBeenCalled();
       expect(updatedShip.currentPosition.x).toBe(1.0003707937837683);
       expect(updatedShip.currentPosition.y).toBe(1.0005561906756524);
+      expect(updatedShip.currentCourse.value).toBe(56.3);
     });
   });
 
