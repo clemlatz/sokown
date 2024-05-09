@@ -25,6 +25,11 @@
     {{@model.destinationLocation.name}}
   </dd>
 
+  <dt id="current-course">Current course</dt>
+  <dd aria-labelledby="current-course">
+    {{@model.currentCourse}} °
+  </dd>
+
   <dt id="time-to-destination">Time to destination</dt>
   <dd aria-labelledby="time-to-destination">
     {{#if @model.timeToDestination}}
