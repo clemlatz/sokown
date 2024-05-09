@@ -60,6 +60,26 @@ export default class StarMapObjectComponent extends Component<ComponentSignature
     );
   }
 
+  get fillColor(): string {
+    return this.primaryBodyPosition === null
+      ? this.args.color
+      : 'url(#gradient)';
+  }
+
+  get transformOrigin(): string {
+    return `${this.objectPosition.x} ${this.objectPosition.y}`;
+  }
+
+  get angleToTheSun(): string {
+    const angleInRadians = Math.atan2(
+      this.objectPosition.y,
+      this.objectPosition.x,
+    );
+    const angleInDegrees = (angleInRadians * 180) / Math.PI;
+    const angleFromPositiveYAxis = angleInDegrees - 90;
+    return `rotate(${angleFromPositiveYAxis})`;
+  }
+
   private get starMapSizeInSokownUnits() {
     return this.args.scale * 10;
   }

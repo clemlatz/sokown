@@ -9,14 +9,21 @@
       fill-opacity="0"
       aria-label={{this.orbitLabel}}
     />
+
+    <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="{{@color}}"/>
+      <stop offset="100%" stop-color="black"/>
+    </linearGradient>
   {{/if}}
 
   <circle
     cx={{this.objectPosition.x}}
     cy={{this.objectPosition.y}}
     r="1"
-    fill="{{@color}}"
+    fill="{{this.fillColor}}"
     aria-label={{@label}}
+    transform="{{this.angleToTheSun}}"
+    transform-origin="{{this.transformOrigin}}"
   />
   <text
     x={{this.labelPosition.x}}
