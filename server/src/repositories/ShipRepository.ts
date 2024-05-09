@@ -7,6 +7,7 @@ import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import User from '../models/User';
 import { ITXClientDenyList } from 'prisma/prisma-client/runtime/library';
 import Location from '../models/Location';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 export type ShipDTO = {
   id: number;
@@ -18,6 +19,7 @@ export type ShipDTO = {
   speed: number;
   currentPositionX: number;
   currentPositionY: number;
+  currentCourse: number;
   destinationPositionX: number;
   destinationPositionY: number;
   currentLocationCode: string | null;
@@ -112,6 +114,7 @@ export default class ShipRepository {
       data: {
         currentPositionX: ship.currentPosition.x,
         currentPositionY: ship.currentPosition.y,
+        currentCourse: ship.currentCourse.value,
         destinationPositionX: ship.isStationary
           ? null
           : ship.destinationPosition.x,
@@ -141,6 +144,7 @@ export default class ShipRepository {
       ship.name || 'Unnamed ship',
       new SpeedInKilometersPerSecond(ship.speed),
       currentPosition,
+      new OrientationInDegrees(ship.currentCourse),
       destination,
       ship.currentLocationCode,
     );
