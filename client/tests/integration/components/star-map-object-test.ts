@@ -10,6 +10,7 @@ module('Integration | Component | star-map-object', function (hooks) {
     // given
     this.set('scale', 300);
     this.set('label', 'Twinkle');
+    this.set('color', 'darkpink');
     this.set('position', { x: 690, y: 480 });
     this.set('primaryBodyPosition', { x: 0, y: 0 });
     this.set('distanceFromPrimaryBody', 525);
@@ -18,17 +19,20 @@ module('Integration | Component | star-map-object', function (hooks) {
       hbs`<StarMapObject
         @scale={{this.scale}}
         @label={{this.label}}
+        @color={{this.color}}
         @position={{this.position}}
         @primaryBodyPosition={{this.primaryBodyPosition}}
         @distanceFromPrimaryBody={{this.distanceFromPrimaryBody}}
       />`,
     );
 
+    const starMapObject = screen.getByLabelText('Twinkle');
     assert.dom('text').hasText('Twinkle');
     assert.dom('text').hasAttribute('x', '23');
     assert.dom('text').hasAttribute('Y', '-12.5');
-    assert.dom(screen.getByLabelText('Twinkle')).hasAttribute('cx', '23');
-    assert.dom(screen.getByLabelText('Twinkle')).hasAttribute('cy', '-16');
+    assert.dom(starMapObject).hasAttribute('cx', '23');
+    assert.dom(starMapObject).hasAttribute('cy', '-16');
+    assert.dom(starMapObject).hasAttribute('fill', 'darkpink');
     assert
       .dom(screen.getByLabelText("Twinkle's orbit"))
       .hasAttribute('r', '17.5');

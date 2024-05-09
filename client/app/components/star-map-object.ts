@@ -8,6 +8,7 @@ import type Location from 'sokown-client/models/location';
 interface ComponentSignature {
   Args: {
     label: string;
+    color: string;
     location: Location;
     position: Position;
     primaryBodyPosition: Position | null;
