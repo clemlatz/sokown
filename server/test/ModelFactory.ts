@@ -49,11 +49,12 @@ export default class ModelFactory {
   public static createLocation({
     code = 'earth',
     name = 'Earth',
+    color = 'grey',
     position = new Position(3, 4),
     primaryBody = null,
     distanceFromPrimaryBody: orbitRadius = 5,
   }) {
-    const location = new Location(code, name, position, primaryBody);
+    const location = new Location(code, name, color, position, primaryBody);
     location.distanceFromPrimaryBody = new DistanceInSokownUnits(orbitRadius);
     return location;
   }

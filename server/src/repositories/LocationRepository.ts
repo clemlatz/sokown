@@ -2,16 +2,27 @@ import Location from '../models/Location';
 import Position from '../models/Position';
 import { Injectable } from '@nestjs/common';
 
-const spaceLocation = new Location('space', 'Space', new Position(0, 0));
-const sun = new Location('sun', 'Sun', new Position(0, 0));
-const earth = new Location('earth', 'Earth', new Position(0, 0), sun);
+const spaceLocation = new Location(
+  'space',
+  'Space',
+  'black',
+  new Position(0, 0),
+);
+const sun = new Location('sun', 'Sun', '#f8cb5d', new Position(0, 0));
+const earth = new Location(
+  'earth',
+  'Earth',
+  '#84c8e4',
+  new Position(0, 0),
+  sun,
+);
 const locations = [
   sun,
-  new Location('mercury', 'Mercury', new Position(0, 0), sun),
-  new Location('venus', 'Venus', new Position(0, 0), sun),
+  new Location('mercury', 'Mercury', '#b89276', new Position(0, 0), sun),
+  new Location('venus', 'Venus', '#ecc0bf', new Position(0, 0), sun),
   earth,
-  new Location('moon', 'Moon', new Position(0, 0), earth),
-  new Location('mars', 'Mars', new Position(0, 0), sun),
+  new Location('moon', 'Moon', 'grey', new Position(0, 0), earth),
+  new Location('mars', 'Mars', '#c84835', new Position(0, 0), sun),
 ];
 
 @Injectable()

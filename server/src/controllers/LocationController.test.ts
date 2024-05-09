@@ -25,6 +25,7 @@ describe('LocationController', () => {
     const sun = ModelFactory.createLocation({
       code: 'sun',
       name: 'Sun',
+      color: 'yellow',
       position: new Position(0, 0),
       primaryBody: null,
       distanceFromPrimaryBody: 0,
@@ -34,6 +35,7 @@ describe('LocationController', () => {
       ModelFactory.createLocation({
         code: 'earth',
         name: 'Earth',
+        color: 'blue',
         position: new Position(1, 2),
         primaryBody: sun,
         distanceFromPrimaryBody: 1,
@@ -68,6 +70,7 @@ describe('LocationController', () => {
             type: 'location',
             attributes: {
               name: 'Sun',
+              color: 'yellow',
               position: { x: 0, y: 0 },
               primaryBodyPosition: null,
               distanceFromPrimaryBody: 0,
@@ -78,6 +81,7 @@ describe('LocationController', () => {
             type: 'location',
             attributes: {
               name: 'Earth',
+              color: 'blue',
               position: { x: 1, y: 2 },
               primaryBodyPosition: { x: 0, y: 0 },
               distanceFromPrimaryBody: 1,
@@ -106,6 +110,7 @@ describe('LocationController', () => {
             type: 'location',
             attributes: {
               name: 'Sun',
+              color: 'yellow',
               position: { x: 0, y: 0 },
               primaryBodyPosition: null,
               distanceFromPrimaryBody: 0,
