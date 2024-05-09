@@ -17,7 +17,7 @@ interface ComponentSignature {
   };
 }
 
-export default class StarMapObjectComponent extends Component<ComponentSignature> {
+export default class StarMapLocationComponent extends Component<ComponentSignature> {
   get shouldBeDisplayed(): boolean {
     return this.primaryBodyPosition === null || this.orbitRadius > 5;
   }

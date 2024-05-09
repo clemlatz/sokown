@@ -16,7 +16,7 @@ module('Integration | Component | star-map-object', function (hooks) {
     this.set('distanceFromPrimaryBody', 0);
 
     const screen = await render(
-      hbs`<StarMapObject
+      hbs`<StarMapLocation
         @scale={{this.scale}}
         @label={{this.label}}
         @color={{this.color}}
@@ -26,13 +26,13 @@ module('Integration | Component | star-map-object', function (hooks) {
       />`,
     );
 
-    const starMapObject = screen.getByLabelText('Twinkle Sun');
+    const starMapLocation = screen.getByLabelText('Twinkle Sun');
     assert.dom('text').hasText('Twinkle Sun');
     assert.dom('text').hasAttribute('x', '0');
     assert.dom('text').hasAttribute('Y', '3.5');
-    assert.dom(starMapObject).hasAttribute('cx', '0');
-    assert.dom(starMapObject).hasAttribute('cy', '0');
-    assert.dom(starMapObject).hasAttribute('fill', 'yellow');
+    assert.dom(starMapLocation).hasAttribute('cx', '0');
+    assert.dom(starMapLocation).hasAttribute('cy', '0');
+    assert.dom(starMapLocation).hasAttribute('fill', 'yellow');
   });
 
   module('when location has a primary body', function () {
@@ -46,7 +46,7 @@ module('Integration | Component | star-map-object', function (hooks) {
       this.set('distanceFromPrimaryBody', 525);
 
       const screen = await render(
-        hbs`<StarMapObject
+        hbs`<StarMapLocation
           @scale={{this.scale}}
           @label={{this.label}}
           @color={{this.color}}
@@ -56,15 +56,15 @@ module('Integration | Component | star-map-object', function (hooks) {
         />`,
       );
 
-      const starMapObject = screen.getByLabelText('Twinkle');
+      const starMapLocation = screen.getByLabelText('Twinkle');
       assert.dom('text').hasText('Twinkle');
       assert.dom('text').hasAttribute('x', '23');
       assert.dom('text').hasAttribute('y', '-12.5');
-      assert.dom(starMapObject).hasAttribute('cx', '23');
-      assert.dom(starMapObject).hasAttribute('cy', '-16');
-      assert.dom(starMapObject).hasAttribute('fill', 'url(#gradient)');
+      assert.dom(starMapLocation).hasAttribute('cx', '23');
+      assert.dom(starMapLocation).hasAttribute('cy', '-16');
+      assert.dom(starMapLocation).hasAttribute('fill', 'url(#gradient)');
       assert
-        .dom(starMapObject)
+        .dom(starMapLocation)
         .hasAttribute('transform', 'rotate(-124.82448915695679)');
       assert
         .dom(screen.getByLabelText("Twinkle's orbit"))
@@ -82,7 +82,7 @@ module('Integration | Component | star-map-object', function (hooks) {
       this.set('distanceFromPrimaryBody', 100);
 
       const screen = await render(
-        hbs`<StarMapObject
+        hbs`<StarMapLocation
         @scale={{this.scale}}
         @label={{this.label}}
         @position={{this.position}}
