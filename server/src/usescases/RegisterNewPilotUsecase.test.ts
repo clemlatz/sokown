@@ -2,7 +2,6 @@ import RegisterNewPilotUsecase from './RegisterNewPilotUsecase';
 import UserRepository from '../repositories/UserRepository';
 import ShipRepository from '../repositories/ShipRepository';
 import LocationRepository from '../repositories/LocationRepository';
-import Location from '../models/Location';
 import Position from '../models/Position';
 import User from '../models/User';
 import { PrismaClient } from '@prisma/client';
@@ -146,8 +145,9 @@ function _buildDependencies(
     shipNameIsTaken: true,
   },
 ) {
-  const moonPosition = new Position(1, 2);
-  const moonLocation = new Location('moon', 'Moon', moonPosition);
+  const moonLocation = ModelFactory.createLocation({
+    position: new Position(1, 2),
+  });
   const createdUser = new User(1, 'Valentina Tereshkova');
   const userRepository = {
     create: jest.fn().mockResolvedValue(createdUser),

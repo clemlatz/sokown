@@ -7,7 +7,6 @@ import { ShipController } from './ShipController';
 import ShipRepository from '../repositories/ShipRepository';
 import Position from '../models/Position';
 import LocationRepository from '../repositories/LocationRepository';
-import Location from '../models/Location';
 import EventRepository from '../repositories/EventRepository';
 import ModelFactory from '../../test/ModelFactory';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
@@ -67,9 +66,7 @@ describe('ShipController', () => {
         .mockImplementation(async () => ships);
       jest
         .spyOn(locationRepository, 'findByPosition')
-        .mockImplementation(
-          () => new Location('earth', 'Earth', new Position(1, 1)),
-        );
+        .mockImplementation(() => ModelFactory.createLocation({}));
 
       // when
       await shipController.index(response);
@@ -135,9 +132,7 @@ describe('ShipController', () => {
         .mockImplementation(async () => ship);
       jest
         .spyOn(locationRepository, 'findByPosition')
-        .mockReturnValueOnce(
-          new Location('earth', 'Earth', new Position(1, 2)),
-        );
+        .mockReturnValueOnce(ModelFactory.createLocation({}));
 
       // when
       await shipController.get(response, { id: '1' });
@@ -179,8 +174,12 @@ describe('ShipController', () => {
         .mockImplementation(async () => ship);
       jest
         .spyOn(locationRepository, 'findByPosition')
-        .mockReturnValueOnce(new Location('earth', 'Earth', new Position(1, 2)))
-        .mockReturnValueOnce(new Location('moon', 'Moon', new Position(3, 4)));
+        .mockReturnValueOnce(
+          ModelFactory.createLocation({ code: 'earth', name: 'Earth' }),
+        )
+        .mockReturnValueOnce(
+          ModelFactory.createLocation({ code: 'moon', name: 'Moon' }),
+        );
 
       // when
       await shipController.get(response, { id: '1' });
@@ -213,9 +212,12 @@ describe('ShipController', () => {
         send: jest.fn(),
       } as unknown as Response;
       const earthPosition = new Position(1, 2);
-      const earthLocation = new Location('earth', 'Earth', earthPosition);
+      const earthLocation = ModelFactory.createLocation({});
       const marsPosition = new Position(3, 4);
-      const marsLocation = new Location('mars', 'Mars', marsPosition);
+      const marsLocation = ModelFactory.createLocation({
+        code: 'mars',
+        name: 'Mars',
+      });
       const ship = ModelFactory.createShip({
         id: 1,
         name: 'Discovery One',
