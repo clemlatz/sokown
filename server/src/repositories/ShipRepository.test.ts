@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Position from '../models/Position';
 import ModelFactory from '../../test/ModelFactory';
 import User from '../models/User';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 describe('ShipRepository', () => {
   describe('create', () => {
@@ -94,6 +95,7 @@ describe('ShipRepository', () => {
           speed: 1,
           currentPositionX: 1,
           currentPositionY: 2,
+          currentCourse: 0,
           destinationPositionX: 3,
           destinationPositionY: 4,
           currentLocationCode: null,
@@ -108,6 +110,7 @@ describe('ShipRepository', () => {
           speed: 0.5,
           currentPositionX: 5,
           currentPositionY: 6,
+          currentCourse: 84,
           destinationPositionX: 0,
           destinationPositionY: 0,
           currentLocationCode: null,
@@ -143,6 +146,7 @@ describe('ShipRepository', () => {
         name: 'Ship 2',
         speed: 0.5,
         currentPosition: new Position(5, 6),
+        currentCourse: new OrientationInDegrees(84),
         destinationPosition: new Position(0, 0),
       });
       expect(ships.length).toEqual(2);
@@ -165,6 +169,7 @@ describe('ShipRepository', () => {
           speed: 100,
           currentPositionX: 1,
           currentPositionY: 2,
+          currentCourse: 88,
           destinationPositionX: 3,
           destinationPositionY: 4,
           currentLocationCode: null,
@@ -189,6 +194,7 @@ describe('ShipRepository', () => {
         speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
+        currentCourse: new OrientationInDegrees(88),
         destinationPosition: expectedDestination,
       });
       expect(prisma.ship.findMany).toHaveBeenCalledWith({
@@ -216,6 +222,7 @@ describe('ShipRepository', () => {
           speed: 100,
           currentPositionX: 1,
           currentPositionY: 2,
+          currentCourse: 19,
           destinationPositionX: 3,
           destinationPositionY: 4,
           currentLocationCode: null,
@@ -241,6 +248,7 @@ describe('ShipRepository', () => {
         speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
+        currentCourse: new OrientationInDegrees(19),
         destinationPosition: expectedDestination,
       });
       expect(prisma.ship.findMany).toHaveBeenCalledWith({
@@ -266,6 +274,7 @@ describe('ShipRepository', () => {
         speed: 100,
         currentPositionX: 1,
         currentPositionY: 2,
+        currentCourse: 45,
         destinationPositionX: 3,
         destinationPositionY: 4,
         currentLocationCode: null,
@@ -289,6 +298,7 @@ describe('ShipRepository', () => {
         name: 'Ship',
         speed: 100,
         currentPosition: expectedPosition,
+        currentCourse: new OrientationInDegrees(45),
         destinationPosition: expectedDestination,
       });
       expect(prisma.ship.findFirst).toHaveBeenCalledWith({
@@ -308,6 +318,7 @@ describe('ShipRepository', () => {
           name: 'Ship',
           currentPosition: new Position(1, 2),
           currentLocationCode: 'mars',
+          currentCourse: new OrientationInDegrees(84),
         });
         const prisma = {
           ship: {
@@ -328,6 +339,7 @@ describe('ShipRepository', () => {
           data: {
             currentPositionX: ship.currentPosition.x,
             currentPositionY: ship.currentPosition.y,
+            currentCourse: 84,
             destinationPositionX: null,
             destinationPositionY: null,
             currentLocationCode: 'mars',
@@ -346,6 +358,7 @@ describe('ShipRepository', () => {
           id: 1,
           name: 'Ship',
           currentPosition,
+          currentCourse: new OrientationInDegrees(88),
           destinationPosition,
         });
         const prisma = {
@@ -370,6 +383,7 @@ describe('ShipRepository', () => {
             destinationPositionX: ship.destinationPosition.x,
             destinationPositionY: ship.destinationPosition.y,
             currentLocationCode: null,
+            currentCourse: 88,
             updatedAt: new Date('2019-01-01'),
           },
         });
