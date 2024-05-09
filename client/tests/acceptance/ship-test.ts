@@ -42,6 +42,9 @@ module('Acceptance | ship', function (hooks) {
         .dom(screen.getByRole('definition', { name: 'Current location' }))
         .hasText('3.000 4.000 Moon');
       assert
+        .dom(screen.getByRole('definition', { name: 'Current course' }))
+        .hasText('0 °');
+      assert
         .dom(screen.getByRole('definition', { name: 'Current destination' }))
         .hasText('—');
       assert
@@ -61,6 +64,9 @@ module('Acceptance | ship', function (hooks) {
         assert
           .dom(screen.getByRole('heading', { name: 'Bebop', level: 2 }))
           .exists();
+        assert
+          .dom(screen.getByRole('definition', { name: 'Current course' }))
+          .hasText('84 °');
         assert
           .dom(screen.getByRole('definition', { name: 'Current destination' }))
           .hasText('3.000 4.000 Moon');

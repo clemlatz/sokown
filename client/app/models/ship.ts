@@ -13,6 +13,7 @@ export default class ShipModel extends Model {
   @attr declare speedInKilometersPerSecond: number;
   @attr declare currentPosition: Position;
   @attr declare currentLocation: Location;
+  @attr declare currentCourse: number;
   @attr declare destinationPosition: Position;
   @attr declare destinationLocation: Location;
   @attr declare timeToDestination: number | null;
