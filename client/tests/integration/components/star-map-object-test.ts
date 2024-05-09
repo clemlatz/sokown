@@ -33,4 +33,27 @@ module('Integration | Component | star-map-object', function (hooks) {
       .dom(screen.getByLabelText("Twinkle's orbit"))
       .hasAttribute('r', '17.5');
   });
+
+  module('when orbit radius is to small', function () {
+    test('it is hidden', async function (assert) {
+      // given
+      this.set('scale', 300);
+      this.set('label', 'Twinkle');
+      this.set('position', { x: 690, y: 480 });
+      this.set('primaryBodyPosition', { x: 0, y: 0 });
+      this.set('distanceFromPrimaryBody', 100);
+
+      const screen = await render(
+        hbs`<StarMapObject
+        @scale={{this.scale}}
+        @label={{this.label}}
+        @position={{this.position}}
+        @primaryBodyPosition={{this.primaryBodyPosition}}
+        @distanceFromPrimaryBody={{this.distanceFromPrimaryBody}}
+      />`,
+      );
+
+      assert.dom(screen.queryByLabelText('Twinkle')).doesNotExist();
+    });
+  });
 });

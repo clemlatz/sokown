@@ -17,6 +17,10 @@ interface ComponentSignature {
 }
 
 export default class StarMapObjectComponent extends Component<ComponentSignature> {
+  get shouldBeDisplayed(): boolean {
+    return this.primaryBodyPosition === null || this.orbitRadius > 5;
+  }
+
   get objectPosition(): Position {
     return {
       x: (this.args.position.x / this.starMapSizeInSokownUnits) * 100,
