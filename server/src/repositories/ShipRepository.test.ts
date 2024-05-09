@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 import Position from '../models/Position';
 import ModelFactory from '../../test/ModelFactory';
 import User from '../models/User';
-import Location from '../models/Location';
 
 describe('ShipRepository', () => {
   describe('create', () => {
@@ -228,7 +227,7 @@ describe('ShipRepository', () => {
         },
       } as unknown as PrismaClient;
       const repository = new ShipRepository(prisma);
-      const location = new Location('earth', 'Earth', new Position(1, 2));
+      const location = ModelFactory.createLocation({});
 
       // when
       const ships = await repository.getAllAtLocation(location);

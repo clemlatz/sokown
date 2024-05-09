@@ -1,6 +1,5 @@
 import Position from '../models/Position';
 import EventRepository from '../repositories/EventRepository';
-import Location from '../models/Location';
 import ModelFactory from '../../test/ModelFactory';
 import LocationRepository from '../repositories/LocationRepository';
 import MoveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
@@ -17,8 +16,11 @@ describe('moveShipTowardsDestinationUsecase', () => {
         destinationPosition,
       });
       const locationRepository = {
-        findByPosition: jest.fn(
-          () => new Location('mars', 'Mars', destinationPosition),
+        findByPosition: jest.fn(() =>
+          ModelFactory.createLocation({
+            name: 'Mars',
+            position: destinationPosition,
+          }),
         ),
       } as unknown as LocationRepository;
       const eventRepository = {
@@ -50,8 +52,8 @@ describe('moveShipTowardsDestinationUsecase', () => {
         destinationPosition,
       });
       const locationRepository = {
-        findByPosition: jest.fn(
-          () => new Location('mars', 'Mars', destinationPosition),
+        findByPosition: jest.fn(() =>
+          ModelFactory.createLocation({ code: 'mars', name: 'Mars' }),
         ),
       } as unknown as LocationRepository;
       const eventRepository = {
@@ -67,11 +69,10 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const updatedShip = await moveShipTowardsDestinationUsecase.execute(ship);
 
       // then
-      const destinationLocation = new Location(
-        'mars',
-        'Mars',
-        new Position(23, 17),
-      );
+      const destinationLocation = ModelFactory.createLocation({
+        code: 'mars',
+        name: 'Mars',
+      });
       expect(eventRepository.create).toHaveBeenCalledWith(
         'has arrived at Mars ({23,17})',
         ship,

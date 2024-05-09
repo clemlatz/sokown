@@ -1,11 +1,11 @@
 import Position from './Position';
-import Location from './Location';
+import ModelFactory from '../../test/ModelFactory';
 
 describe('Location', () => {
   describe('setPosition', () => {
     test('it should round coordinates to three digits', () => {
       // given
-      const location = new Location('earth', 'Earth', new Position(1, 1));
+      const location = ModelFactory.createLocation({});
       const newPosition = new Position(3.14159265359, 1.61803398875);
 
       // when
