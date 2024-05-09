@@ -2,6 +2,7 @@ import Ship from './Ship';
 import Position from './Position';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import User from './User';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 describe('Ship', () => {
   describe('destinationPosition', () => {
@@ -14,6 +15,7 @@ describe('Ship', () => {
         'Hermes',
         new SpeedInKilometersPerSecond(1),
         new Position(1, 2),
+        new OrientationInDegrees(0),
         new Position(3, 4),
         null,
       );
@@ -34,6 +36,7 @@ describe('Ship', () => {
         'Hermes',
         new SpeedInKilometersPerSecond(1),
         new Position(1, 2),
+        new OrientationInDegrees(0),
         null,
         null,
       );

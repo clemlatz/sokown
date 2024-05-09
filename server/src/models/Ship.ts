@@ -1,6 +1,7 @@
 import Position from './Position';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import User from './User';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 export default class Ship {
   private readonly _id: number;
@@ -8,6 +9,7 @@ export default class Ship {
   private readonly _name: string;
   private readonly _speed: SpeedInKilometersPerSecond;
   private _currentPosition: Position = new Position(0, 0);
+  private _currentCourse: OrientationInDegrees = new OrientationInDegrees(0);
   private _destinationPosition: Position | null;
   private _currentLocationCode: string | null;
 
@@ -17,6 +19,7 @@ export default class Ship {
     name: string,
     speed: SpeedInKilometersPerSecond,
     currentPosition: Position,
+    currentCourse: OrientationInDegrees,
     destinationPosition: Position | null,
     currentLocationCode: string | null,
   ) {
@@ -25,6 +28,7 @@ export default class Ship {
     this._name = name;
     this._speed = speed;
     this._currentPosition = currentPosition;
+    this._currentCourse = currentCourse;
     this._destinationPosition = destinationPosition;
     this._currentLocationCode = currentLocationCode;
   }
@@ -51,6 +55,14 @@ export default class Ship {
 
   set currentPosition(value: Position) {
     this._currentPosition = value;
+  }
+
+  get currentCourse(): OrientationInDegrees {
+    return this._currentCourse;
+  }
+
+  set currentCourse(value: OrientationInDegrees) {
+    this._currentCourse = value;
   }
 
   get destinationPosition(): Position {

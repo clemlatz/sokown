@@ -5,6 +5,7 @@ import User from '../src/models/User';
 import AuthenticationMethod from '../src/models/AuthenticationMethod';
 import SpeedInKilometersPerSecond from '../src/values/SpeedInKilometersPerSecond';
 import DistanceInSokownUnits from '../src/values/DistanceInSokownUnits';
+import OrientationInDegrees from '../src/values/OrientationInDegrees';
 
 export default class ModelFactory {
   public static createAuthenticationMethod({
@@ -24,6 +25,7 @@ export default class ModelFactory {
     name = 'Artémis',
     speed = 100,
     currentPosition = new Position(1, 1),
+    currentCourse = new OrientationInDegrees(0),
     destinationPosition = null,
     currentLocationCode = null,
   }: {
@@ -32,6 +34,7 @@ export default class ModelFactory {
     name?: string;
     speed?: number;
     currentPosition?: Position;
+    currentCourse?: OrientationInDegrees;
     destinationPosition?: Position | null;
     currentLocationCode?: string | null;
   } = {}): Ship {
@@ -41,6 +44,7 @@ export default class ModelFactory {
       name,
       new SpeedInKilometersPerSecond(speed),
       currentPosition,
+      currentCourse,
       destinationPosition,
       currentLocationCode,
     );
