@@ -110,6 +110,7 @@ export class ShipController {
           x: ship.currentPosition.x,
           y: ship.currentPosition.y,
         },
+        currentCourse: ship.currentCourse.value,
         currentLocation: currentLocation
           ? { name: currentLocation.name }
           : null,

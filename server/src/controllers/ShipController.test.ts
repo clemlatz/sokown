@@ -12,6 +12,7 @@ import ModelFactory from '../../test/ModelFactory';
 import AuthenticationGuard from '../guards/AuthenticationGuard';
 import AuthenticationMethodRepository from '../repositories/AuthenticationMethodRepository';
 import User from '../models/User';
+import OrientationInDegrees from '../values/OrientationInDegrees';
 
 describe('ShipController', () => {
   let shipController: ShipController;
@@ -58,6 +59,7 @@ describe('ShipController', () => {
           speed: 200,
           name: 'Europa Report',
           currentPosition: new Position(3, 4),
+          currentCourse: new OrientationInDegrees(88),
           destinationPosition: new Position(23, 17),
         }),
       ];
@@ -86,6 +88,7 @@ describe('ShipController', () => {
               speedInKilometersPerSecond: 100,
               currentPosition: { x: 1, y: 1 },
               currentLocation: { name: 'Earth' },
+              currentCourse: 0,
               destinationPosition: null,
               destinationLocation: null,
               timeToDestination: null,
@@ -103,6 +106,7 @@ describe('ShipController', () => {
               speedInKilometersPerSecond: 200,
               currentPosition: { x: 3, y: 4 },
               currentLocation: { name: 'Earth' },
+              currentCourse: 88,
               destinationPosition: { x: 23, y: 17 },
               destinationLocation: { name: 'Earth' },
               timeToDestination: null,
@@ -125,6 +129,7 @@ describe('ShipController', () => {
         speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 2),
+        currentCourse: new OrientationInDegrees(0),
         destinationPosition: null,
       });
       jest
@@ -147,6 +152,7 @@ describe('ShipController', () => {
             name: 'Discovery One',
             speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 2 },
+            currentCourse: 0,
             currentLocation: { name: 'Earth' },
             destinationPosition: null,
             destinationLocation: null,
@@ -167,6 +173,7 @@ describe('ShipController', () => {
         speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 2),
+        currentCourse: new OrientationInDegrees(84),
         destinationPosition: new Position(3, 4),
       });
       jest
@@ -194,6 +201,7 @@ describe('ShipController', () => {
             name: 'Discovery One',
             speedInKilometersPerSecond: 100,
             currentPosition: { x: 1, y: 2 },
+            currentCourse: 84,
             currentLocation: { name: 'Earth' },
             destinationPosition: { x: 3, y: 4 },
             destinationLocation: { name: 'Moon' },
