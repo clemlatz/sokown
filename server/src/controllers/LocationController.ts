@@ -61,6 +61,7 @@ export default class LocationController {
       type: 'location',
       attributes: {
         name: location.name,
+        color: location.color,
         position: {
           x: location.position.x,
           y: location.position.y,

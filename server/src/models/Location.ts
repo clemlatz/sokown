@@ -4,13 +4,15 @@ import DistanceInSokownUnits from '../values/DistanceInSokownUnits';
 export default class Location {
   private readonly _code: string;
   private readonly _name: string;
+  private readonly _color: string;
   private _position: Position;
-  private _primaryBody: Location | null;
+  private readonly _primaryBody: Location | null;
   private _distanceFromPrimaryBody: DistanceInSokownUnits;
 
   constructor(
     code: string,
     name: string,
+    color: string,
     position: Position,
     primaryBody: Location | null = null,
   ) {
@@ -18,6 +20,7 @@ export default class Location {
     this._name = name;
     this._position = position;
     this._primaryBody = primaryBody;
+    this._color = color;
   }
 
   get code(): string {
@@ -26,6 +29,10 @@ export default class Location {
 
   get name(): string {
     return this._name;
+  }
+
+  get color(): string {
+    return this._color;
   }
 
   get position(): Position {
