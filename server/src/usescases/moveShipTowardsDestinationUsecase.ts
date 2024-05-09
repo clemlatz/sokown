@@ -1,5 +1,6 @@
 import Ship from '../models/Ship';
 import calculateNewPosition from '../helpers/calculateNewPosition';
+import calculateAngleBetweenPositions from '../helpers/calculateAngleBetweenPositions';
 import LocationRepository from '../repositories/LocationRepository';
 import EventRepository from '../repositories/EventRepository';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
@@ -22,6 +23,11 @@ export default class MoveShipTowardsDestinationUsecase {
       ship.currentPosition,
       ship.destinationPosition,
       distanceTraveledInKm,
+    );
+
+    ship.currentCourse = calculateAngleBetweenPositions(
+      ship.currentPosition,
+      ship.destinationPosition,
     );
 
     ship.currentLocationCode = this.locationRepository.findByPosition(
