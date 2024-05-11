@@ -41,7 +41,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       expect(eventRepository.create).not.toHaveBeenCalled();
       expect(updatedShip.currentPosition.x).toBe(1.0003707937837683);
       expect(updatedShip.currentPosition.y).toBe(1.0005561906756524);
-      expect(updatedShip.currentCourse.value).toBe(56.3);
+      expect(updatedShip.currentCourse.value).toBe(33.7);
     });
   });
 

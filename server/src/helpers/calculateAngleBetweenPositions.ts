@@ -9,12 +9,12 @@ export default function calculateAngleBetweenPositions(
     position2.y - position1.y,
     position2.x - position1.x,
   );
-  const angleInDegrees = (angleInRadians * 180) / Math.PI;
-  const angleFromYPositiveAxis = angleInDegrees;
-  const newCourse =
+  const angleInDegrees = angleInRadians * (180 / Math.PI);
+  const angleInDegreesClockwise = 360 - angleInDegrees;
+  const angleFromYPositiveAxis = angleInDegreesClockwise - 270;
+  const positiveAngle =
     angleFromYPositiveAxis >= 0
       ? angleFromYPositiveAxis
       : angleFromYPositiveAxis + 360;
-  const orientationInDegrees = new OrientationInDegrees(newCourse);
-  return orientationInDegrees;
+  return new OrientationInDegrees(positiveAngle);
 }
