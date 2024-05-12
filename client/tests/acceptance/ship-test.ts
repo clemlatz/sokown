@@ -56,6 +56,7 @@ module('Acceptance | ship', function (hooks) {
       assert
         .dom(screen.getByLabelText('A star map of the solar system'))
         .exists();
+      assert.dom(screen.getByLabelText('Scale')).hasText('32 S.U.');
     });
 
     module('when ship is moving', function () {
