@@ -3,81 +3,46 @@
 import Component from '@glimmer/component';
 
 import type { Position } from 'sokown-client/types';
-import type Location from 'sokown-client/models/location';
+import type ShipModel from 'sokown-client/models/ship';
 
 interface ComponentSignature {
   Args: {
-    label: string;
-    color: string;
-    location: Location;
-    position: Position;
-    primaryBodyPosition: Position | null;
-    distanceFromPrimaryBody: number;
+    ship: ShipModel;
     scale: number;
   };
 }
 
 export default class StarMapLocationComponent extends Component<ComponentSignature> {
-  get shouldBeDisplayed(): boolean {
-    return this.primaryBodyPosition === null || this.orbitRadius > 5;
-  }
-
   get objectPosition(): Position {
     return {
-      x: (this.args.position.x / this.starMapSizeInSokownUnits) * 100,
-      y: (-this.args.position.y / this.starMapSizeInSokownUnits) * 100,
-    };
-  }
-
-  get labelPosition(): Position {
-    return {
-      x: this.objectPosition.x,
-      y: this.objectPosition.y + 3.5,
-    };
-  }
-
-  get primaryBodyPosition(): Position | null {
-    if (!this.args.primaryBodyPosition) {
-      return null;
-    }
-
-    return {
       x:
-        (this.args.primaryBodyPosition.x / this.starMapSizeInSokownUnits) * 100,
+        (this.args.ship.currentPosition.x / this.starMapSizeInSokownUnits) *
+        100,
       y:
-        (-this.args.primaryBodyPosition.y / this.starMapSizeInSokownUnits) *
+        (-this.args.ship.currentPosition.y / this.starMapSizeInSokownUnits) *
         100,
     };
   }
 
-  get orbitLabel(): string {
-    return `${this.args.label}'s orbit`;
-  }
+  get polygonPoints(): string {
+    const leftWingX = this.objectPosition.x + -1;
+    const leftWingY = this.objectPosition.y + 3;
 
-  get orbitRadius(): number {
-    return (
-      (this.args.distanceFromPrimaryBody / this.starMapSizeInSokownUnits) * 100
-    );
-  }
+    const rearX = this.objectPosition.x;
+    const rearY = this.objectPosition.y + 2;
 
-  get fillColor(): string {
-    return this.primaryBodyPosition === null
-      ? this.args.color
-      : 'url(#gradient)';
+    const rightWingX = this.objectPosition.x + 1;
+    const rightWingY = this.objectPosition.y + 3;
+
+    return `${this.objectPosition.x},${this.objectPosition.y} ${leftWingX},${leftWingY}, ${rearX},${rearY} ${rightWingX},${rightWingY}`;
   }
 
   get transformOrigin(): string {
     return `${this.objectPosition.x} ${this.objectPosition.y}`;
   }
 
-  get angleToTheSun(): string {
-    const angleInRadians = Math.atan2(
-      this.objectPosition.y,
-      this.objectPosition.x,
-    );
-    const angleInDegrees = (angleInRadians * 180) / Math.PI;
-    const angleFromPositiveYAxis = angleInDegrees - 90;
-    return `rotate(${angleFromPositiveYAxis})`;
+  get rotation(): string {
+    return `rotate(${this.args.ship.currentCourse})`;
   }
 
   private get starMapSizeInSokownUnits() {
