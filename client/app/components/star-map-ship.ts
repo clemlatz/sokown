@@ -15,24 +15,20 @@ interface ComponentSignature {
 export default class StarMapLocationComponent extends Component<ComponentSignature> {
   get objectPosition(): Position {
     return {
-      x:
-        (this.args.ship.currentPosition.x / this.starMapSizeInSokownUnits) *
-        100,
-      y:
-        (-this.args.ship.currentPosition.y / this.starMapSizeInSokownUnits) *
-        100,
+      x: this.args.ship.currentPosition.x,
+      y: -this.args.ship.currentPosition.y,
     };
   }
 
   get polygonPoints(): string {
-    const leftWingX = this.objectPosition.x + -1;
-    const leftWingY = this.objectPosition.y + 3;
+    const leftWingX = this.objectPosition.x + (-1 * this.args.scale) / 10;
+    const leftWingY = this.objectPosition.y + (3 * this.args.scale) / 10;
 
     const rearX = this.objectPosition.x;
-    const rearY = this.objectPosition.y + 2;
+    const rearY = this.objectPosition.y + (2 * this.args.scale) / 10;
 
-    const rightWingX = this.objectPosition.x + 1;
-    const rightWingY = this.objectPosition.y + 3;
+    const rightWingX = this.objectPosition.x + (1 * this.args.scale) / 10;
+    const rightWingY = this.objectPosition.y + (3 * this.args.scale) / 10;
 
     return `${this.objectPosition.x},${this.objectPosition.y} ${leftWingX},${leftWingY}, ${rearX},${rearY} ${rightWingX},${rightWingY}`;
   }
@@ -43,9 +39,5 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
 
   get rotation(): string {
     return `rotate(${this.args.ship.currentCourse})`;
-  }
-
-  private get starMapSizeInSokownUnits() {
-    return this.args.scale * 10;
   }
 }

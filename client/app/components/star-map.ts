@@ -16,4 +16,14 @@ interface ComponentSignature {
 
 export default class StarMapComponent extends Component<ComponentSignature> {
   @tracked scale: number = 300;
+
+  public get viewBox(): string {
+    const mapSize = this.scale * 10;
+    const mapOffset = mapSize / 2;
+    return `-${mapOffset} -${mapOffset} ${mapSize} ${mapSize}`;
+  }
+
+  public get fontSize(): number {
+    return this.scale / 5;
+  }
 }
