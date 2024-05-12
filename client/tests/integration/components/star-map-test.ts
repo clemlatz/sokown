@@ -53,4 +53,20 @@ module('Integration | Component | star-map', function (hooks) {
       assert.dom(screen.getByLabelText('Artémis')).exists();
     });
   });
+
+  module('when a scale is provided', function () {
+    test('it displays the map zoomed at given scale', async function (assert) {
+      // given
+      this.set('locations', []);
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} />`,
+      );
+
+      // then
+      const starMap = screen.getByLabelText('A star map of the solar system');
+      assert.dom(starMap).hasAttribute('viewBox', '-160 -160 320 320');
+    });
+  });
 });
