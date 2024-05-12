@@ -10,7 +10,7 @@ module('Integration | Component | star-map-ship', function (hooks) {
     // given
     const ship = {
       name: 'Daedalus',
-      currentPosition: { x: 9, y: 12 },
+      currentPosition: { x: 90, y: 120 },
       currentCourse: 84,
     };
     this.set('scale', 300);
@@ -25,7 +25,7 @@ module('Integration | Component | star-map-ship', function (hooks) {
     const starMapShip = screen.getByLabelText('Daedalus');
     assert
       .dom(starMapShip)
-      .hasAttribute('points', '0.3,-0.4 -0.7,2.6, 0.3,1.6 1.3,2.6');
+      .hasAttribute('points', '90,-120 60,-30, 90,-60 120,-30');
     assert.dom(starMapShip).hasAttribute('transform', 'rotate(84)');
   });
 });

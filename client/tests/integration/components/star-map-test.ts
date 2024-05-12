@@ -6,7 +6,7 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Component | star-map', function (hooks) {
   setupRenderingTest(hooks, {});
 
-  test('it displays locations and ship', async function (assert) {
+  test('it displays the map centered on the sun with locations', async function (assert) {
     // given
     this.set('locations', [
       {
@@ -25,6 +25,9 @@ module('Integration | Component | star-map', function (hooks) {
     );
 
     // then
+    const starMap = screen.getByLabelText('A star map of the solar system');
+    assert.dom(starMap).exists();
+    assert.dom(starMap).hasAttribute('viewBox', '-1500 -1500 3000 3000');
     assert.dom('text').hasText('300 S.U.');
     assert.dom(screen.getByLabelText('Earth')).exists();
     assert.dom(screen.getByLabelText('Artémis')).exists();

@@ -19,21 +19,21 @@ interface ComponentSignature {
 
 export default class StarMapLocationComponent extends Component<ComponentSignature> {
   get shouldBeDisplayed(): boolean {
-    return this.primaryBodyPosition === null || this.orbitRadius > 5;
+    return (
+      this.primaryBodyPosition === null ||
+      this.orbitRadius > (this.args.scale / 10) * 5
+    );
   }
 
   get objectPosition(): Position {
     return {
-      x: (this.args.position.x / this.starMapSizeInSokownUnits) * 100,
-      y: (-this.args.position.y / this.starMapSizeInSokownUnits) * 100,
+      x: this.args.position.x,
+      y: -this.args.position.y,
     };
   }
 
-  get labelPosition(): Position {
-    return {
-      x: this.objectPosition.x,
-      y: this.objectPosition.y + 3.5,
-    };
+  get labelPositionY(): number {
+    return this.objectPosition.y + (this.args.scale / 10) * 3.5;
   }
 
   get primaryBodyPosition(): Position | null {
@@ -42,11 +42,8 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
     }
 
     return {
-      x:
-        (this.args.primaryBodyPosition.x / this.starMapSizeInSokownUnits) * 100,
-      y:
-        (-this.args.primaryBodyPosition.y / this.starMapSizeInSokownUnits) *
-        100,
+      x: this.args.primaryBodyPosition.x,
+      y: -this.args.primaryBodyPosition.y,
     };
   }
 
@@ -55,9 +52,7 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
   }
 
   get orbitRadius(): number {
-    return (
-      (this.args.distanceFromPrimaryBody / this.starMapSizeInSokownUnits) * 100
-    );
+    return this.args.distanceFromPrimaryBody;
   }
 
   get fillColor(): string {
@@ -78,9 +73,5 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
     const angleInDegrees = (angleInRadians * 180) / Math.PI;
     const angleFromPositiveYAxis = angleInDegrees - 90;
     return `rotate(${angleFromPositiveYAxis})`;
-  }
-
-  private get starMapSizeInSokownUnits() {
-    return this.args.scale * 10;
   }
 }
