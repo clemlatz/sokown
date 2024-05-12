@@ -59,6 +59,7 @@ dl dt {
 /* StarMap */
 
 .StarMap {
+  background: black;
   margin: auto;
   max-width: 768px;
 }
