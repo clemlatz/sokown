@@ -60,6 +60,17 @@ dl dt {
 
 .StarMap {
   background: black;
+  color: white;
   margin: auto;
   max-width: 768px;
+  position: relative;;
+}
+
+.StarMap__scale {
+  border-bottom: 5px solid white;
+  bottom: 2%;
+  position: absolute;
+  right: 2%;
+  text-align: center;
+  width: 10%;
 }

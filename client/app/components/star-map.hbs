@@ -7,17 +7,6 @@
        aria-label="A star map of the solar system"
        font-size={{this.fontSize}}
   >
-    <rect x="35%" y="46%" width="10%" height="0.5%" fill="white" aria-hidden="true"/>
-    <text
-      x="40%"
-      y="45%"
-      fill="white"
-      text-anchor="middle"
-      aria-hidden="true"
-    >
-      {{this.scale}} S.U.
-    </text>
-
     {{#each @locations as |location| }}
       <StarMapLocation
         @scale={{this.scale}}
@@ -33,4 +22,5 @@
       <StarMapShip @scale={{this.scale}} @ship={{@ship}} />
     {{/if}}
   </svg>
+  <div class="StarMap__scale" aria-label="Scale">{{this.scale}} S.U.</div>
 </div>
