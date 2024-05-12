@@ -18,7 +18,7 @@ module('Acceptance | ship', function (hooks) {
   setupMirage(hooks);
 
   module('visiting /ships/:id', function () {
-    test('it displays ship public information', async function (assert) {
+    test('it displays ship public information and star map', async function (assert) {
       // when
       const screen = await visit('/');
       await click(screen.getByRole('link', { name: 'Ships' }));
@@ -53,6 +53,9 @@ module('Acceptance | ship', function (hooks) {
       assert
         .dom(screen.getByRole('definition', { name: 'Est. time of arrival' }))
         .hasText('—');
+      assert
+        .dom(screen.getByLabelText('A star map of the solar system'))
+        .exists();
     });
 
     module('when ship is moving', function () {

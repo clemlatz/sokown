@@ -49,6 +49,8 @@
   </dd>
 </dl>
 
+<StarMap @locations={{this.starMapLocations}} @ship={{@model}} />
+
 <h3>Autopilot</h3>
 {{#if this.currentUser.isAuthenticated}}
   <form class="row row-cols-lg-auto g-3 align-items-center" {{on "submit" this.setDestination}}>
