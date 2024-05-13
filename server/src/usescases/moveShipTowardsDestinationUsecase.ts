@@ -25,11 +25,6 @@ export default class MoveShipTowardsDestinationUsecase {
       distanceTraveledInKm,
     );
 
-    ship.currentCourse = calculateAngleBetweenPositions(
-      ship.currentPosition,
-      ship.destinationPosition,
-    );
-
     ship.currentLocationCode = this.locationRepository.findByPosition(
       ship.currentPosition,
     ).code;
@@ -46,6 +41,11 @@ export default class MoveShipTowardsDestinationUsecase {
       }
       ship.resetDestination();
       return ship;
+    } else {
+      ship.currentCourse = calculateAngleBetweenPositions(
+        ship.currentPosition,
+        ship.destinationPosition,
+      );
     }
 
     ship.currentPosition = newPosition;

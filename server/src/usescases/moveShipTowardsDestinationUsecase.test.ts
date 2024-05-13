@@ -53,6 +53,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const ship = ModelFactory.createShip({
         currentPosition,
         destinationPosition,
+        currentCourse: new OrientationInDegrees(88),
       });
       const locationRepository = {
         findByPosition: jest.fn(() =>
@@ -85,6 +86,9 @@ describe('moveShipTowardsDestinationUsecase', () => {
       expect(updatedShip.currentPosition.y).toBe(17);
       expect(updatedShip.isStationary).toBe(true);
       expect(updatedShip.currentLocationCode).toBe('mars');
+      expect(updatedShip.currentCourse).toStrictEqual(
+        new OrientationInDegrees(88),
+      );
     });
   });
 });
