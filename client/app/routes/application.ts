@@ -9,7 +9,7 @@ export default class ApplicationRoute extends Route {
   @service declare currentUser: CurrentUserService;
 
   async model() {
-    await this.locations.load();
     await this.currentUser.load();
+    await this.locations.load();
   }
 }
