@@ -22,5 +22,10 @@
       <StarMapShip @scale={{this.scale}} @ship={{@ship}} />
     {{/if}}
   </svg>
+
+  <div class="StarMap__scale-controls">
+    <button class="btn btn-sm btn-light" aria-label="Zoom in" type="button" {{on "click" this.zoomIn}}>+</button>
+    <button class="btn btn-sm btn-light" aria-label="Zoom out" type="button" {{on "click" this.zoomOut}}>-</button>
+  </div>
   <div class="StarMap__scale" aria-label="Scale">{{this.scale}} S.U.</div>
 </div>
