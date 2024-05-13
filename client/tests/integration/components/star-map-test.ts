@@ -1,7 +1,9 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'sokown-client/tests/helpers';
 import { render } from '@1024pix/ember-testing-library';
 import { hbs } from 'ember-cli-htmlbars';
+import { click } from '@ember/test-helpers';
+
+import { setupRenderingTest } from 'sokown-client/tests/helpers';
 
 module('Integration | Component | star-map', function (hooks) {
   setupRenderingTest(hooks, {});
@@ -67,6 +69,42 @@ module('Integration | Component | star-map', function (hooks) {
       // then
       const starMap = screen.getByLabelText('A star map of the solar system');
       assert.dom(starMap).hasAttribute('viewBox', '-160 -160 320 320');
+    });
+  });
+
+  module('when zooming in', function () {
+    test('it reduces map scale', async function (assert) {
+      // given
+      this.set('locations', []);
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} />`,
+      );
+
+      // when
+      await click(screen.getByRole('button', { name: 'Zoom in' }));
+
+      // then
+      const starMap = screen.getByLabelText('A star map of the solar system');
+      assert.dom(starMap).hasAttribute('viewBox', '-80 -80 160 160');
+      assert.dom(screen.getByLabelText('Scale')).hasText('16 S.U.');
+    });
+  });
+
+  module('when zooming out', function () {
+    test('it increases map scale', async function (assert) {
+      // given
+      this.set('locations', []);
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} />`,
+      );
+
+      // when
+      await click(screen.getByRole('button', { name: 'Zoom out' }));
+
+      // then
+      const starMap = screen.getByLabelText('A star map of the solar system');
+      assert.dom(starMap).hasAttribute('viewBox', '-320 -320 640 640');
+      assert.dom(screen.getByLabelText('Scale')).hasText('64 S.U.');
     });
   });
 });

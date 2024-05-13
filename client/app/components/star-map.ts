@@ -1,6 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 
 import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 import type Location from 'sokown-client/models/location';
 import type ShipModel from 'sokown-client/models/ship';
@@ -15,8 +17,10 @@ interface ComponentSignature {
 }
 
 export default class StarMapComponent extends Component<ComponentSignature> {
+  @tracked private _scale: number | null = null;
+
   public get scale(): number {
-    return this.args.scale || 300;
+    return this._scale || this.args.scale || 300;
   }
 
   private get mapSize(): number {
@@ -47,5 +51,17 @@ export default class StarMapComponent extends Component<ComponentSignature> {
 
   public get fontSize(): number {
     return this.scale / 5;
+  }
+
+  @action
+  public zoomIn(): void {
+    const newScale = this.scale / 2;
+    this._scale = newScale >= 1 ? newScale : 1;
+  }
+
+  @action
+  public zoomOut(): void {
+    const newScale = this.scale * 2;
+    this._scale = newScale <= 1024 ? newScale : 1024;
   }
 }

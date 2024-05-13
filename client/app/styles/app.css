@@ -68,9 +68,20 @@ dl dt {
 
 .StarMap__scale {
   border-bottom: 5px solid white;
-  bottom: 2%;
+  bottom: 10px;
   position: absolute;
-  right: 2%;
+  right: 10px;
   text-align: center;
-  width: 10%;
+  width: 100px;
+}
+
+.StarMap__scale-controls {
+  bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  position: absolute;
+  right: 44px;
+  width: 32px;
 }

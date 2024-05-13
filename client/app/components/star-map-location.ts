@@ -21,7 +21,7 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
   get shouldBeDisplayed(): boolean {
     return (
       this.primaryBodyPosition === null ||
-      this.orbitRadius > (this.args.scale / 10) * 5
+      this.orbitRadius > (this.args.scale / 10) * 3
     );
   }
 
