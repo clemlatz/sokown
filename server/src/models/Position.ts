@@ -14,6 +14,14 @@ export default class Position {
     return this._y;
   }
 
+  get roundedX() {
+    return Math.round(this.x * 100) / 100;
+  }
+
+  get roundedY() {
+    return Math.round(this.y * 100) / 100;
+  }
+
   toString(): string {
     return `{${this.x},${this.y}}`;
   }

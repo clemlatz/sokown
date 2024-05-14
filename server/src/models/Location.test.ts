@@ -12,8 +12,8 @@ describe('Location', () => {
       location.setPosition(newPosition);
 
       // then
-      expect(location.position.x).toStrictEqual(3.142);
-      expect(location.position.y).toStrictEqual(1.618);
+      expect(location.position.x).toStrictEqual(3.14);
+      expect(location.position.y).toStrictEqual(1.62);
     });
   });
 });

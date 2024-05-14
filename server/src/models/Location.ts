@@ -40,9 +40,7 @@ export default class Location {
   }
 
   setPosition(position: Position): void {
-    const xWithThreeDigits = Math.round(position.x * 1000) / 1000;
-    const yWithThreeDigits = Math.round(position.y * 1000) / 1000;
-    this._position = new Position(xWithThreeDigits, yWithThreeDigits);
+    this._position = new Position(position.roundedX, position.roundedY);
   }
 
   get primaryBody(): Location {
