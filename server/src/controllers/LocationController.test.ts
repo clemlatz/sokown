@@ -47,9 +47,6 @@ describe('LocationController', () => {
     jest
       .spyOn(locationRepository, 'getByCode')
       .mockImplementation(() => locations[0]);
-    jest
-      .spyOn(astronomyService, 'getPositionFor')
-      .mockResolvedValue(new Position(5, 6));
   });
 
   describe('index', () => {
@@ -128,6 +125,9 @@ describe('LocationController', () => {
         const response = {
           json: jest.fn(),
         } as unknown as Response;
+        jest
+          .spyOn(astronomyService, 'getPositionFor')
+          .mockResolvedValue(new Position(3.1415, 1.618));
 
         // when
         await locationController.getPosition(
@@ -145,7 +145,7 @@ describe('LocationController', () => {
           data: {
             id: 'earth',
             type: 'position',
-            attributes: { x: 5, y: 6 },
+            attributes: { x: 3.14, y: 1.62 },
           },
         });
       });

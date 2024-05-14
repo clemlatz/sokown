@@ -35,7 +35,7 @@ export default class LocationController {
     @Query() query: { targetDate: string },
     @Res() res: Response,
   ): Promise<void> {
-    const { x, y } = await this.astronomyService.getPositionFor(
+    const position = await this.astronomyService.getPositionFor(
       params.code,
       new Date(parseInt(query.targetDate)),
     );
@@ -43,7 +43,10 @@ export default class LocationController {
       data: {
         id: params.code,
         type: 'position',
-        attributes: { x, y },
+        attributes: {
+          x: position.roundedX,
+          y: position.roundedY,
+        },
       },
     });
   }
