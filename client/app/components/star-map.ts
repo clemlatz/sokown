@@ -20,7 +20,7 @@ export default class StarMapComponent extends Component<ComponentSignature> {
   @tracked private _scale: number | null = null;
 
   public get scale(): number {
-    return this._scale || this.args.scale || 300;
+    return this._scale || this.args.scale || 256;
   }
 
   private get mapSize(): number {

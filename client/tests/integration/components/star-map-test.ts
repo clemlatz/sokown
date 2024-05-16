@@ -25,8 +25,8 @@ module('Integration | Component | star-map', function (hooks) {
     // then
     const starMap = screen.getByLabelText('A star map of the solar system');
     assert.dom(starMap).exists();
-    assert.dom(starMap).hasAttribute('viewBox', '-1500 -1500 3000 3000');
-    assert.dom(screen.getByLabelText('Scale')).hasText('300 S.U.');
+    assert.dom(starMap).hasAttribute('viewBox', '-1280 -1280 2560 2560');
+    assert.dom(screen.getByLabelText('Scale')).hasText('256 S.U.');
     assert.dom(screen.getByLabelText('Earth')).exists();
   });
 
@@ -51,7 +51,7 @@ module('Integration | Component | star-map', function (hooks) {
 
       // then
       const starMap = screen.getByLabelText('A star map of the solar system');
-      assert.dom(starMap).hasAttribute('viewBox', '-1400 -1700 3000 3000');
+      assert.dom(starMap).hasAttribute('viewBox', '-1180 -1480 2560 2560');
       assert.dom(screen.getByLabelText('Artémis')).exists();
     });
   });
