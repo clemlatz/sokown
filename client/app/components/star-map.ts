@@ -82,7 +82,6 @@ export default class StarMapComponent extends Component<ComponentSignature> {
   public saveZoomLevel(scale: number): void {
     const savedZoomLevels = this._readSavedZoomLevels();
     savedZoomLevels[this.args.key] = scale;
-    console.log(JSON.stringify(savedZoomLevels));
     window.localStorage.setItem('zoomLevels', JSON.stringify(savedZoomLevels));
   }
 
