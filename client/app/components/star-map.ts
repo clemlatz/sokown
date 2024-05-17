@@ -13,14 +13,24 @@ interface ComponentSignature {
     locations: Location[];
     ship: ShipModel;
     scale: number;
+    key: 'locations' | 'ship';
   };
 }
+
+type SavedZoomLevels = {
+  locations: number;
+  ship: number;
+};
+
+const DEFAULT_SCALE = 256;
 
 export default class StarMapComponent extends Component<ComponentSignature> {
   @tracked private _scale: number | null = null;
 
   public get scale(): number {
-    return this._scale || this.args.scale || 256;
+    return (
+      this._scale || this.savedZoomLevel || this.args.scale || DEFAULT_SCALE
+    );
   }
 
   private get mapSize(): number {
@@ -55,13 +65,34 @@ export default class StarMapComponent extends Component<ComponentSignature> {
 
   @action
   public zoomIn(): void {
-    const newScale = this.scale / 2;
-    this._scale = newScale >= 1 ? newScale : 1;
+    const nextScale = this.scale / 2;
+    const newScale = nextScale >= 1 ? nextScale : 1;
+    this.saveZoomLevel(newScale);
+    this._scale = newScale;
   }
 
   @action
   public zoomOut(): void {
-    const newScale = this.scale * 2;
-    this._scale = newScale <= 1024 ? newScale : 1024;
+    const nextScale = this.scale * 2;
+    const newScale = nextScale <= 1024 ? nextScale : 1024;
+    this.saveZoomLevel(newScale);
+    this._scale = newScale;
+  }
+
+  public saveZoomLevel(scale: number): void {
+    const savedZoomLevels = this._readSavedZoomLevels();
+    savedZoomLevels[this.args.key] = scale;
+    console.log(JSON.stringify(savedZoomLevels));
+    window.localStorage.setItem('zoomLevels', JSON.stringify(savedZoomLevels));
+  }
+
+  public get savedZoomLevel(): number | null {
+    const savedZoomLevels = this._readSavedZoomLevels();
+    return savedZoomLevels[this.args.key];
+  }
+
+  private _readSavedZoomLevels(): SavedZoomLevels {
+    const rawSavedZoomLevels = window.localStorage.getItem('zoomLevels');
+    return rawSavedZoomLevels ? JSON.parse(rawSavedZoomLevels) : {};
   }
 }

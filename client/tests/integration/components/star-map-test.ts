@@ -4,6 +4,9 @@ import { hbs } from 'ember-cli-htmlbars';
 import { click } from '@ember/test-helpers';
 
 import { setupRenderingTest } from 'sokown-client/tests/helpers';
+import stubLocalStorage from 'sokown-client/tests/helpers/local-storage-stub';
+
+stubLocalStorage({});
 
 module('Integration | Component | star-map', function (hooks) {
   setupRenderingTest(hooks, {});
@@ -75,9 +78,10 @@ module('Integration | Component | star-map', function (hooks) {
   module('when zooming in', function () {
     test('it reduces map scale', async function (assert) {
       // given
+      const localStorage = stubLocalStorage({ locations: 32, ship: 32 });
       this.set('locations', []);
       const screen = await render(
-        hbs`<StarMap @locations={{this.locations}} @scale={{32}} />`,
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} @key="locations" />`,
       );
 
       // when
@@ -87,15 +91,22 @@ module('Integration | Component | star-map', function (hooks) {
       const starMap = screen.getByLabelText('A star map of the solar system');
       assert.dom(starMap).hasAttribute('viewBox', '-80 -80 160 160');
       assert.dom(screen.getByLabelText('Scale')).hasText('16 S.U.');
+      assert.true(
+        localStorage.setItem.calledWith(
+          'zoomLevels',
+          '{"locations":16,"ship":32}',
+        ),
+      );
     });
   });
 
   module('when zooming out', function () {
     test('it increases map scale', async function (assert) {
       // given
+      const localStorage = stubLocalStorage({ locations: 32, ship: 32 });
       this.set('locations', []);
       const screen = await render(
-        hbs`<StarMap @locations={{this.locations}} @scale={{32}} />`,
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} @key={{"locations"}} />`,
       );
 
       // when
@@ -105,6 +116,12 @@ module('Integration | Component | star-map', function (hooks) {
       const starMap = screen.getByLabelText('A star map of the solar system');
       assert.dom(starMap).hasAttribute('viewBox', '-320 -320 640 640');
       assert.dom(screen.getByLabelText('Scale')).hasText('64 S.U.');
+      assert.true(
+        localStorage.setItem.calledWith(
+          'zoomLevels',
+          '{"locations":64,"ship":32}',
+        ),
+      );
     });
   });
 });

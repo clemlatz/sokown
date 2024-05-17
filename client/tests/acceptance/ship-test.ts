@@ -1,11 +1,12 @@
 import { module, test } from 'qunit';
-import { currentURL, click, fillIn } from '@ember/test-helpers';
+import { click, currentURL, fillIn } from '@ember/test-helpers';
 import { visit } from '@1024pix/ember-testing-library';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import 'qunit-dom';
 import { Response } from 'miragejs';
 
 import { setupApplicationTest } from 'sokown-client/tests/helpers';
+import stubLocalStorage from 'sokown-client/tests/helpers/local-storage-stub';
 
 type TestContext = {
   server: {
@@ -19,6 +20,9 @@ module('Acceptance | ship', function (hooks) {
 
   module('visiting /ships/:id', function () {
     test('it displays ship public information and star map', async function (assert) {
+      // given
+      stubLocalStorage({ ship: 32 });
+
       // when
       const screen = await visit('/');
       await click(screen.getByRole('link', { name: 'Ships' }));
