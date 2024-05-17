@@ -15,7 +15,9 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'no-console': 'error',
+  },
   overrides: [
     // ts files
     {
