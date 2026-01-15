@@ -96,11 +96,6 @@ export default class StarMapComponent extends Component<ComponentSignature> {
     return rawSavedZoomLevels ? JSON.parse(rawSavedZoomLevels) : {};
   }
 
-  public truncate(number: number): string {
-    const truncatedNumber = Math.trunc(number * 1000) / 1000;
-    return truncatedNumber.toFixed(3);
-  }
-
   @action
   public handleMouseMove(event: MouseEvent): void {
     const container = event.currentTarget as HTMLElement;

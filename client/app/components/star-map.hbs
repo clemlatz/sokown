@@ -35,8 +35,8 @@
   <div class="StarMap__scale" aria-label="Scale">{{this.scale}} S.U.</div>
   {{#if this.mousePosition}}
     <div class="StarMap__coordinates" aria-label="Coordinates">
-      <span aria-label="X coordinate">X: {{this.truncate this.mousePosition.x}}</span>
-      <span aria-label="Y coordinate">Y: {{this.truncate this.mousePosition.y}}</span>
+      <span aria-label="X coordinate">X: {{format-coordinate this.mousePosition.x}}</span>
+      <span aria-label="Y coordinate">Y: {{format-coordinate this.mousePosition.y}}</span>
     </div>
   {{/if}}
 </div>

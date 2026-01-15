@@ -144,8 +144,22 @@ module('Integration | Component | star-map', function (hooks) {
         clientY: 100,
       });
 
-      // then - coordinates are displayed
+      // then - coordinates are displayed with truncated values
       assert.dom(screen.getByLabelText('Coordinates')).exists();
+      assert.dom(screen.getByLabelText('X coordinate')).exists();
+      assert.dom(screen.getByLabelText('Y coordinate')).exists();
+
+      // verify coordinates are formatted with 3 decimal places
+      const xCoordinate = screen.getByLabelText('X coordinate').textContent;
+      const yCoordinate = screen.getByLabelText('Y coordinate').textContent;
+      assert.true(
+        /^X: -?\d+\.\d{3}$/.test(xCoordinate?.trim() || ''),
+        `X coordinate "${xCoordinate}" should be formatted with 3 decimal places`,
+      );
+      assert.true(
+        /^Y: -?\d+\.\d{3}$/.test(yCoordinate?.trim() || ''),
+        `Y coordinate "${yCoordinate}" should be formatted with 3 decimal places`,
+      );
     });
 
     test('it hides coordinates on mouse leave', async function (assert) {

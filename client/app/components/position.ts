@@ -1,8 +1,3 @@
-import Component from '@glimmer/component';
+import templateOnlyComponent from '@ember/component/template-only';
 
-export default class PositionComponent extends Component {
-  format(coordinate: number) {
-    const truncatedNumber = Math.trunc(coordinate * 1000) / 1000;
-    return truncatedNumber.toFixed(3);
-  }
-}
+export default templateOnlyComponent();
