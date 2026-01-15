@@ -85,3 +85,9 @@ dl dt {
   right: 44px;
   width: 32px;
 }
+
+.StarMap__coordinates {
+  bottom: 10px;
+  left: 10px;
+  position: absolute;
+}

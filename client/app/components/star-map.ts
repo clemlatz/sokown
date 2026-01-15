@@ -26,6 +26,7 @@ const DEFAULT_SCALE = 256;
 
 export default class StarMapComponent extends Component<ComponentSignature> {
   @tracked private _scale: number | null = null;
+  @tracked public mousePosition: Position | null = null;
 
   public get scale(): number {
     return (
@@ -93,5 +94,37 @@ export default class StarMapComponent extends Component<ComponentSignature> {
   private _readSavedZoomLevels(): SavedZoomLevels {
     const rawSavedZoomLevels = window.localStorage.getItem('zoomLevels');
     return rawSavedZoomLevels ? JSON.parse(rawSavedZoomLevels) : {};
+  }
+
+  public truncate(number: number): string {
+    const truncatedNumber = Math.trunc(number * 1000) / 1000;
+    return truncatedNumber.toFixed(3);
+  }
+
+  @action
+  public handleMouseMove(event: MouseEvent): void {
+    const container = event.currentTarget as HTMLElement;
+    const svg = container.querySelector('svg');
+    if (!svg) return;
+
+    const rect = svg.getBoundingClientRect();
+
+    // Convert screen coordinates to SVG viewBox coordinates
+    const scaleX = this.mapSize / rect.width;
+    const scaleY = this.mapSize / rect.height;
+
+    const svgX = (event.clientX - rect.left) * scaleX - this.mapOffset.x;
+    const svgY = (event.clientY - rect.top) * scaleY - this.mapOffset.y;
+
+    // Flip Y-axis back (SVG uses inverted Y)
+    this.mousePosition = {
+      x: svgX,
+      y: -svgY,
+    };
+  }
+
+  @action
+  public handleMouseLeave(): void {
+    this.mousePosition = null;
   }
 }

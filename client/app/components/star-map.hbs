@@ -1,4 +1,9 @@
-<div class="StarMap">
+{{! template-lint-disable no-invalid-interactive }}
+<div
+  class="StarMap"
+  {{on "mousemove" this.handleMouseMove}}
+  {{on "mouseleave" this.handleMouseLeave}}
+>
   <svg version="1.1"
        baseProfile="full"
        viewBox={{this.viewBox}}
@@ -28,4 +33,10 @@
     <button class="btn btn-sm btn-light" aria-label="Zoom out" type="button" {{on "click" this.zoomOut}}>-</button>
   </div>
   <div class="StarMap__scale" aria-label="Scale">{{this.scale}} S.U.</div>
+  {{#if this.mousePosition}}
+    <div class="StarMap__coordinates" aria-label="Coordinates">
+      <span aria-label="X coordinate">X: {{this.truncate this.mousePosition.x}}</span>
+      <span aria-label="Y coordinate">Y: {{this.truncate this.mousePosition.y}}</span>
+    </div>
+  {{/if}}
 </div>
