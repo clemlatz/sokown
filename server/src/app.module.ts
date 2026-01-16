@@ -12,6 +12,7 @@ import RegisterNewPilotUsecase from './usescases/RegisterNewPilotUsecase';
 
 import AuthenticationGuard from './guards/AuthenticationGuard';
 import OpenIDConnectService from './services/OpenIDConnectService';
+import MailerService from './services/MailerService';
 
 import AuthenticationMethodRepository from './repositories/AuthenticationMethodRepository';
 import EventRepository from './repositories/EventRepository';
@@ -42,6 +43,7 @@ import AstronomyService from './services/AstronomyService';
     AuthenticationMethodRepository,
     UserRepository,
     OpenIDConnectService.factory,
+    MailerService.factory,
     AuthenticationGuard,
     RegisterNewPilotUsecase,
     AstronomyService,

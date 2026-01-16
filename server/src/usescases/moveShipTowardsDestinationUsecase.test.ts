@@ -4,6 +4,8 @@ import ModelFactory from '../../test/ModelFactory';
 import LocationRepository from '../repositories/LocationRepository';
 import MoveShipTowardsDestinationUsecase from './moveShipTowardsDestinationUsecase';
 import OrientationInDegrees from '../values/OrientationInDegrees';
+import MailerService from '../services/MailerService';
+import User from '../models/User';
 
 describe('moveShipTowardsDestinationUsecase', () => {
   describe('when ship is not yet at destination', () => {
@@ -28,10 +30,14 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
+      const mailerService = {
+        sendMailNotification: jest.fn().mockResolvedValue(undefined),
+      } as unknown as MailerService;
       const moveShipTowardsDestinationUsecase =
         new MoveShipTowardsDestinationUsecase(
           locationRepository,
           eventRepository,
+          mailerService,
         );
 
       // when
@@ -39,6 +45,7 @@ describe('moveShipTowardsDestinationUsecase', () => {
 
       // then
       expect(eventRepository.create).not.toHaveBeenCalled();
+      expect(mailerService.sendMailNotification).not.toHaveBeenCalled();
       expect(updatedShip.currentPosition.x).toBe(1.0003707937837683);
       expect(updatedShip.currentPosition.y).toBe(1.0005561906756524);
       expect(updatedShip.currentCourse.value).toBe(33.7);
@@ -63,10 +70,14 @@ describe('moveShipTowardsDestinationUsecase', () => {
       const eventRepository = {
         create: jest.fn(),
       } as unknown as EventRepository;
+      const mailerService = {
+        sendMailNotification: jest.fn().mockResolvedValue(undefined),
+      } as unknown as MailerService;
       const moveShipTowardsDestinationUsecase =
         new MoveShipTowardsDestinationUsecase(
           locationRepository,
           eventRepository,
+          mailerService,
         );
 
       // when
@@ -89,6 +100,81 @@ describe('moveShipTowardsDestinationUsecase', () => {
       expect(updatedShip.currentCourse).toStrictEqual(
         new OrientationInDegrees(88),
       );
+    });
+
+    test('it sends mail notification when owner has enabled notifications', async () => {
+      // given
+      const currentPosition = new Position(23, 17);
+      const destinationPosition = new Position(23, 17);
+      const owner = new User(1, 'Test Pilot', 'pilot@example.com', true);
+      const ship = ModelFactory.createShip({
+        currentPosition,
+        destinationPosition,
+        owner,
+      });
+      const marsLocation = ModelFactory.createLocation({
+        code: 'mars',
+        name: 'Mars',
+      });
+      const locationRepository = {
+        findByPosition: jest.fn(() => marsLocation),
+      } as unknown as LocationRepository;
+      const eventRepository = {
+        create: jest.fn(),
+      } as unknown as EventRepository;
+      const mailerService = {
+        sendMailNotification: jest.fn().mockResolvedValue(undefined),
+      } as unknown as MailerService;
+      const moveShipTowardsDestinationUsecase =
+        new MoveShipTowardsDestinationUsecase(
+          locationRepository,
+          eventRepository,
+          mailerService,
+        );
+
+      // when
+      await moveShipTowardsDestinationUsecase.execute(ship);
+
+      // then
+      expect(mailerService.sendMailNotification).toHaveBeenCalledWith(
+        ship,
+        marsLocation,
+      );
+    });
+
+    test('it does not send mail notification when owner has disabled notifications', async () => {
+      // given
+      const currentPosition = new Position(23, 17);
+      const destinationPosition = new Position(23, 17);
+      const owner = new User(1, 'Test Pilot', 'pilot@example.com', false);
+      const ship = ModelFactory.createShip({
+        currentPosition,
+        destinationPosition,
+        owner,
+      });
+      const locationRepository = {
+        findByPosition: jest.fn(() =>
+          ModelFactory.createLocation({ code: 'mars', name: 'Mars' }),
+        ),
+      } as unknown as LocationRepository;
+      const eventRepository = {
+        create: jest.fn(),
+      } as unknown as EventRepository;
+      const mailerService = {
+        sendMailNotification: jest.fn().mockResolvedValue(undefined),
+      } as unknown as MailerService;
+      const moveShipTowardsDestinationUsecase =
+        new MoveShipTowardsDestinationUsecase(
+          locationRepository,
+          eventRepository,
+          mailerService,
+        );
+
+      // when
+      await moveShipTowardsDestinationUsecase.execute(ship);
+
+      // then
+      expect(mailerService.sendMailNotification).not.toHaveBeenCalled();
     });
   });
 });
