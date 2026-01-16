@@ -6,11 +6,13 @@ import EventRepository from '../repositories/EventRepository';
 import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import DistanceInKilometers from '../values/DistanceInKilometers';
 import Position from '../models/Position';
+import MailerService from '../services/MailerService';
 
 export default class MoveShipTowardsDestinationUsecase {
   constructor(
     private readonly locationRepository: LocationRepository,
     private readonly eventRepository: EventRepository,
+    private readonly mailerService: MailerService,
   ) {}
 
   async execute(ship: Ship): Promise<Ship> {
@@ -38,6 +40,17 @@ export default class MoveShipTowardsDestinationUsecase {
           ship,
           destinationLocation,
         );
+
+        if (ship.owner.hasEnabledNotifications) {
+          this.mailerService
+            .sendMailNotification(ship, destinationLocation)
+            .catch((error) => {
+              console.error(
+                `Failed to send arrival notification for ship ${ship.id}:`,
+                error,
+              );
+            });
+        }
       }
       ship.resetDestination();
       return ship;
