@@ -68,7 +68,12 @@ describe('OpenIDConnectController', () => {
     describe('when auth method and user already exists', () => {
       it('it logs user in', async () => {
         // given
-        const givenUser = new User(1, 'Jimmy Doolittle');
+        const givenUser = new User(
+          1,
+          'Jimmy Doolittle',
+          'jimmy@example.com',
+          false,
+        );
         const givenAuthenticationMethod =
           ModelFactory.createAuthenticationMethod({
             id: 2,

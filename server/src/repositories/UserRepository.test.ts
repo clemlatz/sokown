@@ -10,9 +10,12 @@ describe('UserRepository', () => {
       // given
       const prisma = {
         user: {
-          create: jest
-            .fn()
-            .mockResolvedValue({ id: 1, pilotName: 'Valentina Terechkova' }),
+          create: jest.fn().mockResolvedValue({
+            id: 1,
+            pilotName: 'Valentina Terechkova',
+            email: 'valentina@example.org',
+            hasEnabledNotifications: false,
+          }),
         },
       } as unknown as PrismaClient;
       const repository = new UserRepository(prisma);
@@ -27,7 +30,12 @@ describe('UserRepository', () => {
       );
 
       // then
-      const expectedUser = new User(1, 'Valentina Terechkova');
+      const expectedUser = new User(
+        1,
+        'Valentina Terechkova',
+        'valentina@example.org',
+        false,
+      );
       expect(returnedUser).toEqual(expectedUser);
       expect(prisma.user.create).toHaveBeenCalledWith({
         data: {
@@ -98,6 +106,8 @@ describe('UserRepository', () => {
               user: {
                 id: 2,
                 pilotName: 'Charles Lindbergh',
+                email: 'charles@example.com',
+                hasEnabledNotifications: true,
               },
             }),
           },
@@ -108,7 +118,12 @@ describe('UserRepository', () => {
         const user = await repository.getByAuthenticationMethodId(1);
 
         // then
-        const expectedUser = new User(2, 'Charles Lindbergh');
+        const expectedUser = new User(
+          2,
+          'Charles Lindbergh',
+          'charles@example.com',
+          true,
+        );
         expect(user).toEqual(expectedUser);
         expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
           where: { id: 1 },
@@ -142,7 +157,12 @@ describe('UserRepository', () => {
 
     it('returns true if user exists', async () => {
       // given
-      const user = new User(1, 'Betty Skelton Erde');
+      const user = new User(
+        1,
+        'Betty Skelton Erde',
+        'betty@example.com',
+        false,
+      );
       const prisma = {
         user: {
           findUnique: jest.fn().mockResolvedValue(user),

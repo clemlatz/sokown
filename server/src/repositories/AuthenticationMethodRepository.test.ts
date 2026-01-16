@@ -63,6 +63,8 @@ describe('AuthenticationMethodRepository', () => {
               user: {
                 id: 2,
                 pilotName: 'Chuck Yeager',
+                email: 'chuck@example.com',
+                hasEnabledNotifications: false,
               },
             }),
           },
@@ -80,7 +82,7 @@ describe('AuthenticationMethodRepository', () => {
               email: 'user@example.net',
               username: 'name',
             },
-            new User(2, 'Chuck Yeager'),
+            new User(2, 'Chuck Yeager', 'chuck@example.com', false),
           ),
         );
         expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
@@ -160,6 +162,8 @@ describe('AuthenticationMethodRepository', () => {
               user: {
                 id: 2,
                 pilotName: 'Chuck Yeager',
+                email: 'chuck@example.com',
+                hasEnabledNotifications: false,
               },
             }),
           },
@@ -177,7 +181,7 @@ describe('AuthenticationMethodRepository', () => {
               email: 'user@example.net',
               username: 'name',
             },
-            new User(2, 'Chuck Yeager'),
+            new User(2, 'Chuck Yeager', 'chuck@example.com', false),
           ),
         );
         expect(prisma.authenticationMethod.findUnique).toHaveBeenCalledWith({
@@ -222,6 +226,8 @@ describe('AuthenticationMethodRepository', () => {
         user: {
           id: 2,
           pilotName: 'Chuck Yeager',
+          email: 'chuck@example.com',
+          hasEnabledNotifications: false,
         },
       };
       const prisma = {
@@ -244,7 +250,7 @@ describe('AuthenticationMethodRepository', () => {
           email: 'user@example.net',
           username: 'name',
         },
-        new User(2, 'Chuck Yeager'),
+        new User(2, 'Chuck Yeager', 'chuck@example.com', false),
       );
       expect(authenticationMethod).toEqual(expectedAuthenticationMethod);
       expect(prisma.authenticationMethod.findFirst).toHaveBeenCalledWith({
@@ -284,7 +290,12 @@ describe('AuthenticationMethodRepository', () => {
       const authenticationMethod = ModelFactory.createAuthenticationMethod({
         user: null,
       });
-      const user = new User(1, 'Svetlana Savitskaïa');
+      const user = new User(
+        1,
+        'Svetlana Savitskaïa',
+        'svetlana@example.com',
+        false,
+      );
       const prisma = {
         authenticationMethod: {
           update: jest.fn(),
@@ -314,7 +325,12 @@ describe('AuthenticationMethodRepository', () => {
       const authenticationMethod = ModelFactory.createAuthenticationMethod({
         user: null,
       });
-      const user = new User(1, 'Svetlana Savitskaïa');
+      const user = new User(
+        1,
+        'Svetlana Savitskaïa',
+        'svetlana@example.com',
+        false,
+      );
       const prisma = {} as unknown as PrismaClient;
       const transaction = {
         authenticationMethod: {

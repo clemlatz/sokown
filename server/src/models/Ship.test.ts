@@ -8,7 +8,12 @@ describe('Ship', () => {
   describe('destinationPosition', () => {
     test('it prints position', () => {
       // given
-      const owner = new User(2, 'Raymonde de Laroche');
+      const owner = new User(
+        2,
+        'Raymonde de Laroche',
+        'raymonde@example.com',
+        false,
+      );
       const ship = new Ship(
         1,
         owner,
@@ -29,7 +34,12 @@ describe('Ship', () => {
 
     test('it throws an error if there is no destination', () => {
       // given
-      const owner = new User(2, 'Raymonde de Laroche');
+      const owner = new User(
+        2,
+        'Raymonde de Laroche',
+        'raymonde@example.com',
+        false,
+      );
       const ship = new Ship(
         1,
         owner,

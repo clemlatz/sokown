@@ -146,7 +146,7 @@ describe('UserController', () => {
       const response = {
         json: jest.fn(),
       } as unknown as Response;
-      const user = new User(2, 'Amelia Earhart');
+      const user = new User(2, 'Amelia Earhart', 'amelia@example.com', false);
       jest
         .spyOn(userRepository, 'getByAuthenticationMethodId')
         .mockImplementation(async () => user);
