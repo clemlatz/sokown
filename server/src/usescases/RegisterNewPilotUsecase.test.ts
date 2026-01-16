@@ -148,7 +148,12 @@ function _buildDependencies(
   const moonLocation = ModelFactory.createLocation({
     position: new Position(1, 2),
   });
-  const createdUser = new User(1, 'Valentina Tereshkova');
+  const createdUser = new User(
+    1,
+    'Valentina Tereshkova',
+    'valentina@example.com',
+    false,
+  );
   const userRepository = {
     create: jest.fn().mockResolvedValue(createdUser),
     existsByPilotName: jest.fn().mockResolvedValue(pilotNameIsTaken),

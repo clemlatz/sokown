@@ -21,7 +21,7 @@ export default class ModelFactory {
 
   public static createShip({
     id = 1,
-    owner = new User(2, 'Eileen Collins'),
+    owner = new User(2, 'Eileen Collins', 'eileen@example.com', false),
     name = 'Artémis',
     speed = 100,
     currentPosition = new Position(1, 1),

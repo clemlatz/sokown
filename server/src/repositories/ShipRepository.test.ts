@@ -15,7 +15,12 @@ describe('ShipRepository', () => {
         },
       } as unknown as PrismaClient;
       const repository = new ShipRepository(prisma);
-      const owner = new User(1, 'Valentina Tereshkova');
+      const owner = new User(
+        1,
+        'Valentina Tereshkova',
+        'valentina@example.com',
+        false,
+      );
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
       // when
@@ -90,6 +95,8 @@ describe('ShipRepository', () => {
           owner: {
             id: 3,
             pilotName: 'Owner 3',
+            email: 'owner3@example.com',
+            hasEnabledNotifications: false,
           },
           name: 'Ship 1',
           speed: 1,
@@ -105,6 +112,8 @@ describe('ShipRepository', () => {
           owner: {
             id: 4,
             pilotName: 'Owner 4',
+            email: 'owner4@example.com',
+            hasEnabledNotifications: true,
           },
           name: 'Ship 2',
           speed: 0.5,
@@ -134,7 +143,7 @@ describe('ShipRepository', () => {
       });
       const expectedShip1 = ModelFactory.createShip({
         id: 1,
-        owner: new User(3, 'Owner 3'),
+        owner: new User(3, 'Owner 3', 'owner3@example.com', false),
         name: 'Ship 1',
         speed: 1,
         currentPosition: new Position(1, 2),
@@ -142,7 +151,7 @@ describe('ShipRepository', () => {
       });
       const expectedShip2 = ModelFactory.createShip({
         id: 2,
-        owner: new User(4, 'Owner 4'),
+        owner: new User(4, 'Owner 4', 'owner4@example.com', true),
         name: 'Ship 2',
         speed: 0.5,
         currentPosition: new Position(5, 6),
@@ -164,6 +173,8 @@ describe('ShipRepository', () => {
           owner: {
             id: 2,
             pilotName: 'Owner 2',
+            email: 'owner2@example.com',
+            hasEnabledNotifications: false,
           },
           name: 'Ship',
           speed: 100,
@@ -190,7 +201,7 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
-        owner: new User(2, 'Owner 2'),
+        owner: new User(2, 'Owner 2', 'owner2@example.com', false),
         speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
@@ -217,6 +228,8 @@ describe('ShipRepository', () => {
           owner: {
             id: 2,
             pilotName: 'Owner 2',
+            email: 'owner2@example.com',
+            hasEnabledNotifications: false,
           },
           name: 'Ship',
           speed: 100,
@@ -244,7 +257,7 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
-        owner: new User(2, 'Owner 2'),
+        owner: new User(2, 'Owner 2', 'owner2@example.com', false),
         speed: 100,
         name: 'Ship',
         currentPosition: expectedPosition,
@@ -269,6 +282,8 @@ describe('ShipRepository', () => {
         owner: {
           id: 2,
           pilotName: 'Owner 2',
+          email: 'owner2@example.com',
+          hasEnabledNotifications: false,
         },
         name: 'Ship',
         speed: 100,
@@ -294,7 +309,7 @@ describe('ShipRepository', () => {
       const expectedDestination = new Position(3, 4);
       const expectedShip = ModelFactory.createShip({
         id: 1,
-        owner: new User(2, 'Owner 2'),
+        owner: new User(2, 'Owner 2', 'owner2@example.com', false),
         name: 'Ship',
         speed: 100,
         currentPosition: expectedPosition,

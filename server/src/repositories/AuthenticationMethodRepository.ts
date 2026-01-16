@@ -95,6 +95,8 @@ export type AuthenticationMethodDTO = {
   user: {
     id: number;
     pilotName: string;
+    email: string;
+    hasEnabledNotifications: boolean;
   };
 };
 
@@ -105,6 +107,13 @@ function _buildAuthenticationMethod(
   return new AuthenticationMethod(
     authenticationMethod.id,
     authenticationMethod.idTokenClaims,
-    user === null ? null : new User(user.id, user.pilotName),
+    user === null
+      ? null
+      : new User(
+          user.id,
+          user.pilotName,
+          user.email,
+          user.hasEnabledNotifications,
+        ),
   );
 }

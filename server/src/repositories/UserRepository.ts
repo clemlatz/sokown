@@ -30,7 +30,12 @@ export default class UserRepository {
       },
     });
 
-    return new User(userDto.id, userDto.pilotName);
+    return new User(
+      userDto.id,
+      userDto.pilotName,
+      userDto.email,
+      userDto.hasEnabledNotifications,
+    );
   }
 
   async getByAuthenticationMethodId(id: number): Promise<User> {
@@ -55,7 +60,12 @@ export default class UserRepository {
     }
 
     const { user } = authenticationMethod;
-    return new User(user.id, user.pilotName);
+    return new User(
+      user.id,
+      user.pilotName,
+      user.email,
+      user.hasEnabledNotifications,
+    );
   }
 
   async existsByPilotName(pilotName: string): Promise<boolean> {

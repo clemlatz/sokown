@@ -48,14 +48,14 @@ describe('ShipController', () => {
       const ships = [
         ModelFactory.createShip({
           id: 1,
-          owner: new User(3, 'David Bowman'),
+          owner: new User(3, 'David Bowman', 'david@example.com', false),
           speed: 100,
           name: 'Discovery One',
           currentPosition: new Position(1, 1),
         }),
         ModelFactory.createShip({
           id: 2,
-          owner: new User(4, 'James Corrigan'),
+          owner: new User(4, 'James Corrigan', 'james@example.com', true),
           speed: 200,
           name: 'Europa Report',
           currentPosition: new Position(3, 4),
@@ -125,7 +125,7 @@ describe('ShipController', () => {
       } as unknown as Response;
       const ship = ModelFactory.createShip({
         id: 1,
-        owner: new User(2, 'David Bowman'),
+        owner: new User(2, 'David Bowman', 'david@example.com', false),
         speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 2),
@@ -169,7 +169,7 @@ describe('ShipController', () => {
       } as unknown as Response;
       const ship = ModelFactory.createShip({
         id: 1,
-        owner: new User(2, 'David Bowman'),
+        owner: new User(2, 'David Bowman', 'david@example.com', false),
         speed: 100,
         name: 'Discovery One',
         currentPosition: new Position(1, 2),

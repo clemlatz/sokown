@@ -14,6 +14,8 @@ export type ShipDTO = {
   owner: {
     id: number;
     pilotName: string;
+    email: string;
+    hasEnabledNotifications: boolean;
   };
   name: string;
   speed: number;
@@ -137,7 +139,12 @@ export default class ShipRepository {
       ship.currentPositionY,
     );
 
-    const owner = new User(ship.owner.id, ship.owner.pilotName);
+    const owner = new User(
+      ship.owner.id,
+      ship.owner.pilotName,
+      ship.owner.email,
+      ship.owner.hasEnabledNotifications,
+    );
     return new Ship(
       ship.id,
       owner,
