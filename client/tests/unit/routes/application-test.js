@@ -5,6 +5,10 @@ import sinon from 'sinon';
 module('Unit | Route | application', function (hooks) {
   setupTest(hooks);
 
+  hooks.afterEach(function () {
+    sinon.restore();
+  });
+
   test('it loads current user and locations', async function (assert) {
     // given
     let route = this.owner.lookup('route:application');
