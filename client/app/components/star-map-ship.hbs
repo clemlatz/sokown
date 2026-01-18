@@ -1,3 +1,19 @@
+{{#unless @ship.isStationary}}
+  {{#if @showTrajectory}}
+    <line
+      x1={{this.objectPosition.x}}
+      y1={{this.objectPosition.y}}
+      x2={{this.destinationX}}
+      y2={{this.destinationY}}
+      stroke="lightblue"
+      stroke-width="0.3%"
+      stroke-dasharray="0.5% 0.5%"
+      opacity="0.6"
+      aria-label={{if @ship.destinationLocation (concat "Trajectory to " @ship.destinationLocation.name) "Trajectory"}}
+    />
+  {{/if}}
+{{/unless}}
+
 <polygon
   points="{{this.polygonPoints}}"
   fill="white"

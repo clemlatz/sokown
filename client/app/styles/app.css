@@ -91,3 +91,19 @@ dl dt {
   left: 10px;
   position: absolute;
 }
+
+.StarMap__path-toggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgb(0 0 0 / 70%);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.StarMap__path-toggle .form-check-label {
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
