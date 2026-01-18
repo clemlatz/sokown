@@ -107,3 +107,18 @@ dl dt {
   cursor: pointer;
   user-select: none;
 }
+
+/* Trajectory animation */
+@keyframes march {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -1.5%;
+  }
+}
+
+.trajectory {
+  animation: march 2s linear infinite;
+}

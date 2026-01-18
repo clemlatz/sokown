@@ -1,6 +1,7 @@
 {{#unless @ship.isStationary}}
   {{#if @showTrajectory}}
     <line
+      class="trajectory"
       x1={{this.objectPosition.x}}
       y1={{this.objectPosition.y}}
       x2={{this.destinationX}}
