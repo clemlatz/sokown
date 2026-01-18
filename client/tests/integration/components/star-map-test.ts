@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { render } from '@1024pix/ember-testing-library';
 import { hbs } from 'ember-cli-htmlbars';
 import { click, triggerEvent } from '@ember/test-helpers';
+import sinon from 'sinon';
 
 import { setupRenderingTest } from 'sokown-client/tests/helpers';
 import stubLocalStorage from 'sokown-client/tests/helpers/local-storage-stub';
@@ -180,6 +181,154 @@ module('Integration | Component | star-map', function (hooks) {
 
       // then - coordinates are hidden
       assert.dom(screen.queryByLabelText('Coordinates')).doesNotExist();
+    });
+  });
+
+  module('trajectory toggle', function () {
+    test('it displays trajectory checkbox when ship is moving', async function (assert) {
+      // given
+      stubLocalStorage({});
+      this.set('locations', []);
+      this.set('ship', {
+        name: 'Daedalus',
+        currentPosition: { x: 100, y: 200 },
+        isStationary: false,
+        destinationPosition: { x: 300, y: 400 },
+      });
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @ship={{this.ship}} />`,
+      );
+
+      // then
+      const checkbox = screen.getByLabelText('Show trajectory');
+      assert.dom(checkbox).exists();
+      assert.dom(checkbox).isNotChecked();
+    });
+
+    test('it does not display trajectory checkbox when ship is stationary', async function (assert) {
+      // given
+      stubLocalStorage({});
+      this.set('locations', []);
+      this.set('ship', {
+        name: 'Daedalus',
+        currentPosition: { x: 100, y: 200 },
+        isStationary: true,
+        destinationPosition: null,
+      });
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @ship={{this.ship}} />`,
+      );
+
+      // then
+      assert.dom(screen.queryByLabelText('Show trajectory')).doesNotExist();
+    });
+
+    test('it does not display trajectory checkbox when there is no ship', async function (assert) {
+      // given
+      stubLocalStorage({});
+      this.set('locations', []);
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} />`,
+      );
+
+      // then
+      assert.dom(screen.queryByLabelText('Show trajectory')).doesNotExist();
+    });
+
+    test('it saves trajectory preference to localStorage when toggled', async function (assert) {
+      // given
+      const localStorage = stubLocalStorage({});
+      this.set('locations', []);
+      this.set('ship', {
+        name: 'Daedalus',
+        currentPosition: { x: 100, y: 200 },
+        isStationary: false,
+        destinationPosition: { x: 300, y: 400 },
+      });
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @ship={{this.ship}} />`,
+      );
+      const checkbox = screen.getByLabelText('Show trajectory');
+
+      // when - check the checkbox
+      await click(checkbox);
+
+      // then - localStorage is updated to true
+      assert.true(
+        localStorage.setItem.calledWith('showTrajectory', 'true'),
+        'localStorage.setItem should be called with showTrajectory=true',
+      );
+      assert.dom(checkbox).isChecked();
+
+      // when - uncheck the checkbox
+      await click(checkbox);
+
+      // then - localStorage is updated to false
+      assert.true(
+        localStorage.setItem.calledWith('showTrajectory', 'false'),
+        'localStorage.setItem should be called with showTrajectory=false',
+      );
+      assert.dom(checkbox).isNotChecked();
+    });
+
+    test('it reads initial trajectory state from localStorage', async function (assert) {
+      // given
+      const getItemStub = sinon.stub();
+      getItemStub.withArgs('showTrajectory').returns('true');
+      getItemStub.withArgs('zoomLevels').returns(null);
+      const setItemStub = sinon.stub();
+
+      Object.defineProperty(window, 'localStorage', {
+        value: {
+          getItem: getItemStub,
+          setItem: setItemStub,
+        },
+        writable: true,
+      });
+
+      this.set('locations', []);
+      this.set('ship', {
+        name: 'Daedalus',
+        currentPosition: { x: 100, y: 200 },
+        isStationary: false,
+        destinationPosition: { x: 300, y: 400 },
+      });
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @ship={{this.ship}} />`,
+      );
+
+      // then
+      const checkbox = screen.getByLabelText('Show trajectory');
+      assert.dom(checkbox).isChecked();
+    });
+
+    test('it defaults to unchecked when localStorage has no value', async function (assert) {
+      // given
+      stubLocalStorage({});
+      this.set('locations', []);
+      this.set('ship', {
+        name: 'Daedalus',
+        currentPosition: { x: 100, y: 200 },
+        isStationary: false,
+        destinationPosition: { x: 300, y: 400 },
+      });
+
+      // when
+      const screen = await render(
+        hbs`<StarMap @locations={{this.locations}} @ship={{this.ship}} />`,
+      );
+
+      // then
+      const checkbox = screen.getByLabelText('Show trajectory');
+      assert.dom(checkbox).isNotChecked();
     });
   });
 });

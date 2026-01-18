@@ -9,6 +9,7 @@ interface ComponentSignature {
   Args: {
     ship: ShipModel;
     scale: number;
+    showTrajectory: boolean;
   };
 }
 
@@ -18,6 +19,16 @@ export default class StarMapLocationComponent extends Component<ComponentSignatu
       x: this.args.ship.currentPosition.x,
       y: -this.args.ship.currentPosition.y,
     };
+  }
+
+  get destinationX(): number | null {
+    const x = this.args.ship.destinationPosition?.x;
+    return x !== undefined ? x : null;
+  }
+
+  get destinationY(): number | null {
+    const y = this.args.ship.destinationPosition?.y;
+    return y !== undefined ? -y : null;
   }
 
   get polygonPoints(): string {

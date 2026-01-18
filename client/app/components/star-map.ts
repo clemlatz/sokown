@@ -27,6 +27,20 @@ const DEFAULT_SCALE = 256;
 export default class StarMapComponent extends Component<ComponentSignature> {
   @tracked private _scale: number | null = null;
   @tracked public mousePosition: Position | null = null;
+  @tracked private _showTrajectory: boolean | null = null;
+
+  get showTrajectory(): boolean {
+    if (this._showTrajectory !== null) {
+      return this._showTrajectory;
+    }
+    const saved = window.localStorage.getItem('showTrajectory');
+    return saved === 'true';
+  }
+
+  set showTrajectory(value: boolean) {
+    this._showTrajectory = value;
+    window.localStorage.setItem('showTrajectory', String(value));
+  }
 
   public get scale(): number {
     return (

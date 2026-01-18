@@ -24,9 +24,31 @@
     {{/each}}
 
     {{#if @ship}}
-      <StarMapShip @scale={{this.scale}} @ship={{@ship}} />
+      <StarMapShip
+        @scale={{this.scale}}
+        @ship={{@ship}}
+        @showTrajectory={{this.showTrajectory}}
+      />
     {{/if}}
   </svg>
+
+  {{#if @ship}}
+    {{#unless @ship.isStationary}}
+      <div class="StarMap__path-toggle">
+        <div class="form-check">
+          <Input
+            class="form-check-input"
+            @type="checkbox"
+            id="show-trajectory"
+            @checked={{this.showTrajectory}}
+          />
+          <label class="form-check-label" for="show-trajectory">
+            Show trajectory
+          </label>
+        </div>
+      </div>
+    {{/unless}}
+  {{/if}}
 
   <div class="StarMap__scale-controls">
     <button class="btn btn-sm btn-light" aria-label="Zoom in" type="button" {{on "click" this.zoomIn}}>+</button>
