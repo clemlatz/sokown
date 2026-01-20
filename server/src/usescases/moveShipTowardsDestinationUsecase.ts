@@ -37,8 +37,9 @@ export default class MoveShipTowardsDestinationUsecase {
       // Snap ship to exact destination coordinates
       ship.currentPosition = ship.destinationPosition;
 
-      const destinationLocation =
-        this.locationRepository.findByPosition(ship.destinationPosition);
+      const destinationLocation = this.locationRepository.findByPosition(
+        ship.destinationPosition,
+      );
       if (destinationLocation) {
         await this.eventRepository.create(
           `has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
