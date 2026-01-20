@@ -1,6 +1,8 @@
 import Location from '../models/Location';
 import Position from '../models/Position';
 import { Injectable } from '@nestjs/common';
+import isPositionWithinTolerance from '../helpers/isPositionWithinTolerance';
+import calculateDistanceBetweenPositions from '../helpers/calculateDistanceBetweenPositions';
 
 const spaceLocation = new Location(
   'space',
@@ -41,12 +43,36 @@ export default class LocationRepository {
   }
 
   findByPosition(position: Position): Location | null {
-    const location = locations.find((location) => {
-      return (
-        location.position.x === position.x && location.position.y === position.y
-      );
+    // Find all locations within tolerance
+    const locationsWithinTolerance = locations.filter((location) => {
+      return isPositionWithinTolerance(position, location.position);
     });
 
-    return location ?? spaceLocation;
+    // If no locations found within tolerance, return space
+    if (locationsWithinTolerance.length === 0) {
+      return spaceLocation;
+    }
+
+    // Return the closest location
+    let closestLocation = locationsWithinTolerance[0];
+    let closestDistance = calculateDistanceBetweenPositions(
+      position,
+      closestLocation.position,
+    );
+
+    for (let i = 1; i < locationsWithinTolerance.length; i++) {
+      const currentLocation = locationsWithinTolerance[i];
+      const currentDistance = calculateDistanceBetweenPositions(
+        position,
+        currentLocation.position,
+      );
+
+      if (currentDistance.value < closestDistance.value) {
+        closestLocation = currentLocation;
+        closestDistance = currentDistance;
+      }
+    }
+
+    return closestLocation;
   }
 }
