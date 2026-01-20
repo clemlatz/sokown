@@ -2,6 +2,10 @@
 
 All notable features added to Sokown from the player's perspective.
 
+## 2026-01-20
+
+- Ships now arrive at locations more reliably when traveling close to their destination coordinates
+
 ## 2026-01-18
 
 - You can now toggle a visual trajectory line on the star map showing your ship's planned path to its destination
