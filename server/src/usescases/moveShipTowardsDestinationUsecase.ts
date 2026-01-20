@@ -7,6 +7,7 @@ import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import DistanceInKilometers from '../values/DistanceInKilometers';
 import Position from '../models/Position';
 import MailerService from '../services/MailerService';
+import isPositionWithinTolerance from '../helpers/isPositionWithinTolerance';
 
 export default class MoveShipTowardsDestinationUsecase {
   constructor(
@@ -31,9 +32,13 @@ export default class MoveShipTowardsDestinationUsecase {
       ship.currentPosition,
     ).code;
 
-    if (this._shipDidNotMove(newPosition, ship)) {
+    // Check if ship has arrived (within tolerance of destination)
+    if (this._hasArrivedAtDestination(newPosition, ship)) {
+      // Snap ship to exact destination coordinates
+      ship.currentPosition = ship.destinationPosition;
+
       const destinationLocation =
-        this.locationRepository.findByPosition(newPosition);
+        this.locationRepository.findByPosition(ship.destinationPosition);
       if (destinationLocation) {
         await this.eventRepository.create(
           `has arrived at ${destinationLocation.name} (${ship.destinationPosition})`,
@@ -65,11 +70,8 @@ export default class MoveShipTowardsDestinationUsecase {
     return ship;
   }
 
-  private _shipDidNotMove(newPosition: Position, ship: Ship) {
-    return (
-      newPosition.x === ship.currentPosition.x &&
-      newPosition.y === ship.currentPosition.y
-    );
+  private _hasArrivedAtDestination(newPosition: Position, ship: Ship) {
+    return isPositionWithinTolerance(newPosition, ship.destinationPosition);
   }
 
   private _getDistanceTraveledAtSpeedInTime(
