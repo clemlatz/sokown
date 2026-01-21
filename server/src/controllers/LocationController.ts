@@ -1,8 +1,9 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res, Sse } from '@nestjs/common';
 import { Response } from 'express';
 import LocationRepository from '../repositories/LocationRepository';
 import Location from '../models/Location';
 import AstronomyService from '../services/AstronomyService';
+import { interval, map } from 'rxjs';
 
 @Controller()
 export default class LocationController {
@@ -18,6 +19,20 @@ export default class LocationController {
       this._serializeLocation(location),
     );
     res.json({ data: locationsData });
+  }
+
+  @Get('api/locations/live')
+  @Sse()
+  sse() {
+    return interval(10000).pipe(
+      map(() => {
+        const locations = this.locationRepository.getAll();
+        const locationsData = locations.map((location) =>
+          this._serializeLocation(location),
+        );
+        return { data: locationsData };
+      }),
+    );
   }
 
   @Get('api/locations/:code')
