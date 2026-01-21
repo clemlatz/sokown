@@ -151,4 +151,74 @@ describe('LocationController', () => {
       });
     });
   });
+
+  describe('sse', () => {
+    it('returns an Observable that emits location data', (done) => {
+      // given
+      jest.useFakeTimers();
+
+      // when
+      const observable = locationController.sse();
+
+      // then
+      const subscription = observable.subscribe((event) => {
+        expect(event).toEqual({
+          data: [
+            {
+              id: 'sun',
+              type: 'location',
+              attributes: {
+                name: 'Sun',
+                color: 'yellow',
+                position: { x: 0, y: 0 },
+                primaryBodyPosition: null,
+                distanceFromPrimaryBody: 0,
+              },
+            },
+            {
+              id: 'earth',
+              type: 'location',
+              attributes: {
+                name: 'Earth',
+                color: 'blue',
+                position: { x: 1, y: 2 },
+                primaryBodyPosition: { x: 0, y: 0 },
+                distanceFromPrimaryBody: 1,
+              },
+            },
+          ],
+        });
+        subscription.unsubscribe();
+        jest.useRealTimers();
+        done();
+      });
+
+      // Advance timers to trigger the first emission (interval starts at 10000ms)
+      jest.advanceTimersByTime(10000);
+    });
+
+    it('emits updated data on each interval', (done) => {
+      // given
+      jest.useFakeTimers();
+      const emissions: unknown[] = [];
+
+      // when
+      const observable = locationController.sse();
+
+      // then
+      const subscription = observable.subscribe((event) => {
+        emissions.push(event);
+        if (emissions.length === 2) {
+          expect(emissions).toHaveLength(2);
+          expect(emissions[0]).toEqual(emissions[1]);
+          subscription.unsubscribe();
+          jest.useRealTimers();
+          done();
+        }
+      });
+
+      // Advance timers to trigger two emissions
+      jest.advanceTimersByTime(20000);
+    });
+  });
 });
