@@ -87,7 +87,6 @@
     "ember-source": "~6.10.0",
     "ember-template-lint": "^5.13.0",
     "ember-tooltips": "^4.0.0",
-    "ember-welcome-page": "^7.0.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-ember": "^11.12.0",
