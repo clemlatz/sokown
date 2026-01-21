@@ -61,7 +61,7 @@
     "@types/ember-data__store": "^4.0.7",
     "@types/qunit": "^2.19.10",
     "@types/rsvp": "^4.0.9",
-    "@types/sinon": "^17.0.3",
+    "@types/sinon": "^21.0.0",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "broccoli-asset-rev": "^3.0.0",
@@ -116,6 +116,6 @@
   },
   "dependencies": {
     "dayjs": "^1.11.10",
-    "sinon": "^17.0.1"
+    "sinon": "^21.0.0"
   }
 }
