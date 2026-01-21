@@ -38,3 +38,13 @@ jobs:
           SOURCE: "server/dist/"
           TARGET: ${{ secrets.SERVER_REMOTE_PATH }}
           EXCLUDE: "/node_modules/, /.git/"
+
+      - name: Restart site on Alwaysdata
+        env:
+          ALWAYSDATA_API_TOKEN: ${{ secrets.ALWAYSDATA_API_TOKEN }}
+          ALWAYSDATA_ACCOUNT: ${{ secrets.ALWAYSDATA_ACCOUNT }}
+          ALWAYSDATA_SITE_ID: ${{ secrets.ALWAYSDATA_SITE_ID }}
+        run: |
+          curl -X POST \
+            -u "${ALWAYSDATA_API_TOKEN} account=${ALWAYSDATA_ACCOUNT}:" \
+            "https://api.alwaysdata.com/v1/site/${ALWAYSDATA_SITE_ID}/restart/"
