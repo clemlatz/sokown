@@ -1,7 +1,10 @@
 name: Deploy client
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Client CI" ]
+    types:
+      - completed
     branches:
       - main
   workflow_dispatch:

@@ -1,7 +1,10 @@
 name: Deploy server
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Server CI" ]
+    types:
+      - completed
     branches:
       - main
   workflow_dispatch:
