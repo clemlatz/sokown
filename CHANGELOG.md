@@ -2,6 +2,10 @@
 
 All notable features added to Sokown from the player's perspective.
 
+## 2026-01-23
+
+- Locations positions are now updated in real-time rather than only when page is refreshed.
+
 ## 2026-01-20
 
 - Ships now arrive at locations more reliably when traveling close to their destination coordinates
