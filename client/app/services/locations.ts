@@ -1,5 +1,6 @@
 import Service, { service } from '@ember/service';
 import type Store from '@ember-data/store';
+import { tracked } from '@glimmer/tracking';
 
 import type Location from 'sokown-client/models/location';
 
