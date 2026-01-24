@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { setConfig } = require('@warp-drive/build-config/cjs-set-config.cjs');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
@@ -15,6 +16,13 @@ module.exports = function (defaults) {
           },
         },
       ],
+    },
+  });
+
+  setConfig(app, __dirname, {
+    deprecations: {
+      DEPRECATE_TRACKING_PACKAGE: false,
+      DEPRECATE_LEGACY_IMPORTS: false,
     },
   });
 
