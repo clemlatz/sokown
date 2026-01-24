@@ -7,7 +7,6 @@ import SpeedInKilometersPerSecond from '../values/SpeedInKilometersPerSecond';
 import DistanceInKilometers from '../values/DistanceInKilometers';
 import Position from '../models/Position';
 import MailerService from '../services/MailerService';
-import isPositionWithinTolerance from '../helpers/isPositionWithinTolerance';
 
 export default class MoveShipTowardsDestinationUsecase {
   constructor(
@@ -72,7 +71,10 @@ export default class MoveShipTowardsDestinationUsecase {
   }
 
   private _hasArrivedAtDestination(newPosition: Position, ship: Ship) {
-    return isPositionWithinTolerance(newPosition, ship.destinationPosition);
+    return (
+      newPosition.x === ship.currentPosition.x &&
+      newPosition.y === ship.currentPosition.y
+    );
   }
 
   private _getDistanceTraveledAtSpeedInTime(
