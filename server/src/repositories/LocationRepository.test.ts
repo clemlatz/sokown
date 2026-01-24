@@ -54,16 +54,16 @@ describe('LocationRepository', () => {
       expect(location.name).toEqual('Earth');
     });
 
-    test('it returns a location when position is within 0.1 SU tolerance', () => {
+    test('it returns a location when position is within 1 SU tolerance', () => {
       // given
       const locationRepository = new LocationRepository();
       const earth = locationRepository.getByCode('earth');
       const earthPosition = new Position(758, 653);
       earth.setPosition(earthPosition);
 
-      // Ship position slightly off from Earth (within 0.1 SU)
-      const shipPosition = new Position(758.05, 653.05);
-      // Distance: sqrt(0.05^2 + 0.05^2) ≈ 0.0707 SU < 0.1 SU
+      // Ship position slightly off from Earth (within 1 SU)
+      const shipPosition = new Position(758.5, 653.5);
+      // Distance: sqrt(0.5^2 + 0.5^2) ≈ 0.707 SU < 1 SU
 
       // when
       const location = locationRepository.findByPosition(shipPosition);
@@ -72,16 +72,16 @@ describe('LocationRepository', () => {
       expect(location.name).toEqual('Earth');
     });
 
-    test('it returns Space if position is outside 0.1 SU tolerance', () => {
+    test('it returns Space if position is outside 1 SU tolerance', () => {
       // given
       const locationRepository = new LocationRepository();
       const earth = locationRepository.getByCode('earth');
       const earthPosition = new Position(758, 653);
       earth.setPosition(earthPosition);
 
-      // Ship position too far from Earth (> 0.1 SU)
-      const shipPosition = new Position(758.15, 653.0);
-      // Distance: 0.15 SU > 0.1 SU
+      // Ship position too far from Earth (> 1 SU)
+      const shipPosition = new Position(759.5, 653.0);
+      // Distance: 1.5 SU > 1 SU
 
       // when
       const location = locationRepository.findByPosition(shipPosition);
@@ -108,16 +108,16 @@ describe('LocationRepository', () => {
       const earth = locationRepository.getByCode('earth');
       const moon = locationRepository.getByCode('moon');
 
-      // Set Earth and Moon close together (both within 0.1 SU of test position)
+      // Set Earth and Moon close together (both within 1 SU of test position)
       const earthPosition = new Position(500, 500);
-      const moonPosition = new Position(500.08, 500.06);
+      const moonPosition = new Position(500.8, 500.6);
       earth.setPosition(earthPosition);
       moon.setPosition(moonPosition);
 
       // Ship position closer to Earth than Moon
-      const shipPosition = new Position(500.02, 500.015);
-      // Distance to Earth: sqrt(0.02^2 + 0.015^2) ≈ 0.025 SU
-      // Distance to Moon: sqrt(0.06^2 + 0.045^2) ≈ 0.075 SU
+      const shipPosition = new Position(500.2, 500.15);
+      // Distance to Earth: sqrt(0.2^2 + 0.15^2) ≈ 0.25 SU
+      // Distance to Moon: sqrt(0.6^2 + 0.45^2) ≈ 0.75 SU
 
       // when
       const location = locationRepository.findByPosition(shipPosition);
