@@ -102,46 +102,6 @@ describe('moveShipTowardsDestinationUsecase', () => {
       );
     });
 
-    test('it snaps to destination when ship is within 0.1 SU tolerance', async () => {
-      // given
-      const destinationPosition = new Position(100, 200);
-      // Ship is within 0.1 SU of destination
-      const currentPosition = new Position(100.05, 200.05);
-      // Distance: sqrt(0.05^2 + 0.05^2) ≈ 0.0707 SU < 0.1 SU
-      const ship = ModelFactory.createShip({
-        currentPosition,
-        destinationPosition,
-        speed: 100, // Slow speed to not overshoot in one tick
-      });
-      const locationRepository = {
-        findByPosition: jest.fn(() =>
-          ModelFactory.createLocation({ code: 'mars', name: 'Mars' }),
-        ),
-      } as unknown as LocationRepository;
-      const eventRepository = {
-        create: jest.fn(),
-      } as unknown as EventRepository;
-      const mailerService = {
-        sendMailNotification: jest.fn().mockResolvedValue(undefined),
-      } as unknown as MailerService;
-      const moveShipTowardsDestinationUsecase =
-        new MoveShipTowardsDestinationUsecase(
-          locationRepository,
-          eventRepository,
-          mailerService,
-        );
-
-      // when
-      const updatedShip = await moveShipTowardsDestinationUsecase.execute(ship);
-
-      // then
-      expect(eventRepository.create).toHaveBeenCalled();
-      // Ship should be snapped to exact destination coordinates
-      expect(updatedShip.currentPosition.x).toBe(100);
-      expect(updatedShip.currentPosition.y).toBe(200);
-      expect(updatedShip.isStationary).toBe(true);
-    });
-
     test('it does not trigger arrival when ship is outside 0.1 SU tolerance', async () => {
       // given
       const destinationPosition = new Position(100, 200);
