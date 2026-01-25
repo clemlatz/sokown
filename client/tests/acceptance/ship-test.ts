@@ -1,11 +1,10 @@
 import { module, test } from 'qunit';
 import { click, currentURL, fillIn } from '@ember/test-helpers';
 import { visit } from '@1024pix/ember-testing-library';
-import { setupMirage } from 'ember-cli-mirage/test-support';
 import 'qunit-dom';
 import { Response } from 'miragejs';
 
-import { setupApplicationTest } from 'sokown-client/tests/helpers';
+import { setupApplicationTest, setupMirage } from 'sokown-client/tests/helpers';
 import stubLocalStorage from 'sokown-client/tests/helpers/local-storage-stub';
 
 type TestContext = {

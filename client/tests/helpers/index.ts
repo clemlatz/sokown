@@ -28,7 +28,7 @@ function setupApplicationTest(
   // from other addons:
   //
   // setupIntl(hooks); // ember-intl
-  // setupMirage(hooks); // ember-cli-mirage
+  // setupMirage(hooks); // ember-mirage
 }
 
 function setupRenderingTest(hooks: NestedHooks, options: SetupTestOptions) {
@@ -44,3 +44,4 @@ function setupTest(hooks: NestedHooks, options: SetupTestOptions = {}) {
 }
 
 export { setupApplicationTest, setupRenderingTest, setupTest };
+export { setupMirage } from './setup-mirage';

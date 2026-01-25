@@ -1,10 +1,9 @@
 import { module, test } from 'qunit';
 import { visit } from '@1024pix/ember-testing-library';
-import { setupMirage } from 'ember-cli-mirage/test-support';
 import { click, fillIn } from '@ember/test-helpers';
 import 'qunit-dom';
 
-import { setupApplicationTest } from 'sokown-client/tests/helpers';
+import { setupApplicationTest, setupMirage } from 'sokown-client/tests/helpers';
 
 module('Acceptance | locations', function (hooks) {
   setupApplicationTest(hooks);

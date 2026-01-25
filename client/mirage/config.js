@@ -1,17 +1,19 @@
-import { discoverEmberDataModels } from 'ember-cli-mirage';
 import { createServer } from 'miragejs';
+import ship from './models/ship';
+import location from './models/location';
+import user from './models/user';
+import authenticationMethod from './models/authentication-method';
 
 export default function (config) {
   let finalConfig = {
     ...config,
-    // Remove discoverEmberDataModels if you do not want ember-cli-mirage to auto discover the ember models
     models: {
-      ...discoverEmberDataModels(config.store),
+      ship,
+      location,
+      user,
+      authenticationMethod,
       ...config.models,
     },
-
-    // uncomment to opt into ember-cli-mirage to auto discover ember serializers
-    // serializers: applyEmberDataSerializers(config.serializers),
     routes,
   };
 
