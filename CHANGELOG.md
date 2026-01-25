@@ -2,6 +2,11 @@
 
 All notable features added to Sokown from the player's perspective.
 
+## 2026-01-25
+
+- Ships are now considered to have reached a location when within 1 SU of the target coordinates, improving arrival
+  reliability.
+
 ## 2026-01-23
 
 - Locations positions are now updated in real-time rather than only when page is refreshed.
