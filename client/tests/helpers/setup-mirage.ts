@@ -53,7 +53,6 @@ const locations = [
   },
 ];
 
-// @ts-expect-error miragejs types
 function routes() {
   // @ts-expect-error miragejs types
   this.get('/api/users/me', () => {
