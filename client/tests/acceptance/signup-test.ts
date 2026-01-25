@@ -1,8 +1,7 @@
 import { module, test } from 'qunit';
 import { currentURL, fillIn } from '@ember/test-helpers';
-import { setupApplicationTest } from 'sokown-client/tests/helpers';
+import { setupApplicationTest, setupMirage } from 'sokown-client/tests/helpers';
 import { visit } from '@1024pix/ember-testing-library';
-import { setupMirage } from 'ember-cli-mirage/test-support';
 import 'qunit-dom';
 
 module('Acceptance | signup', function (hooks) {

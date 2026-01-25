@@ -1,9 +1,8 @@
 import { module, test } from 'qunit';
 import { currentURL } from '@ember/test-helpers';
-import { setupApplicationTest } from 'sokown-client/tests/helpers';
+import { setupApplicationTest, setupMirage } from 'sokown-client/tests/helpers';
 import { visit } from '@1024pix/ember-testing-library';
 import { click } from '@ember/test-helpers';
-import { setupMirage } from 'ember-cli-mirage/test-support';
 
 module('Acceptance | sokown', function (hooks) {
   setupApplicationTest(hooks);
