@@ -88,7 +88,7 @@
     "ember-qunit": "^9.0.0",
     "ember-resolver": "^13.0.0",
     "ember-source": "~6.10.0",
-    "ember-template-lint": "^5.13.0",
+    "ember-template-lint": "^7.0.0",
     "ember-tooltips": "^4.0.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^10.0.0",
