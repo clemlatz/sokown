@@ -136,4 +136,9 @@ export default class StarMapComponent extends Component<ComponentSignature> {
   public handleMouseLeave(): void {
     this.mousePosition = null;
   }
+
+  @action
+  public toggleTrajectory(): void {
+    this.showTrajectory = !this.showTrajectory;
+  }
 }

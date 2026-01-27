@@ -37,16 +37,22 @@
     <p id="pilot-name-question"><strong>How shall we call you?</strong></p>
 
     <div class="form-floating mb-3">
-      <Input class="form-control" id="pilot-name" aria-describedby="pilot-name-question"
-             @value={{this.pilotName}} placeholder="Pilot name" required/>
+      <input class="form-control" id="pilot-name" aria-describedby="pilot-name-question"
+             value={{this.pilotName}}
+             placeholder="Pilot name"
+             onchange={{this.updatePilotName}}
+             required/>
       <label for="pilot-name">Pilot name</label>
     </div>
 
     <p id="ship-name-question"><strong>What will be you first ship's name?</strong></p>
 
     <div class="form-floating mb-3">
-      <Input class="form-control" id="ship-name" aria-describedby="ship-name-question"
-             @value={{this.shipName}} placeholder="Ship name" required/>
+      <input class="form-control" id="ship-name" aria-describedby="ship-name-question"
+             value={{this.shipName}}
+             placeholder="Ship name"
+             onchange={{this.updateShipName}}
+             required/>
       <label for="ship-name">Ship name</label>
     </div>
 
@@ -55,8 +61,8 @@
     </p>
 
     <div class="form-check mb-3">
-      <Input class="form-check-input" @type="checkbox" aria-describedby="notifications-question"
-             id="notifications" @checked={{this.notificationsAreEnabled}} />
+      <input class="form-check-input" type="checkbox" aria-describedby="notifications-question"
+             id="notifications" checked={{this.notificationsAreEnabled}} />
       <label class="form-check-label" for="notifications">
         Enable e-mail notifications
       </label>

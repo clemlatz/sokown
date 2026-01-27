@@ -107,7 +107,7 @@ module('Integration | Component | star-map', function (hooks) {
       const localStorage = stubLocalStorage({ locations: 32, ship: 32 });
       this.set('locations', []);
       const screen = await render(
-        hbs`<StarMap @locations={{this.locations}} @scale={{32}} @key={{"locations"}} />`,
+        hbs`<StarMap @locations={{this.locations}} @scale={{32}} @key="locations" />`,
       );
 
       // when

@@ -36,11 +36,12 @@
     {{#unless @ship.isStationary}}
       <div class="StarMap__path-toggle">
         <div class="form-check">
-          <Input
+          <input
             class="form-check-input"
-            @type="checkbox"
+            type="checkbox"
             id="show-trajectory"
-            @checked={{this.showTrajectory}}
+            checked={{this.showTrajectory}}
+            onchange={{this.toggleTrajectory}}
           />
           <label class="form-check-label" for="show-trajectory">
             Show trajectory
