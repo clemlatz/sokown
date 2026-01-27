@@ -49,7 +49,7 @@
   </dd>
 </dl>
 
-<StarMap @locations={{this.starMapLocations}} @ship={{@model}} @key="ship" />
+<StarMap @locations={{this.starMapLocations}} @ship={{@model}} @key="ship"/>
 
 <h3>Autopilot</h3>
 {{#if this.currentUser.isAuthenticated}}
@@ -58,7 +58,9 @@
       <label class="visually-hidden" for="newDestinationPositionX">X</label>
       <div class="input-group">
         <div class="input-group-text">X</div>
-        <Input class="form-control" id="newDestinationPositionX" @value={{this.newDestinationPositionX}} required/>
+        <input class="form-control" id="newDestinationPositionX"
+               onchange={{this.updateDestinationPositionX}}
+               value={{this.newDestinationPositionX}} required/>
       </div>
     </div>
 
@@ -66,7 +68,9 @@
       <label class="visually-hidden" for="newDestinationPositionY">Y</label>
       <div class="input-group">
         <div class="input-group-text">Y</div>
-        <Input class="form-control" id="newDestinationPositionY" @value={{this.newDestinationPositionY}} required/>
+        <input class="form-control" id="newDestinationPositionY"
+               onchange={{this.updateDestinationPositionY}}
+               value={{this.newDestinationPositionY}} required/>
       </div>
     </div>
 

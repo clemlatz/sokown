@@ -20,6 +20,16 @@ export default class UserSignupController extends Controller {
   @tracked registrationError: string | null = null;
 
   @action
+  updatePilotName(event: { target: HTMLInputElement }) {
+    this.pilotName = event.target.value;
+  }
+
+  @action
+  updateShipName(event: { target: HTMLInputElement }) {
+    this.shipName = event.target.value;
+  }
+
+  @action
   async register(event: Event) {
     event.preventDefault();
 

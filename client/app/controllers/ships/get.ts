@@ -21,6 +21,16 @@ export default class ShipsGetController extends Controller {
   }
 
   @action
+  updateDestinationPositionX(event: { target: HTMLInputElement }) {
+    this.newDestinationPositionX = event.target.value;
+  }
+
+  @action
+  updateDestinationPositionY(event: { target: HTMLInputElement }) {
+    this.newDestinationPositionY = event.target.value;
+  }
+
+  @action
   async setDestination(event: Event) {
     event.preventDefault();
     this.model.destinationPosition = {
