@@ -31,7 +31,7 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "eslint": "^8.42.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.7.0",
@@ -60,7 +60,8 @@
     "nodemailer": "^7.0.12",
     "openid-client": "^5.6.4",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typescript-eslint": "^8.54.0"
   },
   "private": "true",
   "jest": {
