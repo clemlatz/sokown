@@ -55,7 +55,7 @@ describe('Ship', () => {
       const tested = () => ship.destinationPosition;
 
       // then
-      expect(tested).toThrowError(new Error('Ship Hermes has no destination'));
+      expect(tested).toThrow(new Error('Ship Hermes has no destination'));
     });
   });
 });
