@@ -35,7 +35,7 @@ describe('LocationRepository', () => {
       const tested = () => locationRepository.getByCode('nibiru');
 
       // then
-      expect(tested).toThrowError(new Error('Unknown location nibiru'));
+      expect(tested).toThrow(new Error('Unknown location nibiru'));
     });
   });
 
